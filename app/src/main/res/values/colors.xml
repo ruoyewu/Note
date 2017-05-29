@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <color name="black">#000000</color>
+    <color name="gray">#808080</color>
+
+    <color name="cosmos">#FECCCD</color>
+    <color name="romance">#FDFDFD</color>
+    <color name="carnation">#FC5659</color>
+    <color name="athens_gray">#EFEFF4</color>
+    <color name="mercury">#E3E3E5</color>
+    <color name="sundown">#FBB5B2</color>
+    <color name="french_lilac">#D7AEDF</color>
+    <color name="pink_lace">#FED2FA</color>
+    <color name="blanched_almond">#FEE8CF</color>
+    <color name="selago">#E9DCEA</color>
+    <color name="sail">#B8DEFA</color>
+    <color name="pale_cornflower_blue">#ACD0FB</color>
+    <color name="riptide">#8EE1DB</color>
+    <color name="anti_flash_white">#F3F3F4</color>
+    <color name="desert_storm">#EFE5DE</color>
+    <color name="mystic">#DDEAF1</color>
+    <color name="surf_crest">#D3E7D4</color>
+    <color name="half_baked">#85B9D1</color>
+    <color name="edgewater">#C5DAC1</color>
+    <color name="paris_white">#C6DBD6</color>
+    <color name="spring_wood">#E8E4D8</color>
+    <color name="ebb">#E7DAD4</color>
+    <color name="black_white">#E7E3D8</color>
+    <color name="baby_pink">#F3C1CA</color>
+    <color name="london_hue">#BDA3C7</color>
+    <color name="double_spanish_white">#D5C0A3</color>
+    <color name="mauvelous">#EF97A9</color>
+    <color name="ghost">#C1C0C8</color>
+    <color name="iceberg">#CFE0D8</color>
+    <color name="turquoise_green">#A6D1B6</color>
+    <color name="vista_white">#FDF7F7</color>
+    <color name="beige">#F4F3DD</color>
+
+</resources>

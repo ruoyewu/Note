@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.wuruoye.note.widget.CustomRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:id="@+id/activity_write"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="UnusedAttribute">
+
+    <ImageView
+        android:id="@+id/iv_write"
+        android:scaleType="centerCrop"
+        android:src="@drawable/paper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_write_date"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <View
+                android:background="@color/gray"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"/>
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/et_write"
+            android:gravity="start"
+            android:layout_width="match_parent"
+            android:background="@null"
+            android:padding="5dp"
+            android:layout_weight="1"
+            android:layout_height="0dp" />
+
+        <LinearLayout
+            android:id="@+id/ll_write_edit"
+            android:visibility="gone"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            android:background="@color/romance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            xmlns:android="http://schemas.android.com/apk/res/android">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_write_time"
+                    android:text="时"
+                    android:textColor="@color/carnation"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tv_write_paper"
+                    android:text="纸"
+                    android:textColor="@color/carnation"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tv_write_direct"
+                    android:text="左"
+                    android:textColor="@color/carnation"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"/>
+
+                <Button
+                    android:id="@+id/tv_write_submit"
+                    android:text="完"
+                    android:background="@drawable/back"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:textColor="@color/romance"
+                    android:layout_marginRight="20dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
+            </LinearLayout>
+
+            <HorizontalScrollView
+                android:id="@+id/hsv_paper"
+                android:scrollbars="none"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="150dp" >
+                <LinearLayout
+                    android:id="@+id/ll_write_paper"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+            </HorizontalScrollView>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_write_back"
+            android:text="退"
+            android:textSize="18sp"
+            android:transitionName="@string/translate_note_button"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/back"
+            android:textColor="@color/romance"
+            android:layout_marginBottom="10dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+    </LinearLayout>
+
+</com.wuruoye.note.widget.CustomRelativeLayout>
