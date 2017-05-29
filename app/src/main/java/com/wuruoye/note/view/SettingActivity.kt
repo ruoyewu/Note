@@ -1,9 +1,12 @@
 package com.wuruoye.note.view
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
+import android.support.v4.app.ActivityOptionsCompat
 import android.view.View
 import com.wuruoye.note.R
 import com.wuruoye.note.base.BaseActivity
@@ -19,6 +22,7 @@ import kotlinx.android.synthetic.main.activity_setting.*
  */
 class SettingActivity : BaseActivity(), View.OnClickListener{
     private lateinit var noteGet: NoteGet
+    private var isChangeItem = false
 
     private var noteView = object : IAbsView<ArrayList<Note>>{
         override fun setModel(model: ArrayList<Note>) {
@@ -44,7 +48,17 @@ class SettingActivity : BaseActivity(), View.OnClickListener{
         iv_setting_show.setColorFilter(color)
         iv_setting_show__.setColorFilter(color)
 
+        ll_setting_show.setOnClickListener(this)
         tv_setting_back.setOnClickListener(this)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == CHANGE_ITEM){
+            if (resultCode == Activity.RESULT_OK){
+                isChangeItem = true
+            }
+        }
     }
 
     override fun initPresenter() {
@@ -61,6 +75,9 @@ class SettingActivity : BaseActivity(), View.OnClickListener{
             R.id.tv_setting_back -> {
                 closeActivity()
             }
+            R.id.ll_setting_show -> {
+                startAc(Intent(this,ShowItemActivity::class.java), CHANGE_ITEM)
+            }
         }
     }
 
@@ -73,11 +90,24 @@ class SettingActivity : BaseActivity(), View.OnClickListener{
         tv_setting_count.text = tv_setting_count.text.toString() + count
     }
 
+    private fun startAc(intent: Intent, requestCode: Int){
+        val compat = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
+                tv_setting_back,getString(R.string.translate_note_button))
+        ActivityCompat.startActivityForResult(this,intent,requestCode,compat.toBundle())
+    }
+
     private fun closeActivity(){
+        if (isChangeItem){
+            setResult(Activity.RESULT_OK)
+        }
         if (Build.VERSION.SDK_INT > 21){
             finishAfterTransition()
         }else{
             finish()
         }
+    }
+
+    companion object{
+        val CHANGE_ITEM = 1
     }
 }

@@ -117,8 +117,17 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK){
-            getNote()
+        when (requestCode){
+            WRITE_NOTE -> {
+                if (resultCode == Activity.RESULT_OK){
+                    getNote()
+                }
+            }
+            START_SETTING -> {
+                if (resultCode == Activity.RESULT_OK){
+                    getNote()
+                }
+            }
         }
     }
 

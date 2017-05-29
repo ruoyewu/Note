@@ -44,7 +44,7 @@
             android:id="@+id/item_note_title"
             android:text="早"
             android:textSize="15sp"
-            android:lines="1"
+            android:maxLines="2"
             android:padding="10dp"
             android:gravity="center_vertical"
             android:layout_width="match_parent"

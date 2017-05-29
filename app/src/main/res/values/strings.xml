@@ -1,6 +1,8 @@
 <resources>
-    <string name="app_name">Note</string>
+    <string name="app_name">简记</string>
+    <string name="example">人生若只如初见</string>
 
     <string name="translate_note">translate_note</string>
     <string name="translate_note_button">translate_note_button</string>
+
 </resources>

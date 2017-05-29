@@ -45,7 +45,7 @@
                 <ImageView
                     android:id="@+id/iv_setting_show"
                     android:src="@drawable/ic_dehaze"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginRight="10dp"
                     android:layout_width="18dp"
                     android:layout_height="18dp" />
                 <TextView
