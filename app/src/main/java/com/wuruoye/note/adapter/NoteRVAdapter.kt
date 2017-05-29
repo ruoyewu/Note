@@ -40,7 +40,7 @@ class NoteRVAdapter(
             p0.wait.text = "上个月"
         }else if (note.week == -2){
             p0.info.visibility = View.GONE
-            if (note.month == NoteUtil.getMonth()){
+            if (note.month == NoteUtil.getMonth() && note.year == NoteUtil.getYear()){
                 p0.wait.text = "明日再续"
             }else{
                 p0.wait.text = "下个月"

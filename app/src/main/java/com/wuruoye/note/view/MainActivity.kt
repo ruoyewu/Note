@@ -196,7 +196,7 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
     private fun upMonth(b: Boolean){
         isUpDirect = !b
         if (b){
-            if (mMonth == NoteUtil.getMonth()){
+            if (mMonth == NoteUtil.getMonth() && mYear == NoteUtil.getYear()){
 
             }else{
                 if (mMonth == 12){
@@ -206,8 +206,9 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
                         mMonth = 1
                         mYear ++
                     }
+                }else{
+                    mMonth ++
                 }
-                mMonth ++
                 tv_note_year.text = Config.yearList[mYear - FIRST_YEAR]
                 tv_note_month.text = Config.numList[mMonth]
                 getNote()
