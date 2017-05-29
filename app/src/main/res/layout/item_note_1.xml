@@ -2,12 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="5dp"
-    android:transitionName="@string/translate_note"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:ignore="UnusedAttribute">
     <LinearLayout
-        android:id="@+id/note_1_info"
+        android:id="@+id/item_note_info"
         android:background="@color/athens_gray"
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -18,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <TextView
-                android:id="@+id/note_1_day"
+                android:id="@+id/item_note_day"
                 android:text="二十七"
                 android:textSize="15sp"
                 android:layout_margin="8dp"
@@ -30,7 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"/>
             <TextView
-                android:id="@+id/note_1_week"
+                android:id="@+id/item_note_week"
                 android:text="周六"
                 android:textSize="15sp"
                 android:layout_width="wrap_content"
@@ -42,7 +41,7 @@
             android:layout_width="1dp"
             android:layout_height="match_parent"/>
         <TextView
-            android:id="@+id/note_1_title"
+            android:id="@+id/item_note_title"
             android:text="早"
             android:textSize="15sp"
             android:lines="1"
@@ -52,8 +51,9 @@
             android:layout_height="match_parent" />
     </LinearLayout>
 
+
     <TextView
-        android:id="@+id/note_1_null"
+        android:id="@+id/item_note_null"
         android:text="待"
         android:textSize="20sp"
         android:gravity="center_vertical"

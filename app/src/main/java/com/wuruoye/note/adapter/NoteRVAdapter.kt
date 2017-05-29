@@ -12,6 +12,7 @@ import android.widget.TextView
 import com.wuruoye.note.R
 import com.wuruoye.note.model.Config
 import com.wuruoye.note.model.Note
+import com.wuruoye.note.model.NoteCache
 import com.wuruoye.note.util.NoteUtil
 
 /**
@@ -24,6 +25,7 @@ class NoteRVAdapter(
 ) : RecyclerView.Adapter<NoteRVAdapter.ViewHolder>(), View.OnClickListener {
     private var redColor = 0
     private var defaultColor = 0
+    private lateinit var noteCache: NoteCache
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(p0: ViewHolder?, p1: Int) {
@@ -45,11 +47,29 @@ class NoteRVAdapter(
             }
         }else{
             if (note.content != "" || note.style != 0) {
+                val item = noteCache.itemShow
+                var day = ""
+                var week = ""
+                if (item == 1){
+                    day = Config.numList[note.day]
+                    week = "周${Config.weekList[note.week]}"
+                }else if (item == 2){
+                    day = note.day.toString()
+                    week = "周${Config.weekList[note.week]}"
+                }else if (item == 3){
+                    day = Config.numList[note.month] + "月" + Config.numList[note.day] + "日"
+                    week = "星期${Config.weekList[note.week]}"
+                }else if (item == 4){
+                    day = Config.yearList[note.year - 2013] + "年" +
+                            Config.numList[note.month] + "月" +
+                            Config.numList[note.day] + "日"
+                    week = "星期${Config.weekList[note.week]}"
+                }
                 p0.wait.visibility = View.GONE
                 p0.info.visibility = View.VISIBLE
-                p0.day.text = Config.numList[note.day]
+                p0.day.text = day
                 p0.title.text = note.content
-                p0.week.text = "周${Config.weekList[note.week]}"
+                p0.week.text = week
             } else {
                 p0.info.visibility = View.GONE
                 p0.wait.visibility = View.VISIBLE
@@ -67,7 +87,14 @@ class NoteRVAdapter(
     override fun onCreateViewHolder(p0: ViewGroup?, p1: Int): ViewHolder {
         redColor = ActivityCompat.getColor(p0!!.context,R.color.carnation)
         defaultColor = ActivityCompat.getColor(p0.context,R.color.gray)
-        val view = LayoutInflater.from(p0.context).inflate(R.layout.item_note_1,p0,false)
+        noteCache = NoteCache(p0.context)
+        val item = noteCache.itemShow
+        val view =
+                if (item == 1 || item == 2){
+                    LayoutInflater.from(p0.context).inflate(R.layout.item_note_1,p0,false)
+                }else{
+                    LayoutInflater.from(p0.context).inflate(R.layout.item_note_2,p0,false)
+                }
         return ViewHolder(view)
     }
 
@@ -80,10 +107,10 @@ class NoteRVAdapter(
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val day = itemView.findViewById(R.id.note_1_day) as TextView
-        val week = itemView.findViewById(R.id.note_1_week) as TextView
-        val title = itemView.findViewById(R.id.note_1_title) as TextView
-        val wait = itemView.findViewById(R.id.note_1_null) as TextView
-        val info = itemView.findViewById(R.id.note_1_info) as LinearLayout
+        val day = itemView.findViewById(R.id.item_note_day) as TextView
+        val week = itemView.findViewById(R.id.item_note_week) as TextView
+        val title = itemView.findViewById(R.id.item_note_title) as TextView
+        val wait = itemView.findViewById(R.id.item_note_null) as TextView
+        val info = itemView.findViewById(R.id.item_note_info) as LinearLayout
     }
 }

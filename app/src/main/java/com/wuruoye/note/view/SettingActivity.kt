@@ -3,6 +3,7 @@ package com.wuruoye.note.view
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
 import android.view.View
 import com.wuruoye.note.R
 import com.wuruoye.note.base.BaseActivity
@@ -38,6 +39,10 @@ class SettingActivity : BaseActivity(), View.OnClickListener{
 
     override fun initView() {
         noteGet.requestAllNote()
+
+        val color = ActivityCompat.getColor(this,R.color.gray)
+        iv_setting_show.setColorFilter(color)
+        iv_setting_show__.setColorFilter(color)
 
         tv_setting_back.setOnClickListener(this)
     }

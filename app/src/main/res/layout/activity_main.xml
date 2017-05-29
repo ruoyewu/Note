@@ -16,11 +16,17 @@
         android:layout_width="match_parent"
         android:layout_height="40dp" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_note"
+    <com.wuruoye.note.widget.SpringScrollView
+        android:id="@+id/ssv_note"
         android:layout_width="match_parent"
         android:layout_weight="1"
-        android:layout_height="0dp" />
+        android:layout_height="0dp">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_note"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </com.wuruoye.note.widget.SpringScrollView>
+
 
     <RelativeLayout
         android:layout_margin="5dp"

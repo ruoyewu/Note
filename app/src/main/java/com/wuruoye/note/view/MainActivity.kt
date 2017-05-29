@@ -8,7 +8,6 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.widget.PopupWindowCompat
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
 import android.util.Log
@@ -16,8 +15,10 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.PopupWindow
+import com.transitionseverywhere.Fade
 import com.transitionseverywhere.Slide
 import com.transitionseverywhere.TransitionManager
+import com.transitionseverywhere.TransitionSet
 import com.wuruoye.note.R
 import com.wuruoye.note.adapter.ItemRVAdapter
 import com.wuruoye.note.adapter.NoteRVAdapter
@@ -29,6 +30,7 @@ import com.wuruoye.note.presenter.NoteGet
 import com.wuruoye.note.util.NoteUtil
 import com.wuruoye.note.util.SQLiteUtil
 import com.wuruoye.note.util.toast
+import com.wuruoye.note.widget.SpringScrollView
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnClickListener{
@@ -47,6 +49,16 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
 
         override fun setWorn(message: String) {
             toast(message)
+        }
+
+    }
+    private val dragListener = object : SpringScrollView.OnDragListener{
+        override fun onUpDrag() {
+            upMonth(true)
+        }
+
+        override fun onDownDrag() {
+            upMonth(false)
         }
 
     }
@@ -93,6 +105,7 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
 
         })
 
+        ssv_note.setDragListener(dragListener)
         tv_note_year.setOnClickListener(this)
         tv_note_month.setOnClickListener(this)
         tv_note_write.setOnClickListener(this)
@@ -152,43 +165,52 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
         val note = v.tag as Note
         if (note.week == -1 || note.week == -2){
             if (note.week == -1) {
-                if (mMonth == 1){
-                    mMonth = 12
-                    mYear --
-                }else{
-                    mMonth --
-                }
-                tv_note_year.text = Config.yearList[mYear - FIRST_YEAR]
-                tv_note_month.text = Config.numList[mMonth]
-                getNote()
+                upMonth(false)
             }else{
-                if (mMonth == NoteUtil.getMonth()){
-
-                }else{
-                    if (mMonth == 12){
-                        if (mYear == NoteUtil.getYear()){
-
-                        }else{
-                            mMonth = 1
-                            mYear ++
-                        }
-                    }
-                    mMonth ++
-                    tv_note_year.text = Config.yearList[mYear - FIRST_YEAR]
-                    tv_note_month.text = Config.numList[mMonth]
-                    getNote()
-                }
+                upMonth(true)
             }
         }else {
             toWriteNote(note)
         }
     }
 
+
     override fun onBackPressed() {
         if (isSearch){
             openSearch(false)
         }else {
             super.onBackPressed()
+        }
+    }
+
+    private fun upMonth(b: Boolean){
+        if (b){
+            if (mMonth == NoteUtil.getMonth()){
+
+            }else{
+                if (mMonth == 12){
+                    if (mYear == NoteUtil.getYear()){
+
+                    }else{
+                        mMonth = 1
+                        mYear ++
+                    }
+                }
+                mMonth ++
+                tv_note_year.text = Config.yearList[mYear - FIRST_YEAR]
+                tv_note_month.text = Config.numList[mMonth]
+                getNote()
+            }
+        }else{
+            if (mMonth == 1){
+                mMonth = 12
+                mYear --
+            }else{
+                mMonth --
+            }
+            tv_note_year.text = Config.yearList[mYear - FIRST_YEAR]
+            tv_note_month.text = Config.numList[mMonth]
+            getNote()
         }
     }
 
@@ -232,7 +254,7 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
     }
 
     private fun openSearch(isOpen: Boolean){
-        TransitionManager.beginDelayedTransition(activity_main,Slide(Gravity.TOP))
+//        TransitionManager.beginDelayedTransition(activity_main,Slide(Gravity.TOP))
         when (isOpen) {
             false -> {
                 isSearch = false
@@ -300,14 +322,29 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
     }
 
     private fun setNote(noteList: ArrayList<Note>){
-        TransitionManager.beginDelayedTransition(rv_note,Slide(Gravity.BOTTOM))
-        rv_note.layoutManager = LinearLayoutManager(this)
+        val set = TransitionSet()
+//                .addTransition(Fade(Fade.MODE_IN))
+                .addTransition(Fade(Fade.MODE_OUT))
+                .addTransition(Slide(Gravity.TOP))
+                .setStartDelay(0)
+                .setDuration(200)
+        TransitionManager.beginDelayedTransition(rv_note,set)
+        val layout = object : LinearLayoutManager(this){
+            override fun canScrollVertically(): Boolean {
+                return false
+            }
+        }
+        layout.isAutoMeasureEnabled = true
+        rv_note.layoutManager = layout
         rv_note.adapter = NoteRVAdapter(noteList,this)
-        rv_note.post {
-            if (noteList.size > 2) {
-                rv_note.scrollToPosition(noteList.size - if (isClose) 1 else 2)
-//                rv_note.smoothScrollToPosition(noteList.size - if (isClose) 1 else 2)
-            } }
+        ssv_note.post {
+            val y = ssv_note.measuredHeight
+            ssv_note.scrollBy(0,y * 10)
+//            if (noteList.size > 2) {
+//                rv_note.scrollToPosition(noteList.size - if (isClose) 1 else 2)
+////                rv_note.smoothScrollToPosition(noteList.size - if (isClose) 1 else 2)
+//            }
+        }
     }
 
     companion object{

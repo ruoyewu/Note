@@ -37,18 +37,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
+                android:id="@+id/ll_setting_show"
                 android:padding="10dp"
+                android:gravity="center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <ImageView
-                    android:src=""
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent" />
+                    android:id="@+id/iv_setting_show"
+                    android:src="@drawable/ic_dehaze"
+                    android:layout_marginRight="5dp"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp" />
                 <TextView
                     android:text="日记显示样式"
+                    android:gravity="center_vertical"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent" />
+                <ImageView
+                    android:id="@+id/iv_setting_show__"
+                    android:src="@drawable/ic_keyboard_arrow_right"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp" />
             </LinearLayout>
         </LinearLayout>
     </com.wuruoye.note.widget.SpringScrollView>
