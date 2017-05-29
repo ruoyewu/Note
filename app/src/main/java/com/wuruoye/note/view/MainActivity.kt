@@ -41,6 +41,7 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
     private var isClose = false
     private var isSearch = false
     private var search = ""
+    private var isUpDirect = true
 
     private val noteView = object : IAbsView<ArrayList<Note>>{
         override fun setModel(model: ArrayList<Note>) {
@@ -184,6 +185,7 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
     }
 
     private fun upMonth(b: Boolean){
+        isUpDirect = !b
         if (b){
             if (mMonth == NoteUtil.getMonth()){
 
@@ -250,7 +252,7 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
         rv.adapter = adapter
         popWindow.contentView  = view
         popWindow.isFocusable = true
-        popWindow.showAsDropDown(v)
+        popWindow.showAsDropDown(v,0,-100)
     }
 
     private fun openSearch(isOpen: Boolean){
@@ -322,12 +324,19 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
     }
 
     private fun setNote(noteList: ArrayList<Note>){
-        val set = TransitionSet()
-//                .addTransition(Fade(Fade.MODE_IN))
-                .addTransition(Fade(Fade.MODE_OUT))
-                .addTransition(Slide(Gravity.TOP))
-                .setStartDelay(0)
-                .setDuration(200)
+        val set =
+                when (isUpDirect){
+                    false -> {
+                        TransitionSet()
+                                .addTransition(Fade(Fade.MODE_OUT))
+                                .addTransition(Slide(Gravity.BOTTOM))
+                    }
+                    else -> {
+                        TransitionSet()
+                                .addTransition(Fade(Fade.MODE_OUT))
+                                .addTransition(Slide(Gravity.TOP))
+                    }
+                }
         TransitionManager.beginDelayedTransition(rv_note,set)
         val layout = object : LinearLayoutManager(this){
             override fun canScrollVertically(): Boolean {

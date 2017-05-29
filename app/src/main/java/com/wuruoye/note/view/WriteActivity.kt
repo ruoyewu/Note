@@ -144,9 +144,13 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
             note.content = et_write.text.toString()
             note.style = paperColor
             note.direct = mDirect
-            SQLiteUtil.saveNote(this,note)
+            if (note.content == "" && note.style == 0){
+                SQLiteUtil.deleteNote(this,note)
+            }else
+                SQLiteUtil.saveNote(this,note)
             setResult(Activity.RESULT_OK)
         }
+
         if (Build.VERSION.SDK_INT > 21) {
             finishAfterTransition()
         }else{
