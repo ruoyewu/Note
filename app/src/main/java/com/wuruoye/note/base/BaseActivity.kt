@@ -30,7 +30,6 @@ abstract class BaseActivity : android.support.v7.app.AppCompatActivity(){
 
     open fun initPresenter(){
         if (presenterList.size != viewList.size){
-
         }else {
             for (i in 0..presenterList.size - 1){
                 presenterList[i].attachView(viewList[i])
