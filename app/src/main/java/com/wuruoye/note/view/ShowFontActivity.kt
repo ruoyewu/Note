@@ -47,6 +47,13 @@ class ShowFontActivity : BaseActivity(), View.OnClickListener{
         tv_font_download.setOnClickListener(this)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK){
+            recreate()
+        }
+    }
+
     override fun onClick(v: View?) {
         when (v!!.id){
             R.id.tv_font_set_back -> {
@@ -94,41 +101,6 @@ class ShowFontActivity : BaseActivity(), View.OnClickListener{
             llItem.add(llView)
             ll_font_show.addView(llView)
         }
-
-//        val ivLayout = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-//                LinearLayout.LayoutParams.WRAP_CONTENT)
-//        ivLayout.width = 0
-//        ivLayout.weight = 1f
-//        val margin = dp2px(10f)
-//        ivLayout.setMargins(margin,0,margin,0)
-//        val length = dp2px(30f)
-//        val ivvLayout = LinearLayout.LayoutParams(length,length)
-//        val llLayout = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-//                LinearLayout.LayoutParams.WRAP_CONTENT)
-//
-//        for (i in list){
-//            val iv = ImageView(this)
-//            iv.tag = i - 1
-//            iv.setImageResource(Config.fontList[i - 1])
-//            iv.layoutParams = ivLayout
-//            iv.setOnClickListener(this)
-//            ivItem.add(iv)
-//
-//            val ivv = ImageView(this)
-//            ivv.layoutParams = ivvLayout
-//            ivv.setImageResource(R.drawable.ic_select)
-//
-//            val ll = LinearLayout(this)
-//            ll.orientation = LinearLayout.HORIZONTAL
-//            ll.gravity = Gravity.CENTER_VERTICAL
-//            ll.layoutParams = llLayout
-//            llItem.add(ll)
-//
-//            ll.addView(iv)
-//            ll.addView(ivv)
-//
-//            ll_font_show.addView(ll)
-//        }
     }
 
     private fun setIV(item: Int){

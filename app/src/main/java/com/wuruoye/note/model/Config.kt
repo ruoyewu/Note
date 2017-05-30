@@ -8,7 +8,6 @@ import com.wuruoye.note.R
  * this file is to do
  */
 object Config {
-
     val fontList = arrayOf(
             R.drawable.chendaiming,
             R.drawable.chenjishi,
@@ -16,8 +15,17 @@ object Config {
             R.drawable.jiangang,
             R.drawable.minikai,
             R.drawable.minixing,
-            R.drawable.yingbikai,
-            R.drawable.yingbili
+            R.drawable.yingbikai
+    )
+
+    val fontNameList = arrayOf(
+            "chendaiming.ttf",
+            "chenjishi.ttf",
+            "guojinfang.ttf",
+            "jiangang.ttf",
+            "minikai.ttf",
+            "minixing.ttf",
+            "yingbikai.ttf"
     )
 
     val permission = arrayOf(
