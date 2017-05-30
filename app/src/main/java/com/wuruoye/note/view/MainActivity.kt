@@ -3,6 +3,7 @@ package com.wuruoye.note.view
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
@@ -22,11 +23,13 @@ import com.transitionseverywhere.TransitionSet
 import com.wuruoye.note.R
 import com.wuruoye.note.adapter.ItemRVAdapter
 import com.wuruoye.note.adapter.NoteRVAdapter
+import com.wuruoye.note.base.App
 import com.wuruoye.note.base.BaseActivity
 import com.wuruoye.note.base.IAbsView
 import com.wuruoye.note.model.Config
 import com.wuruoye.note.model.Note
 import com.wuruoye.note.presenter.NoteGet
+import com.wuruoye.note.util.FontUtil
 import com.wuruoye.note.util.NoteUtil
 import com.wuruoye.note.util.SQLiteUtil
 import com.wuruoye.note.util.toast

@@ -1,5 +1,6 @@
 package com.wuruoye.note.model
 
+import android.Manifest
 import com.wuruoye.note.R
 
 /**
@@ -7,6 +8,12 @@ import com.wuruoye.note.R
  * this file is to do
  */
 object Config {
+
+
+    val permission = arrayOf(
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    )
 
     val fontList = arrayOf(
             "fonts/linzhixiu.ttf",

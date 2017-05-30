@@ -12,6 +12,13 @@ import java.util.*
 @SuppressLint("WrongConstant")
 object NoteUtil {
 
+    fun isToday(year: Int, month: Int, day: Int): Boolean{
+        val calender = getCalender()
+        return calender.get(Calendar.YEAR) == year ||
+                calender.get(Calendar.MONTH) + 1 == month ||
+                calender.get(Calendar.DAY_OF_MONTH) == day
+    }
+
     fun getDay(): Int{
         return getCalender().get(Calendar.DAY_OF_MONTH)
     }

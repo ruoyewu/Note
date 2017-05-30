@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="MissingPrefix"
     android:id="@+id/activity_font_set"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -34,7 +33,6 @@
                     android:text="@string/example"
                     android:textSize="20sp"
                     android:layout_gravity="center_vertical"
-                    fontPath="fonts/linzhixiu.ttf"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content" />
@@ -44,27 +42,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp" />
             </LinearLayout>
-            <LinearLayout
-                android:id="@+id/ll_font_set_2"
-                android:padding="10dp"
-                android:orientation="horizontal"
-                android:layout_gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:textSize="20sp"
-                    android:text="@string/example"
-                    android:layout_gravity="center_vertical"
-                    fontPath="fonts/jiangang.ttf"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content" />
 
-                <ImageView
-                    android:id="@+id/iv_font_set_2"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp" />
-            </LinearLayout>
             <TextView
                 android:text="@string/font_tip"
                 android:textSize="12sp"
