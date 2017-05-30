@@ -9,15 +9,20 @@ import com.wuruoye.note.R
  */
 object Config {
 
+    val fontList = arrayOf(
+            R.drawable.chendaiming,
+            R.drawable.chenjishi,
+            R.drawable.guojinfang,
+            R.drawable.jiangang,
+            R.drawable.minikai,
+            R.drawable.minixing,
+            R.drawable.yingbikai,
+            R.drawable.yingbili
+    )
 
     val permission = arrayOf(
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
-    )
-
-    val fontList = arrayOf(
-            "fonts/linzhixiu.ttf",
-            "fonts/jiangang.ttf"
     )
 
     val paperStyle = arrayOf(
