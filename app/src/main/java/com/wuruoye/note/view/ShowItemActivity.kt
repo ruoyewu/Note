@@ -38,13 +38,17 @@ class ShowItemActivity : BaseActivity() , View.OnClickListener{
                 iv_item_set_1,
                 iv_item_set_2,
                 iv_item_set_3,
-                iv_item_set_4
+                iv_item_set_4,
+                iv_item_set_5,
+                iv_item_set_6
         )
         llItemList = arrayOf(
                 ll_item_set_1,
                 ll_item_set_2,
                 ll_item_set_3,
-                ll_item_set_4
+                ll_item_set_4,
+                ll_item_set_5,
+                ll_item_set_6
         )
 
         ivItemList[noteCache.itemShow - 1].setImageResource(R.drawable.ic_select)

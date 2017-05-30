@@ -64,6 +64,12 @@ class NoteRVAdapter(
                             Config.numList[note.month] + "月" +
                             Config.numList[note.day] + "日"
                     week = "星期${Config.weekList[note.week]}"
+                }else if (item == 5){
+                    day = note.month.toString() + "月" + note.day + "日"
+                    week = "星期" + Config.weekList[note.week]
+                }else if (item == 6){
+                    day = note.month.toString() + "月" + note.day + "日"
+                    week = ""
                 }
                 p0.wait.visibility = View.GONE
                 p0.info.visibility = View.VISIBLE

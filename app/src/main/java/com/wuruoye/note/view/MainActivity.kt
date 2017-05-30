@@ -125,7 +125,7 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
             }
             START_SETTING -> {
                 if (resultCode == Activity.RESULT_OK){
-                    getNote()
+                    recreate()
                 }
             }
         }

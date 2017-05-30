@@ -15,7 +15,6 @@ import com.wuruoye.note.model.Note
 import com.wuruoye.note.presenter.NoteGet
 import com.wuruoye.note.util.toast
 import kotlinx.android.synthetic.main.activity_setting.*
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig
 
 /**
  * Created by wuruoye on 2017/5/29.
@@ -23,7 +22,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig
  */
 class SettingActivity : BaseActivity(), View.OnClickListener{
     private lateinit var noteGet: NoteGet
-    private var isChangeItem = false
+    private var isChange = false
 
     private var noteView = object : IAbsView<ArrayList<Note>>{
         override fun setModel(model: ArrayList<Note>) {
@@ -43,7 +42,6 @@ class SettingActivity : BaseActivity(), View.OnClickListener{
     }
 
     override fun initView() {
-
         noteGet.requestAllNote()
 
         ll_setting_show.setOnClickListener(this)
@@ -53,11 +51,29 @@ class SettingActivity : BaseActivity(), View.OnClickListener{
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == CHANGE_ITEM){
-            if (resultCode == Activity.RESULT_OK){
-                isChangeItem = true
+        when (requestCode){
+            CHANGE_ITEM -> {
+                if (resultCode == Activity.RESULT_OK){
+                    isChange = true
+                }
+            }
+            CHANGE_FONT -> {
+                if (resultCode == Activity.RESULT_OK){
+                    isChange = true
+                    recreate()
+                }
             }
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        outState?.putBoolean("isChange",isChange)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        super.onRestoreInstanceState(savedInstanceState)
+        isChange = savedInstanceState?.getBoolean("isChange")!!
     }
 
     override fun initPresenter() {
@@ -103,7 +119,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener{
     }
 
     private fun closeActivity(){
-        if (isChangeItem){
+        if (isChange){
             setResult(Activity.RESULT_OK)
         }
         if (Build.VERSION.SDK_INT > 21){

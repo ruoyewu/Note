@@ -1,5 +1,6 @@
 package com.wuruoye.note.view
 
+import android.app.Activity
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -37,8 +38,7 @@ class ShowFontActivity : BaseActivity(), View.OnClickListener{
         ivFontShow.add(iv_font_set_1)
         ivFontShow.add(iv_font_set_2)
 
-        ivFontShow[fontShow].setImageResource(R.drawable.ic_select)
-
+        setIV(fontShow)
         for (i in 0..llFontShow.size - 1){
             llFontShow[i].tag = i
             llFontShow[i].setOnClickListener(this)
@@ -59,11 +59,34 @@ class ShowFontActivity : BaseActivity(), View.OnClickListener{
     }
 
     override fun onBackPressed() {
+        if (fontShow != noteCache.fontShow){
+            noteCache.fontShow = fontShow
+            setResult(Activity.RESULT_OK)
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             finishAfterTransition()
         }else{
             finish()
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        outState?.putInt("item",fontShow)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        super.onRestoreInstanceState(savedInstanceState)
+        fontShow = savedInstanceState?.getInt("item")!!
+        setIV(fontShow)
+    }
+
+    private fun setIV(item: Int){
+        for (i in ivFontShow){
+            i.setImageResource(0)
+        }
+        ivFontShow[item].setImageResource(R.drawable.ic_select)
     }
 
     private fun setClick(item: Int){
@@ -72,12 +95,7 @@ class ShowFontActivity : BaseActivity(), View.OnClickListener{
                         .setDefaultFontPath(Config.fontList[item])
                         .build()
         )
-        noteCache.fontShow = item
-        activity_font_set.invalidate()
-
-        for (i in ivFontShow){
-            i.setImageResource(0)
-        }
-        ivFontShow[item].setImageResource(R.drawable.ic_select)
+        fontShow = item
+        recreate()
     }
 }

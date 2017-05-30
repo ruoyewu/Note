@@ -7,9 +7,10 @@
 
     <LinearLayout
         android:padding="5dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="40dp">
         <TextView
             android:id="@+id/tv_setting_size"
             android:text="累计日记:"
