@@ -22,27 +22,20 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <LinearLayout
-                android:id="@+id/ll_font_set_1"
-                android:padding="10dp"
-                android:orientation="horizontal"
-                android:layout_gravity="center_vertical"
+                android:id="@+id/ll_font_show"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="50dp">
-                <TextView
-                    android:text="@string/example"
-                    android:textSize="20sp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content" />
+                android:layout_height="wrap_content" />
 
-                <ImageView
-                    android:id="@+id/iv_font_set_1"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp" />
-            </LinearLayout>
-
+            <TextView
+                android:id="@+id/tv_font_download"
+                android:text="下载更多字体"
+                android:gravity="center"
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
             <TextView
                 android:text="@string/font_tip"
                 android:textSize="12sp"
