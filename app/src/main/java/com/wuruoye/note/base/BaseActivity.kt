@@ -1,8 +1,11 @@
 package com.wuruoye.note.base
 
+import android.content.Context
 import android.os.Handler
 import android.view.Window
 import android.view.WindowManager
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
 /**
  * Created by wuruoye on 2017/5/27.
@@ -35,6 +38,10 @@ abstract class BaseActivity : android.support.v7.app.AppCompatActivity(){
                 presenterList[i].attachView(viewList[i])
             }
         }
+    }
+
+    override fun attachBaseContext(newBase: Context?) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase))
     }
 
     override fun onDestroy() {

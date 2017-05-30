@@ -78,6 +78,10 @@ class ShowItemActivity : BaseActivity() , View.OnClickListener{
         currentItem = item + 1
     }
 
+    override fun onBackPressed() {
+        closeActivity()
+    }
+
     private fun closeActivity(){
         if (currentItem != noteCache.itemShow){
             noteCache.itemShow = currentItem

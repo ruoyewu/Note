@@ -8,6 +8,11 @@ import com.wuruoye.note.R
  */
 object Config {
 
+    val fontList = arrayOf(
+            "fonts/linzhixiu.ttf",
+            "fonts/jiangang.ttf"
+    )
+
     val paperStyle = arrayOf(
             R.color.romance,
             R.color.cosmos,

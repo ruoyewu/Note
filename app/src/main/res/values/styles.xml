@@ -7,7 +7,7 @@
         <item name="android:textColor">@color/gray</item>
         <item name="colorPrimary">@color/romance</item>
         <item name="colorPrimaryDark">@color/romance</item>
-        <item name="colorAccent">@color/cosmos</item>
+        <item name="colorAccent">@color/gray</item>
         <item name="android:popupMenuStyle">@style/popMenu</item>
         <item name="android:popupWindowStyle">@style/popMenu</item>
     </style>w

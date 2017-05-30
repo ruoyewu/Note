@@ -15,6 +15,7 @@ import com.wuruoye.note.model.Note
 import com.wuruoye.note.presenter.NoteGet
 import com.wuruoye.note.util.toast
 import kotlinx.android.synthetic.main.activity_setting.*
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig
 
 /**
  * Created by wuruoye on 2017/5/29.
@@ -42,13 +43,11 @@ class SettingActivity : BaseActivity(), View.OnClickListener{
     }
 
     override fun initView() {
+
         noteGet.requestAllNote()
 
-        val color = ActivityCompat.getColor(this,R.color.gray)
-        iv_setting_show.setColorFilter(color)
-        iv_setting_show__.setColorFilter(color)
-
         ll_setting_show.setOnClickListener(this)
+        ll_setting_font.setOnClickListener(this)
         tv_setting_back.setOnClickListener(this)
     }
 
@@ -78,7 +77,14 @@ class SettingActivity : BaseActivity(), View.OnClickListener{
             R.id.ll_setting_show -> {
                 startAc(Intent(this,ShowItemActivity::class.java), CHANGE_ITEM)
             }
+            R.id.ll_setting_font -> {
+                startAc(Intent(this,ShowFontActivity::class.java), CHANGE_FONT)
+            }
         }
+    }
+
+    override fun onBackPressed() {
+        closeActivity()
     }
 
     @SuppressLint("SetTextI18n")
@@ -109,5 +115,6 @@ class SettingActivity : BaseActivity(), View.OnClickListener{
 
     companion object{
         val CHANGE_ITEM = 1
+        val CHANGE_FONT = 2
     }
 }

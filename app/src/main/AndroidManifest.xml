@@ -21,6 +21,7 @@
             android:windowSoftInputMode="stateHidden|adjustResize"/>
         <activity android:name=".view.SettingActivity"/>
         <activity android:name=".view.ShowItemActivity"/>
+        <activity android:name=".view.ShowFontActivity"/>
     </application>
 
 </manifest>
