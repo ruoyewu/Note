@@ -40,19 +40,19 @@ class FontCache(context: Context) : BaseCache(context){
     }
 
     fun getFontList(): ArrayList<Int>{
-//        val str = mSP!!.getString(FONT_LIST,"-1")
-//        if (str == "-1"){
-//            return ArrayList()
-//        }else{
-//            val list = ArrayList<Int>()
-//            val jA = JSONArray(str)
-//            val size = jA.length()
-//            for (i in 0..size - 1){
-//                list.add(jA.getInt(i))
-//            }
-//            return list
-//        }
-        return FONT_DOWNLOAD_LIST_DEFAULT
+        val str = mSP!!.getString(FONT_LIST,"-1")
+        if (str == "-1"){
+            return ArrayList()
+        }else{
+            val list = ArrayList<Int>()
+            val jA = JSONArray(str)
+            val size = jA.length()
+            for (i in 0..size - 1){
+                list.add(jA.getInt(i))
+            }
+            return list
+        }
+//        return FONT_DOWNLOAD_LIST_DEFAULT
     }
 
     fun setFontList(list: ArrayList<Int>){

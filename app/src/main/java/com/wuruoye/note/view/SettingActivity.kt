@@ -94,7 +94,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener{
                 startAc(Intent(this,ShowItemActivity::class.java), CHANGE_ITEM)
             }
             R.id.ll_setting_font -> {
-//                startAc(Intent(this,ShowFontActivity::class.java), CHANGE_FONT)
+                startAc(Intent(this,ShowFontActivity::class.java), CHANGE_FONT)
             }
         }
     }

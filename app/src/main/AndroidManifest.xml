@@ -26,6 +26,7 @@
         <activity android:name=".view.SettingActivity"/>
         <activity android:name=".view.ShowItemActivity"/>
         <activity android:name=".view.ShowFontActivity"/>
+        <activity android:name=".view.FontDownloadActivity" />
     </application>
 
 </manifest>
