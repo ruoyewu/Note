@@ -3,6 +3,7 @@ package com.wuruoye.note.view
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
@@ -46,6 +47,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener{
 
         ll_setting_show.setOnClickListener(this)
         ll_setting_font.setOnClickListener(this)
+        ll_setting_feedback.setOnClickListener(this)
         tv_setting_back.setOnClickListener(this)
     }
 
@@ -96,6 +98,9 @@ class SettingActivity : BaseActivity(), View.OnClickListener{
             R.id.ll_setting_font -> {
                 startAc(Intent(this,ShowFontActivity::class.java), CHANGE_FONT)
             }
+            R.id.ll_setting_feedback -> {
+                startFeedback()
+            }
         }
     }
 
@@ -118,6 +123,14 @@ class SettingActivity : BaseActivity(), View.OnClickListener{
         ActivityCompat.startActivityForResult(this,intent,requestCode,compat.toBundle())
     }
 
+    private fun startFeedback(){
+        val intent = Intent(Intent.ACTION_SENDTO)
+//        intent.type = "message/rfc822"
+//        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(CREATE_EMAIL))
+        intent.data = Uri.parse("mailto:" + CREATE_EMAIL)
+        startActivity(intent)
+    }
+
     private fun closeActivity(){
         if (isChange){
             setResult(Activity.RESULT_OK)
@@ -132,5 +145,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener{
     companion object{
         val CHANGE_ITEM = 1
         val CHANGE_FONT = 2
+
+        val CREATE_EMAIL = "2455929518@qq.com"
     }
 }

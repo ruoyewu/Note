@@ -47,7 +47,7 @@
                     android:id="@+id/iv_setting_show"
                     android:src="@drawable/ic_menu"
                     android:layout_marginRight="10dp"
-                    android:layout_width="18dp"
+                    android:layout_width="30dp"
                     android:layout_height="18dp" />
                 <TextView
                     android:text="日记显示样式"
@@ -71,10 +71,31 @@
                 <ImageView
                     android:src="@drawable/ic_font"
                     android:layout_marginRight="10dp"
-                    android:layout_width="22dp"
+                    android:layout_width="30dp"
                     android:layout_height="22dp" />
                 <TextView
                     android:text="字体"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
+                <ImageView
+                    android:src="@drawable/ic_right"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_setting_feedback"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:src="@drawable/ic_email"
+                    android:layout_marginRight="10dp"
+                    android:layout_width="30dp"
+                    android:layout_height="22dp" />
+                <TextView
+                    android:text="反馈建议"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content" />
