@@ -122,23 +122,14 @@ class FontDownloadActivity : BaseActivity() ,View.OnClickListener{
 
     private fun downloadComplete(){
         TransitionManager.beginDelayedTransition(ll_font_download,Slide(Gravity.BOTTOM))
-        val list1 = fontCache.getFontDownloadList()
         val item = ivList[currentItem].tag as Int + 1
-        if (list1.contains(item)) {
-            list1.remove(item)
-        }
         val list2 = fontCache.getFontList()
         if (!list2.contains(item)) {
             list2.add(item)
         }
-        fontCache.setFontDownloadList(list1)
         fontCache.setFontList(list2)
 
-        ivList.removeAt(currentItem)
-        tvList.removeAt(currentItem)
-
-//        initLayout()
-        ll_font_download.removeViewAt(currentItem)
+        tvList[currentItem].text = "已下载"
 
         isChange = true
         isDownload = false
@@ -148,18 +139,24 @@ class FontDownloadActivity : BaseActivity() ,View.OnClickListener{
         ll_font_download.removeAllViews()
         ivList.clear()
         tvList.clear()
-        val list = fontCache.getFontDownloadList()
-        for (i in 0..list.size - 1){
+        val listToDownload = fontCache.getFontDownloadList()
+        val listDownloaded = fontCache.getFontList()
+        for (i in 0..listToDownload.size - 1){
             @SuppressLint("InflateParams")
             val llView = LayoutInflater.from(this).inflate(R.layout.item_font_download,null) as LinearLayout
             val iv = llView.findViewById(R.id.iv_font_download) as ImageView
             val tv = llView.findViewById(R.id.tv_font_download) as TextView
-            iv.setOnClickListener(this)
             iv.tag = i
-            iv.setImageResource(Config.fontList[list[i] - 1])
+            iv.setImageResource(Config.fontList[listToDownload[i] - 1])
             ivList.add(iv)
             tvList.add(tv)
             ll_font_download.addView(llView)
+
+            if (!listDownloaded.contains(listToDownload[i])) {
+                iv.setOnClickListener(this)
+            }else{
+                tv.text = "已下载"
+            }
         }
     }
 }

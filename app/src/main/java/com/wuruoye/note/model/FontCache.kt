@@ -16,27 +16,8 @@ class FontCache(context: Context) : BaseCache(context){
         get() = mSP!!.getInt(FONT, IS_FONT_CHANGE_DEFAULT)
         set(value) = mSP!!.edit().putInt(FONT,value).apply()
 
-    fun setFontDownloadList(list: ArrayList<Int>){
-        val jsonA = JSONArray()
-        for (i in list){
-            jsonA.put(i)
-        }
-        mSP!!.edit().putString(FONT_DOWNLOAD_LIST,jsonA.toString()).apply()
-    }
-
     fun getFontDownloadList(): ArrayList<Int>{
-        val str = mSP!!.getString(FONT_DOWNLOAD_LIST,"-1")
-        if (str == "-1"){
-            return FONT_DOWNLOAD_LIST_DEFAULT
-        }else{
-            val list = ArrayList<Int>()
-            val jsonA = JSONArray(str)
-            val size = jsonA.length()
-            for (i in 0..size - 1){
-                list.add(jsonA.getInt(i))
-            }
-            return list
-        }
+        return FONT_DOWNLOAD_LIST_DEFAULT
     }
 
     fun getFontList(): ArrayList<Int>{
