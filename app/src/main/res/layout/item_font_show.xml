@@ -16,7 +16,6 @@
 
     <ImageView
         android:id="@+id/iv_font_select"
-        android:src="@drawable/ic_select"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:layout_width="30dp"

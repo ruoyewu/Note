@@ -2,7 +2,6 @@ package com.wuruoye.note.view
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.IntentService
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -13,14 +12,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import com.transitionseverywhere.Slide
+import com.transitionseverywhere.TransitionManager
 import com.wuruoye.note.R
 import com.wuruoye.note.base.BaseActivity
 import com.wuruoye.note.model.Config
 import com.wuruoye.note.model.FontCache
-import com.wuruoye.note.model.NoteCache
 import com.wuruoye.note.util.FontUtil
-import com.wuruoye.note.util.dp2px
-import com.wuruoye.note.util.toast
 import kotlinx.android.synthetic.main.activity_show_font.*
 
 /**
@@ -29,20 +27,26 @@ import kotlinx.android.synthetic.main.activity_show_font.*
  */
 class ShowFontActivity : BaseActivity(), View.OnClickListener{
     private lateinit var fontCache: FontCache
+    private var lastFont: Int = 0
 
     private val llItem = ArrayList<LinearLayout>()
-    private val ivItem = ArrayList<ImageView>()
+    private val ivList = ArrayList<ImageView>()
 
     override val contentView: Int
         get() = R.layout.activity_show_font
 
     override fun initData(bundle: Bundle?) {
         fontCache = FontCache(this)
+        lastFont = fontCache.font
     }
 
     override fun initView() {
         initFontShow()
 
+        if (fontCache.font > 0){
+            val item = fontCache.getFontList().indexOf(fontCache.font)
+            setIV(item)
+        }
         tv_font_set_back.setOnClickListener(this)
         tv_font_download.setOnClickListener(this)
     }
@@ -72,6 +76,9 @@ class ShowFontActivity : BaseActivity(), View.OnClickListener{
     }
 
     override fun onBackPressed() {
+        if (lastFont != fontCache.font){
+            setResult(Activity.RESULT_OK)
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             finishAfterTransition()
         }else{
@@ -80,23 +87,26 @@ class ShowFontActivity : BaseActivity(), View.OnClickListener{
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
+        outState!!.putInt("lastFont", lastFont)
         super.onSaveInstanceState(outState)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
         super.onRestoreInstanceState(savedInstanceState)
+        lastFont = savedInstanceState!!.getInt("lastFont")
     }
 
     private fun initFontShow(){
+        TransitionManager.beginDelayedTransition(ll_font_show,Slide(Gravity.BOTTOM))
         val list = fontCache.getFontList()
-        for (i in list){
+        for (i in 0..list.size - 1){
             @SuppressLint("InflateParams")
             val llView = LayoutInflater.from(this).inflate(R.layout.item_font_show,null) as LinearLayout
             val iv = llView.findViewById(R.id.iv_font_show) as ImageView
             val ivv = llView.findViewById(R.id.iv_font_select) as ImageView
-            iv.setImageResource(Config.fontList[i - 1])
-            ivItem.add(ivv)
-            iv.tag = i - 1
+            iv.setImageResource(Config.fontList[list[i] - 1])
+            ivList.add(ivv)
+            iv.tag = i
             iv.setOnClickListener(this)
             llItem.add(llView)
             ll_font_show.addView(llView)
@@ -104,11 +114,17 @@ class ShowFontActivity : BaseActivity(), View.OnClickListener{
     }
 
     private fun setIV(item: Int){
-
+        for (i in ivList){
+            i.setImageResource(0)
+        }
+        ivList[item].setImageResource(R.drawable.ic_select)
     }
 
     private fun setClick(item: Int){
-        toast(item.toString())
+        val num = fontCache.getFontList()[item]
+        fontCache.font = num
+        FontUtil.setFont(this,false,Config.fontNameList[num - 1])
+        recreate()
     }
 
     companion object{

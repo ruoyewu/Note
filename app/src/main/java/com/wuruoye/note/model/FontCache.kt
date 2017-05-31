@@ -70,7 +70,7 @@ class FontCache(context: Context) : BaseCache(context){
 
         val IS_FONT_CHANGE_DEFAULT = 0
         val FONT_DOWNLOAD_LIST_DEFAULT = arrayListOf(
-                1,2,3,4,5,6,7
+                1,2,3,4,5,6
         )
     }
 }

@@ -9,7 +9,6 @@ import com.wuruoye.note.R
  */
 object Config {
     val fontList = arrayOf(
-            R.drawable.chendaiming,
             R.drawable.chenjishi,
             R.drawable.guojinfang,
             R.drawable.jiangang,
@@ -19,7 +18,6 @@ object Config {
     )
 
     val fontNameList = arrayOf(
-            "chendaiming.ttf",
             "chenjishi.ttf",
             "guojinfang.ttf",
             "jiangang.ttf",

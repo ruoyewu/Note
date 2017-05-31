@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
@@ -13,6 +14,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.liulishuo.filedownloader.BaseDownloadTask
 import com.liulishuo.filedownloader.FileDownloadListener
+import com.transitionseverywhere.Slide
+import com.transitionseverywhere.TransitionManager
 
 import com.wuruoye.note.R
 import com.wuruoye.note.base.BaseActivity
@@ -38,11 +41,10 @@ class FontDownloadActivity : BaseActivity() ,View.OnClickListener{
 
     private val listener = object : FileDownloadListener() {
         override fun warn(p0: BaseDownloadTask?) {
-            toast("下载失败")
-            isDownload = false
         }
 
         override fun completed(p0: BaseDownloadTask?) {
+            toast("下载完成")
             downloadComplete()
         }
 
@@ -51,13 +53,14 @@ class FontDownloadActivity : BaseActivity() ,View.OnClickListener{
         }
 
         override fun error(p0: BaseDownloadTask?, p1: Throwable?) {
-
+            isDownload = false
+            toast(p1!!.message.toString())
         }
 
         @SuppressLint("SetTextI18n")
         override fun progress(p0: BaseDownloadTask?, p1: Int, p2: Int) {
-            val i = p1.toFloat() / p2
-            tvList[currentItem - 1].text = i.toString().substring(0,3) + "%"
+            val i = p1.toFloat() / p2 * 100
+            tvList[currentItem].text = i.toString().substring(0,4) + "%"
         }
 
         override fun paused(p0: BaseDownloadTask?, p1: Int, p2: Int) {
@@ -102,30 +105,40 @@ class FontDownloadActivity : BaseActivity() ,View.OnClickListener{
     }
 
     private fun downloadFont(item: Int){
+        var isOk = true
         for (i in Config.permission){
             if (ActivityCompat.checkSelfPermission(this,i) == PackageManager.PERMISSION_DENIED){
+                isOk = false
                 ActivityCompat.requestPermissions(this, arrayOf(i),1)
             }
         }
-        currentItem = item
-        isDownload = true
-        FontUtil.downloadFont(Config.fontNameList[item],listener)
-        toast("开始下载")
+        if (isOk) {
+            currentItem = item
+            isDownload = true
+            FontUtil.downloadFont(Config.fontNameList[item],listener)
+            toast("开始下载,请稍后")
+        }
     }
 
     private fun downloadComplete(){
+        TransitionManager.beginDelayedTransition(ll_font_download,Slide(Gravity.BOTTOM))
         val list1 = fontCache.getFontDownloadList()
-        if (list1.contains(currentItem + 1)) {
-            list1.remove(currentItem + 1)
+        val item = ivList[currentItem].tag as Int + 1
+        if (list1.contains(item)) {
+            list1.remove(item)
         }
         val list2 = fontCache.getFontList()
-        if (!list2.contains(currentItem + 1)) {
-            list2.add(currentItem + 1)
+        if (!list2.contains(item)) {
+            list2.add(item)
         }
         fontCache.setFontDownloadList(list1)
         fontCache.setFontList(list2)
 
-        initLayout()
+        ivList.removeAt(currentItem)
+        tvList.removeAt(currentItem)
+
+//        initLayout()
+        ll_font_download.removeViewAt(currentItem)
 
         isChange = true
         isDownload = false
@@ -133,15 +146,17 @@ class FontDownloadActivity : BaseActivity() ,View.OnClickListener{
 
     private fun initLayout(){
         ll_font_download.removeAllViews()
+        ivList.clear()
+        tvList.clear()
         val list = fontCache.getFontDownloadList()
-        for (i in list){
+        for (i in 0..list.size - 1){
             @SuppressLint("InflateParams")
             val llView = LayoutInflater.from(this).inflate(R.layout.item_font_download,null) as LinearLayout
             val iv = llView.findViewById(R.id.iv_font_download) as ImageView
             val tv = llView.findViewById(R.id.tv_font_download) as TextView
             iv.setOnClickListener(this)
-            iv.tag = i - 1
-            iv.setImageResource(Config.fontList[i - 1])
+            iv.tag = i
+            iv.setImageResource(Config.fontList[list[i] - 1])
             ivList.add(iv)
             tvList.add(tv)
             ll_font_download.addView(llView)
