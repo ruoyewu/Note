@@ -107,11 +107,12 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
             }
             R.id.tv_write_submit -> {
                 closeInputMethod()
-                TransitionManager.beginDelayedTransition(activity_write,Slide(Gravity.BOTTOM))
-                hsv_paper.visibility = View.GONE
-                ll_write_edit.visibility = View.GONE
-                tv_write_back.visibility = View.VISIBLE
-                isShowPaper = false
+                closeActivity()
+//                TransitionManager.beginDelayedTransition(activity_write,Slide(Gravity.BOTTOM))
+//                hsv_paper.visibility = View.GONE
+//                ll_write_edit.visibility = View.GONE
+//                tv_write_back.visibility = View.VISIBLE
+//                isShowPaper = false
             }
             R.id.et_write -> {
                 hsv_paper.visibility = View.GONE

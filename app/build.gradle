@@ -9,8 +9,16 @@ android {
         applicationId "com.wuruoye.note"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        /*
+            2 -> 1.1.0
+            1. 增加字体修改功能
+            2. 修改部分细节
+
+            3 -> 1.1.1
+            1. 修改细节
+         */
+        versionName "1.1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

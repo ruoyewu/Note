@@ -48,6 +48,7 @@ class FontCache(context: Context) : BaseCache(context){
         val FONT = "font"
         val FONT_DOWNLOAD_LIST = "font_download_list"
         val FONT_LIST = "font_list"
+        val FONT_LIST_NAME = "font_list_name"
 
         val IS_FONT_CHANGE_DEFAULT = 0
         val FONT_DOWNLOAD_LIST_DEFAULT = arrayListOf(
