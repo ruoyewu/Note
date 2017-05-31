@@ -42,7 +42,6 @@
 
     <TextView
         android:id="@id/item_note_null"
-        android:text="待"
         android:textSize="20sp"
         android:gravity="center_vertical"
         android:layout_centerInParent="true"

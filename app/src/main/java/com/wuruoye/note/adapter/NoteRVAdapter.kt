@@ -33,13 +33,18 @@ class NoteRVAdapter(
         p0!!.itemView.tag = note
         p0.itemView.setOnClickListener(this)
         p0.wait.setTextColor(defaultColor)
-        p0.wait.text = "待"
+        if (NoteUtil.isToday(note.year,note.month,note.day)){
+            p0.wait.text = "待"
+        }else{
+            p0.wait.text = "逝"
+        }
         if (note.week == -1){
             p0.info.visibility = View.GONE
             p0.wait.visibility = View.VISIBLE
             p0.wait.text = "上个月"
         }else if (note.week == -2){
             p0.info.visibility = View.GONE
+            p0.wait.visibility = View.VISIBLE
             if (note.month == NoteUtil.getMonth() && note.year == NoteUtil.getYear()){
                 p0.wait.text = "明日再续"
             }else{

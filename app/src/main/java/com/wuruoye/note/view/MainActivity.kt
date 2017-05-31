@@ -269,7 +269,6 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
     }
 
     private fun openSearch(isOpen: Boolean){
-//        TransitionManager.beginDelayedTransition(activity_main,Slide(Gravity.TOP))
         when (isOpen) {
             false -> {
                 isSearch = false
@@ -279,6 +278,8 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
             true -> {
                 isSearch = true
                 sv_note.visibility = View.VISIBLE
+                sv_note.isIconified = false
+                sv_note.queryHint = "可输入关键字，天数"
                 getNote()
             }
         }

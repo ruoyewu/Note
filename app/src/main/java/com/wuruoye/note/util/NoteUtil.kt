@@ -14,8 +14,8 @@ object NoteUtil {
 
     fun isToday(year: Int, month: Int, day: Int): Boolean{
         val calender = getCalender()
-        return calender.get(Calendar.YEAR) == year ||
-                calender.get(Calendar.MONTH) + 1 == month ||
+        return calender.get(Calendar.YEAR) == year &&
+                calender.get(Calendar.MONTH) + 1 == month &&
                 calender.get(Calendar.DAY_OF_MONTH) == day
     }
 
