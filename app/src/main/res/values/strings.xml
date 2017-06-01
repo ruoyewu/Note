@@ -9,6 +9,9 @@
         请先将系统字体改为系统默认
     </string>
 
+    <item name="note_position" type="id" />
+    <item name="note_view_holder" type="id"/>
+
     <string name="translate_note">translate_note</string>
     <string name="translate_note_button">translate_note_button</string>
 

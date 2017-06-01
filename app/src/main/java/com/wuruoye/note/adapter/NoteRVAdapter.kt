@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.transitionseverywhere.TransitionManager
 import com.wuruoye.note.R
 import com.wuruoye.note.model.Config
 import com.wuruoye.note.model.Note
@@ -22,7 +23,7 @@ import com.wuruoye.note.util.NoteUtil
 class NoteRVAdapter(
         private val notes: ArrayList<Note>,
         private val listener: OnItemClickListener
-) : RecyclerView.Adapter<NoteRVAdapter.ViewHolder>(), View.OnClickListener {
+) : RecyclerView.Adapter<NoteRVAdapter.ViewHolder>(), View.OnClickListener{
     private var redColor = 0
     private var defaultColor = 0
     private lateinit var noteCache: NoteCache
@@ -32,6 +33,33 @@ class NoteRVAdapter(
         val note = notes[p1]
         p0!!.itemView.tag = note
         p0.itemView.setOnClickListener(this)
+
+        setView(note,p0)
+    }
+
+    override fun getItemCount(): Int {
+        return notes.size
+    }
+
+    override fun onCreateViewHolder(p0: ViewGroup?, p1: Int): ViewHolder {
+        redColor = ActivityCompat.getColor(p0!!.context,R.color.carnation)
+        defaultColor = ActivityCompat.getColor(p0.context,R.color.gray)
+        noteCache = NoteCache(p0.context)
+        val item = noteCache.itemShow
+        val view =
+                if (item == 1 || item == 2){
+                    LayoutInflater.from(p0.context).inflate(R.layout.item_note_1,p0,false)
+                }else{
+                    LayoutInflater.from(p0.context).inflate(R.layout.item_note_2,p0,false)
+                }
+        return ViewHolder(view)
+    }
+
+    override fun onClick(v: View?) {
+        listener.onItemClick(v!!)
+    }
+
+    private fun setView(note: Note, p0: ViewHolder){
         p0.wait.setTextColor(defaultColor)
         if (NoteUtil.isToday(note.year,note.month,note.day)){
             p0.wait.text = "待"
@@ -89,28 +117,6 @@ class NoteRVAdapter(
                 }
             }
         }
-    }
-
-    override fun getItemCount(): Int {
-        return notes.size
-    }
-
-    override fun onCreateViewHolder(p0: ViewGroup?, p1: Int): ViewHolder {
-        redColor = ActivityCompat.getColor(p0!!.context,R.color.carnation)
-        defaultColor = ActivityCompat.getColor(p0.context,R.color.gray)
-        noteCache = NoteCache(p0.context)
-        val item = noteCache.itemShow
-        val view =
-                if (item == 1 || item == 2){
-                    LayoutInflater.from(p0.context).inflate(R.layout.item_note_1,p0,false)
-                }else{
-                    LayoutInflater.from(p0.context).inflate(R.layout.item_note_2,p0,false)
-                }
-        return ViewHolder(view)
-    }
-
-    override fun onClick(v: View?) {
-        listener.onItemClick(v!!)
     }
 
     interface OnItemClickListener{
