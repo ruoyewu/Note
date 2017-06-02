@@ -7,12 +7,21 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/iv_font_download"
-        android:src="@drawable/minixing"
+    <RelativeLayout
         android:layout_width="0dp"
         android:layout_weight="1"
-        android:layout_height="wrap_content" />
+        android:layout_height="70dp">
+        <ImageView
+            android:id="@+id/iv_font_download"
+            android:src="@drawable/minixing"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <com.wuruoye.note.widget.ProcessView
+            android:id="@+id/pv_font_download"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/tv_font_download"

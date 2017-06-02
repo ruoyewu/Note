@@ -33,7 +33,6 @@ class FontCache(context: Context) : BaseCache(context){
             }
             return list
         }
-//        return FONT_DOWNLOAD_LIST_DEFAULT
     }
 
     fun setFontList(list: ArrayList<Int>){

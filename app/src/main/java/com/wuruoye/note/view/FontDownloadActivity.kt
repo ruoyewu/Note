@@ -3,6 +3,7 @@ package com.wuruoye.note.view
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.pm.PackageManager
+import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
@@ -23,6 +24,7 @@ import com.wuruoye.note.model.Config
 import com.wuruoye.note.model.FontCache
 import com.wuruoye.note.util.FontUtil
 import com.wuruoye.note.util.toast
+import com.wuruoye.note.widget.ProcessView
 import kotlinx.android.synthetic.main.activity_font_download.*
 
 /**
@@ -35,9 +37,12 @@ class FontDownloadActivity : BaseActivity() ,View.OnClickListener{
     private var currentItem = 0
     private var isChange = false
     private var isDownload = false
+    private var backColor = 0
 
     private val ivList = ArrayList<ImageView>()
     private val tvList = ArrayList<TextView>()
+    private val llList = ArrayList<LinearLayout>()
+    private val pvList = ArrayList<ProcessView>()
 
     private val listener = object : FileDownloadListener() {
         override fun warn(p0: BaseDownloadTask?) {
@@ -49,7 +54,6 @@ class FontDownloadActivity : BaseActivity() ,View.OnClickListener{
         }
 
         override fun pending(p0: BaseDownloadTask?, p1: Int, p2: Int) {
-
         }
 
         override fun error(p0: BaseDownloadTask?, p1: Throwable?) {
@@ -61,6 +65,8 @@ class FontDownloadActivity : BaseActivity() ,View.OnClickListener{
         override fun progress(p0: BaseDownloadTask?, p1: Int, p2: Int) {
             val i = p1.toFloat() / p2 * 100
             tvList[currentItem].text = i.toString().substring(0,4) + "%"
+
+            pvList[currentItem].setProcess(i)
         }
 
         override fun paused(p0: BaseDownloadTask?, p1: Int, p2: Int) {
@@ -73,6 +79,7 @@ class FontDownloadActivity : BaseActivity() ,View.OnClickListener{
 
     override fun initData(bundle: Bundle?) {
         fontCache = FontCache(this)
+        backColor = ActivityCompat.getColor(this,R.color.athens_gray)
     }
 
     override fun initView() {
@@ -116,7 +123,8 @@ class FontDownloadActivity : BaseActivity() ,View.OnClickListener{
             currentItem = item
             isDownload = true
             FontUtil.downloadFont(Config.fontNameList[item],listener)
-            toast("开始下载,请稍后")
+            pvList[currentItem].visibility = View.VISIBLE
+            toast("开始下载,请稍后...")
         }
     }
 
@@ -130,15 +138,20 @@ class FontDownloadActivity : BaseActivity() ,View.OnClickListener{
         fontCache.setFontList(list2)
 
         tvList[currentItem].text = "已下载"
+        ivList[currentItem].setColorFilter(backColor,PorterDuff.Mode.DARKEN)
+        llList[currentItem].setBackgroundColor(backColor)
 
         isChange = true
         isDownload = false
+        pvList[currentItem].visibility = View.GONE
     }
 
     private fun initLayout(){
         ll_font_download.removeAllViews()
         ivList.clear()
         tvList.clear()
+        llList.clear()
+        pvList.clear()
         val listToDownload = fontCache.getFontDownloadList()
         val listDownloaded = fontCache.getFontList()
         for (i in 0..listToDownload.size - 1){
@@ -146,15 +159,21 @@ class FontDownloadActivity : BaseActivity() ,View.OnClickListener{
             val llView = LayoutInflater.from(this).inflate(R.layout.item_font_download,null) as LinearLayout
             val iv = llView.findViewById(R.id.iv_font_download) as ImageView
             val tv = llView.findViewById(R.id.tv_font_download) as TextView
+            val pv = llView.findViewById(R.id.pv_font_download) as ProcessView
             iv.tag = i
             iv.setImageResource(Config.fontList[listToDownload[i] - 1])
+            pv.setColor(backColor)
             ivList.add(iv)
             tvList.add(tv)
+            llList.add(llView)
+            pvList.add(pv)
             ll_font_download.addView(llView)
 
             if (!listDownloaded.contains(listToDownload[i])) {
                 iv.setOnClickListener(this)
             }else{
+                llView.setBackgroundColor(backColor)
+                iv.setColorFilter(backColor,PorterDuff.Mode.DARKEN)
                 tv.text = "已下载"
             }
         }

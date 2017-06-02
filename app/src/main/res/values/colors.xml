@@ -4,6 +4,8 @@
 
     <color name="black">#000000</color>
     <color name="gray">#808080</color>
+    <color name="light_gray">#D5D5D5</color>
+    <color name="lily_white">#EAEAEA</color>
     <color name="carnation">#FC5659</color>
 
     <color name="cosmos">#FECCCD</color>

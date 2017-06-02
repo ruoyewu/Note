@@ -38,7 +38,7 @@ object FontUtil {
             FileDownloader.getImpl().create(downloadPath + name)
                     .setPath(path)
                     .setListener(listener)
-                    .setCallbackProgressMinInterval(400)
+                    .setCallbackProgressMinInterval(16)
                     .setForceReDownload(true)
                     .start()
         }).start()
