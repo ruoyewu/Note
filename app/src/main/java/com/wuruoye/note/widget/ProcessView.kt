@@ -46,7 +46,7 @@ class ProcessView : View {
         mPaint.strokeWidth = 1f
         mPaint.alpha = 100
 
-        alpha = 0.5f
+        alpha = 0.7f
     }
 
     constructor(context: Context) : super(context) {init()}

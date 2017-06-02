@@ -19,6 +19,7 @@ import com.wuruoye.note.base.BaseActivity
 import com.wuruoye.note.model.Config
 import com.wuruoye.note.model.FontCache
 import com.wuruoye.note.util.FontUtil
+import com.wuruoye.note.util.toast
 import kotlinx.android.synthetic.main.activity_show_font.*
 
 /**
@@ -123,7 +124,17 @@ class ShowFontActivity : BaseActivity(), View.OnClickListener{
     private fun setClick(item: Int){
         val num = fontCache.getFontList()[item]
         fontCache.font = num
-        FontUtil.setFont(this,false,Config.fontNameList[num - 1])
+        try {
+            FontUtil.setFont(this,false,Config.fontNameList[num - 1])
+        } catch(e: Exception) {
+            toast("字体加载出错")
+            val list = fontCache.getFontList()
+            if (list.contains(num)){
+                list.remove(num)
+            }
+            fontCache.font = 0
+            fontCache.setFontList(list)
+        }
         recreate()
     }
 

@@ -125,9 +125,10 @@ class SettingActivity : BaseActivity(), View.OnClickListener{
 
     private fun startFeedback(){
         val intent = Intent(Intent.ACTION_SENDTO)
-//        intent.type = "message/rfc822"
-//        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(CREATE_EMAIL))
+        val name = "设备名: " +  Build.MODEL
+        val sdk = "版本号: " + Build.VERSION.SDK_INT
         intent.data = Uri.parse("mailto:" + CREATE_EMAIL)
+        intent.putExtra(Intent.EXTRA_TEXT,name + "\n" + sdk + "\n")
         startActivity(intent)
     }
 

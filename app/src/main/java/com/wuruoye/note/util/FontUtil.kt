@@ -27,7 +27,7 @@ object FontUtil {
                 }else{
                     Typeface.createFromFile(path)
                 }
-        val field = Typeface::class.java.getDeclaredField("SANS_SERIF")
+        val field = Typeface::class.java.getDeclaredField("SERIF")
         field.isAccessible = true
         field.set(null, typeFace)
     }
