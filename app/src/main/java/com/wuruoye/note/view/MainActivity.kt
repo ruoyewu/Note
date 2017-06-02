@@ -2,10 +2,12 @@ package com.wuruoye.note.view
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
@@ -25,6 +27,7 @@ import com.wuruoye.note.base.BaseActivity
 import com.wuruoye.note.base.IAbsView
 import com.wuruoye.note.model.Config
 import com.wuruoye.note.model.Note
+import com.wuruoye.note.model.NoteCache
 import com.wuruoye.note.presenter.NoteGet
 import com.wuruoye.note.util.NoteUtil
 import com.wuruoye.note.util.SQLiteUtil
@@ -34,6 +37,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnClickListener{
     private lateinit var noteGet: NoteGet
+    private lateinit var noteCache: NoteCache
 
     private var mYear = 0
     private var mMonth = 0
@@ -69,6 +73,7 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
         get() = R.layout.activity_main
 
     override fun initData(bundle: Bundle?) {
+        noteCache = NoteCache(this)
         mMonth = NoteUtil.getMonth()
         mYear = NoteUtil.getYear()
     }
@@ -183,6 +188,21 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
         }else {
             toWriteNote(note)
         }
+    }
+
+    override fun onLongItemClick(v: View) {
+        val viewHolder = v.getTag(R.id.note_view_holder) as NoteRVAdapter.ViewHolder
+        AlertDialog.Builder(this)
+                .setTitle("是否删除日记?")
+                .setPositiveButton("是") { _, _ ->
+                    val note = v.tag as Note
+                    SQLiteUtil.deleteNote(applicationContext,note)
+                    note.style = 0
+                    note.content = ""
+                    setView(note,viewHolder)
+                }
+                .setNegativeButton("否") { _, _ -> }
+                .show()
     }
 
     override fun onBackPressed() {
@@ -364,6 +384,67 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
 //                rv_note.scrollToPosition(noteList.size - if (isClose) 1 else 2)
 ////                rv_note.smoothScrollToPosition(noteList.size - if (isClose) 1 else 2)
 //            }
+        }
+    }
+
+
+    private fun setView(note: Note, p0: NoteRVAdapter.ViewHolder){
+        p0.wait.setTextColor(ActivityCompat.getColor(this,R.color.gray))
+        if (NoteUtil.isToday(note.year,note.month,note.day)){
+            p0.wait.text = "待"
+        }else{
+            p0.wait.text = "逝"
+        }
+        if (note.week == -1){
+            p0.info.visibility = View.GONE
+            p0.wait.visibility = View.VISIBLE
+            p0.wait.text = "上个月"
+        }else if (note.week == -2){
+            p0.info.visibility = View.GONE
+            p0.wait.visibility = View.VISIBLE
+            if (note.month == NoteUtil.getMonth() && note.year == NoteUtil.getYear()){
+                p0.wait.text = "明日再续"
+            }else{
+                p0.wait.text = "下个月"
+            }
+        }else{
+            if (note.content != "" || note.style != 0) {
+                val item = noteCache.itemShow
+                var day = ""
+                var week = ""
+                if (item == 1){
+                    day = Config.numList[note.day]
+                    week = "周${Config.weekList[note.week]}"
+                }else if (item == 2){
+                    day = note.day.toString()
+                    week = "周${Config.weekList[note.week]}"
+                }else if (item == 3){
+                    day = Config.numList[note.month] + "月" + Config.numList[note.day] + "日"
+                    week = "星期${Config.weekList[note.week]}"
+                }else if (item == 4){
+                    day = Config.yearList[note.year - 2013] + "年" +
+                            Config.numList[note.month] + "月" +
+                            Config.numList[note.day] + "日"
+                    week = "星期${Config.weekList[note.week]}"
+                }else if (item == 5){
+                    day = note.month.toString() + "月" + note.day + "日"
+                    week = "星期" + Config.weekList[note.week]
+                }else if (item == 6){
+                    day = note.month.toString() + "月" + note.day + "日"
+                    week = ""
+                }
+                p0.wait.visibility = View.GONE
+                p0.info.visibility = View.VISIBLE
+                p0.day.text = day
+                p0.title.text = note.content
+                p0.week.text = week
+            } else {
+                p0.info.visibility = View.GONE
+                p0.wait.visibility = View.VISIBLE
+                if (note.week == 1 || note.week == 7) {
+                    p0.wait.setTextColor(ActivityCompat.getColor(this,R.color.carnation))
+                }
+            }
         }
     }
 

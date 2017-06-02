@@ -23,7 +23,7 @@ import com.wuruoye.note.util.NoteUtil
 class NoteRVAdapter(
         private val notes: ArrayList<Note>,
         private val listener: OnItemClickListener
-) : RecyclerView.Adapter<NoteRVAdapter.ViewHolder>(), View.OnClickListener{
+) : RecyclerView.Adapter<NoteRVAdapter.ViewHolder>(), View.OnClickListener, View.OnLongClickListener{
     private var redColor = 0
     private var defaultColor = 0
     private lateinit var noteCache: NoteCache
@@ -32,6 +32,7 @@ class NoteRVAdapter(
     override fun onBindViewHolder(p0: ViewHolder?, p1: Int) {
         val note = notes[p1]
         p0!!.itemView.tag = note
+        p0.itemView.setTag(R.id.note_view_holder,p0)
         p0.itemView.setOnClickListener(this)
 
         setView(note,p0)
@@ -59,6 +60,11 @@ class NoteRVAdapter(
         listener.onItemClick(v!!)
     }
 
+    override fun onLongClick(v: View?): Boolean {
+        listener.onLongItemClick(v!!)
+        return true
+    }
+
     private fun setView(note: Note, p0: ViewHolder){
         p0.wait.setTextColor(defaultColor)
         if (NoteUtil.isToday(note.year,note.month,note.day)){
@@ -80,6 +86,7 @@ class NoteRVAdapter(
             }
         }else{
             if (note.content != "" || note.style != 0) {
+                p0.itemView.setOnLongClickListener(this)
                 val item = noteCache.itemShow
                 var day = ""
                 var week = ""
@@ -121,6 +128,7 @@ class NoteRVAdapter(
 
     interface OnItemClickListener{
         fun onItemClick(v: View)
+        fun onLongItemClick(v: View)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
