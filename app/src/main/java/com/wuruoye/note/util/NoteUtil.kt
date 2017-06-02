@@ -50,12 +50,10 @@ object NoteUtil {
         return Config.numList[hour] + "点" + Config.numList[minute] + "分 : "
     }
 
-    fun getStartNote(): Note{
+    fun getStartNote(year: Int, month: Int): Note{
         val calender = Calendar.getInstance()
-        calender.timeInMillis = System.currentTimeMillis()
-        val year = calender.get(Calendar.YEAR)
-        val month = calender.get(Calendar.MONTH) + 1
-
+        calender.set(Calendar.YEAR,year)
+        calender.set(Calendar.MONTH,month - 1)
         calender.set(Calendar.DAY_OF_MONTH,1)
         val week = calender.get(Calendar.DAY_OF_WEEK)
 

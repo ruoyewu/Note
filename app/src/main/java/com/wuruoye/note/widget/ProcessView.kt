@@ -1,13 +1,12 @@
 package com.wuruoye.note.widget
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.graphics.Rect
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
+import com.wuruoye.note.R
 
 /**
  * Created by wuruoye on 2017/6/2.
@@ -41,10 +40,13 @@ class ProcessView : View {
 
     private fun init(){
         mPaint = Paint()
+        mPaint.isDither = true
         mPaint.color = mColor
         mPaint.style = Paint.Style.FILL
-        mPaint.strokeWidth = 5f
-        mPaint.alpha = 1
+        mPaint.strokeWidth = 1f
+        mPaint.alpha = 100
+
+        alpha = 0.5f
     }
 
     constructor(context: Context) : super(context) {init()}

@@ -42,6 +42,8 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
     private var search = ""
     private var isUpDirect = true
 
+
+
     private val noteView = object : IAbsView<ArrayList<Note>>{
         override fun setModel(model: ArrayList<Note>) {
             setNote(model)
@@ -346,7 +348,7 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
                                 .addTransition(Slide(Gravity.TOP))
                     }
                 }
-        TransitionManager.beginDelayedTransition(rv_note,set)
+        TransitionManager.beginDelayedTransition(ssv_note,set)
         val layout = object : LinearLayoutManager(this){
             override fun canScrollVertically(): Boolean {
                 return false

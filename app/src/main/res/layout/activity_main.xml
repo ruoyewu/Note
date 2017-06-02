@@ -16,6 +16,12 @@
         android:layout_width="match_parent"
         android:layout_height="40dp" />
 
+    <!--<com.wuruoye.note.widget.SpringRecyclerView-->
+        <!--android:id="@+id/rv_note"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_weight="1"-->
+        <!--android:layout_height="0dp" />-->
+
     <com.wuruoye.note.widget.SpringScrollView
         android:id="@+id/ssv_note"
         android:layout_width="match_parent"

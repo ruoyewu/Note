@@ -66,7 +66,7 @@ class NoteGet(context: Context) : IAbsPresenter<IAbsView<ArrayList<Note>>>(conte
                 NoteUtil.getMaxDay(month, year)
             }
             val list = ArrayList<Note>()
-            val startNote = NoteUtil.getStartNote()
+            val startNote = NoteUtil.getStartNote(year, month)
             var day = startNote.day
             var week = startNote.week
 
