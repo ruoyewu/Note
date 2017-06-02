@@ -2,11 +2,7 @@
     <string name="app_name">简记</string>
     <string name="example">人生若只如初见</string>
     <string name="font_tip">
-        受android系统影响，
-        如果你在手机系统设置里面更改了手机字体，
-        可能会导致app里面的字体无法正常显示，
-        如果需要正常显示，
-        请先将系统字体改为系统默认
+        受android系统影响，如果你在手机系统设置里面更改了手机字体，可能会导致app里面的字体无法正常显示，如果需要正常显示，请先将系统字体改为系统默认
     </string>
 
     <item name="note_position" type="id" />

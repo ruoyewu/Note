@@ -45,13 +45,11 @@ class FontCache(context: Context) : BaseCache(context){
 
     companion object{
         val FONT = "font"
-        val FONT_DOWNLOAD_LIST = "font_download_list"
         val FONT_LIST = "font_list"
-        val FONT_LIST_NAME = "font_list_name"
 
         val IS_FONT_CHANGE_DEFAULT = 0
         val FONT_DOWNLOAD_LIST_DEFAULT = arrayListOf(
-                1,2,3,4,5,6
+                1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17
         )
     }
 }

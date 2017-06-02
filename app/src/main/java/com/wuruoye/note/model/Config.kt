@@ -14,7 +14,18 @@ object Config {
             R.drawable.jiangang,
             R.drawable.minikai,
             R.drawable.minixing,
-            R.drawable.yingbikai
+            R.drawable.xingkai,
+            R.drawable.xvjinglei,
+            R.drawable.shaonvti,
+            R.drawable.wawati,
+            R.drawable.huati,
+            R.drawable.xilijian,
+            R.drawable.yuanti,
+            R.drawable.weibei,
+            R.drawable.fanti,
+            R.drawable.songfan,
+            R.drawable.xilifan,
+            R.drawable.fanzuan
     )
 
     val fontNameList = arrayOf(
@@ -23,7 +34,18 @@ object Config {
             "jiangang.ttf",
             "minikai.ttf",
             "minixing.ttf",
-            "yingbikai.ttf"
+            "xingkai.ttf",
+            "xvjinglei.ttf",
+            "shaonvti.ttf",
+            "wawati.ttf",
+            "huati.ttf",
+            "xilijian.ttf",
+            "yuanti.ttf",
+            "weibei.ttf",
+            "fanti.ttf",
+            "songfan.ttf",
+            "xilifan.ttf",
+            "fanzuan.ttf"
     )
 
     val permission = arrayOf(
