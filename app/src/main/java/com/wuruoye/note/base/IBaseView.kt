@@ -5,4 +5,5 @@ package com.wuruoye.note.base
  * this file is to do
  */
 
+// 监听 presenter 的接口
 interface IBaseView

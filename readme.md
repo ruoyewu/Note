@@ -1,15 +1,20 @@
-package com.wuruoye.note.base
+# 简记app
 
-import android.content.Context
-import android.os.Handler
-import android.view.Window
-import android.view.WindowManager
+## TODO
 
-/**
- * Created by wuruoye on 2017/5/27.
- * this file is to do
- */
+1.  目前没有发现bug
+2.  删除日记的代码太过混乱，调用太复杂，希望能改一下
+3.  还有比较多的功能未完善，如字体下载的进度条，太简陋
 
+## app架构
+
+打算使用的是mvp架构，有单独的model，view，presenter等，但是关系分的不清，有时间会继续学习一下mvp架构。
+
+就目前而言，使用的是baseActivity，baseView，baPresenter的方法。
+
+代码如下：
+
+```java
 abstract class BaseActivity : android.support.v7.app.AppCompatActivity(){
     /*
     这里是一个activity使用的 数据获取presenter 与 数据回调的view
@@ -18,17 +23,17 @@ abstract class BaseActivity : android.support.v7.app.AppCompatActivity(){
      */
     protected val presenterList = ArrayList<IBasePresenter>()
     protected val viewList = ArrayList<IBaseView>()
-
+    
     /*
     获取activity的对应的 layout 的id
      */
     abstract val contentView: Int
-
+    
     /*
     初始化一些数据，bundle 即 getIntent().getExtras()
      */
     abstract fun initData(bundle: android.os.Bundle?)
-
+    
     /*
     初始化一个view的操作，比如数据嵌入， 设置监听等
      */
@@ -72,3 +77,9 @@ abstract class BaseActivity : android.support.v7.app.AppCompatActivity(){
         }
     }
 }
+```
+
+```java
+
+```
+

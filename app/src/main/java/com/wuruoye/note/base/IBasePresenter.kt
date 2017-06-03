@@ -5,6 +5,9 @@ package com.wuruoye.note.base
  * this file is to do
  */
 
+/*
+basePresenter 声明与 view 绑定 和 解绑 两个函数
+ */
 interface IBasePresenter {
     fun attachView(baseView: IBaseView)
     fun detachView()
