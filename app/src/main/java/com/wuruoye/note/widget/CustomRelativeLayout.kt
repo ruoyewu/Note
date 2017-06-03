@@ -13,15 +13,15 @@ import android.widget.RelativeLayout
 class CustomRelativeLayout : RelativeLayout {
     private var listener: OnChangeListener? = null
 
-    public fun setOnChangeListener(listener: OnChangeListener){
+    fun setOnChangeListener(listener: OnChangeListener){
         this.listener = listener
     }
 
-    constructor(context: Context) : super(context) {}
+    constructor(context: Context) : super(context)
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {}
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)

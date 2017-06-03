@@ -47,4 +47,19 @@ dependencies {
     compile 'com.android.support:support-dynamic-animation:25.3.1'
     //下载
     compile 'com.liulishuo.filedownloader:library:1.4.3'
+    //友盟统计
+    compile 'com.umeng.analytics:analytics:6.1.0'
+
+    //
+    compile 'com.squareup.okhttp3:okhttp:3.8.0'
+    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.droi.sdk:Core:+'
+}
+
+repositories {
+    jcenter()
+    // DroiCore SDK来源地址
+    maven {
+        url "https://github.com/DroiBaaS/DroiBaaS-SDK-Android/raw/master/"
+    }
 }

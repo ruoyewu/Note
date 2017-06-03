@@ -9,11 +9,11 @@ import android.graphics.pdf.PdfRenderer
  */
 object OutUtil {
 
-    public fun outToPDF(){
+    fun outToPDF(){
 
     }
 
-    public fun outToText(){
+    fun outToText(){
         
     }
 }

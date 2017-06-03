@@ -14,6 +14,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import com.transitionseverywhere.Slide
 import com.transitionseverywhere.TransitionManager
+import com.umeng.analytics.MobclickAgent
 import com.wuruoye.note.R
 import com.wuruoye.note.base.BaseActivity
 import com.wuruoye.note.model.Config
@@ -125,7 +126,12 @@ class ShowFontActivity : BaseActivity(), View.OnClickListener{
         val num = fontCache.getFontList()[item]
         fontCache.font = num
         try {
-            FontUtil.setFont(this,false,Config.fontNameList[num - 1])
+            val name = Config.fontNameList[num - 1]
+            val map = HashMap<String,String>()
+            map.put("font",name)
+            MobclickAgent.onEvent(this,"font_click",map)
+
+            FontUtil.setFont(this,false,name)
         } catch(e: Exception) {
             toast("字体加载出错")
             val list = fontCache.getFontList()

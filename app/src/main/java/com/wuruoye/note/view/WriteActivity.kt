@@ -15,6 +15,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import com.transitionseverywhere.Slide
 import com.transitionseverywhere.TransitionManager
+import com.umeng.analytics.MobclickAgent
 import com.wuruoye.note.R
 import com.wuruoye.note.base.BaseActivity
 import com.wuruoye.note.model.Config
@@ -121,6 +122,10 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
                 val color = v.tag as Int
                 paperColor = color
                 iv_write.setColorFilter(ActivityCompat.getColor(this,Config.paperStyle[paperColor]),PorterDuff.Mode.MULTIPLY)
+
+                val map = HashMap<String, String>()
+                map.put("color",color.toString())
+                MobclickAgent.onEvent(this,"paper_click",map)
             }
         }
     }

@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Handler
 import android.view.Window
 import android.view.WindowManager
+import com.umeng.analytics.MobclickAgent
 
 /**
  * Created by wuruoye on 2017/5/27.
@@ -39,7 +40,7 @@ abstract class BaseActivity : android.support.v7.app.AppCompatActivity(){
      */
     override fun onCreate(savedInstanceState: android.os.Bundle?) {
         super.onCreate(savedInstanceState)
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(contentView)
@@ -59,6 +60,16 @@ abstract class BaseActivity : android.support.v7.app.AppCompatActivity(){
                 presenterList[i].attachView(viewList[i])
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        MobclickAgent.onResume(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        MobclickAgent.onPause(this)
     }
 
     /*
