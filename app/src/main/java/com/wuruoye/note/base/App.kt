@@ -1,6 +1,8 @@
 package com.wuruoye.note.base
 
 import android.app.Application
+import com.droi.sdk.core.Core
+import com.droi.sdk.core.DroiObject
 import com.liulishuo.filedownloader.FileDownloader
 import com.wuruoye.note.model.Config
 import com.wuruoye.note.model.FontCache
@@ -16,8 +18,13 @@ class App : Application(){
     override fun onCreate() {
         super.onCreate()
 
+        //文件下载初始化
         FileDownloader.init(this)
 
+        //云服务初始化
+        Core.initialize(this)
+
+        //字体初始化
         val fontCache = FontCache(this)
         val font = fontCache.font
         if (font > 0){

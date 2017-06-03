@@ -104,6 +104,27 @@
                     android:layout_width="25dp"
                     android:layout_height="25dp" />
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_setting_user"
+                android:padding="10dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:src="@drawable/ic_user"
+                    android:layout_marginRight="10dp"
+                    android:layout_width="30dp"
+                    android:layout_height="25dp" />
+                <TextView
+                    android:text="用户"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
+                <ImageView
+                    android:src="@drawable/ic_right"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp" />
+            </LinearLayout>
         </LinearLayout>
     </com.wuruoye.note.widget.SpringScrollView>
 

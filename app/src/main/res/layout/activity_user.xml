@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.wuruoye.note.widget.SpringScrollView
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/til_login_name"
+                app:errorEnabled="true"
+                android:textColorHint="@color/carnation"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/et_login_name"
+                    android:hint="用户名"
+                    android:textColorHint="@color/carnation"
+                    android:background="@null"
+                    android:gravity="center"
+                    android:inputType="textPersonName"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/til_login_pass"
+                app:errorEnabled="true"
+                android:textColorHint="@color/carnation"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/et_login_pass"
+                    android:hint="密码"
+                    android:background="@null"
+                    android:textColorHint="@color/carnation"
+                    android:gravity="center"
+                    android:inputType="textVisiblePassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp" />
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/btn_login_login"
+                android:text="登录"
+                android:background="@drawable/button_shape"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                android:layout_marginTop="20dp"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                tools:ignore="NewApi" />
+
+            <Button
+                android:id="@+id/btn_login_sign"
+                android:text="注册"
+                android:background="@drawable/button_shape"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                tools:ignore="NewApi" />
+        </LinearLayout>
+
+    </com.wuruoye.note.widget.SpringScrollView>
+
+    <TextView
+        android:id="@+id/tv_login_back"
+        android:background="@drawable/back"
+        android:text="设"
+        android:transitionName="@string/translate_note_button"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/romance"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        tools:ignore="UnusedAttribute" />
+
+</RelativeLayout>

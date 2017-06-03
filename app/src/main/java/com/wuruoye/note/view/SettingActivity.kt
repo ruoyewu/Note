@@ -49,6 +49,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener{
         ll_setting_font.setOnClickListener(this)
         ll_setting_feedback.setOnClickListener(this)
         tv_setting_back.setOnClickListener(this)
+        ll_setting_user.setOnClickListener(this)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -101,6 +102,9 @@ class SettingActivity : BaseActivity(), View.OnClickListener{
             R.id.ll_setting_feedback -> {
                 startFeedback()
             }
+            R.id.ll_setting_user -> {
+                startAc(Intent(this, LoginActivity::class.java), USER_MANAGER)
+            }
         }
     }
 
@@ -146,6 +150,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener{
     companion object{
         val CHANGE_ITEM = 1
         val CHANGE_FONT = 2
+        val USER_MANAGER = 3
 
         val CREATE_EMAIL = "2455929518@qq.com"
     }

@@ -31,13 +31,14 @@
         <activity android:name=".view.ShowItemActivity"/>
         <activity android:name=".view.ShowFontActivity"/>
         <activity android:name=".view.FontDownloadActivity" />
+        <activity android:name=".view.LoginActivity" />
 
         <!--友盟统计-->
         <meta-data android:value="KuAn" android:name="UMENG_CHANNEL"/>
         <meta-data android:value="5932198f7f2c7426fb0000b8" android:name="UMENG_APPKEY"/>
 
         <!---->
-        <meta-data android:name="com.droi.sdk.application_id" android:value="2hivmbzhh3dxQ-f-bVStJW65oSwETGJUlQAAio4j"/>
+        <meta-data android:name="com.droi.sdk.application_id" android:value="2hivmbzh1Fzh9CxmsqcPMMgdMM96EILnlQA0ws8M"/>
         <meta-data android:name="com.droi.sdk.channel_name" android:value="KuAn"/>
     </application>
 
