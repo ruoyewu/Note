@@ -2,12 +2,15 @@ package com.wuruoye.note.base
 
 import android.app.Application
 import com.droi.sdk.core.Core
+import com.droi.sdk.core.DroiCloud
 import com.droi.sdk.core.DroiObject
+import com.droi.sdk.core.DroiUser
 import com.liulishuo.filedownloader.FileDownloader
 import com.wuruoye.note.model.Config
 import com.wuruoye.note.model.FontCache
+import com.wuruoye.note.model.UpNote
+import com.wuruoye.note.util.Extensions.toast
 import com.wuruoye.note.util.FontUtil
-import com.wuruoye.note.util.toast
 
 /**
  * Created by wuruoye on 2017/5/26.
@@ -23,6 +26,8 @@ class App : Application(){
 
         //云服务初始化
         Core.initialize(this)
+        DroiUser.setAutoAnonymousUser(false)
+        DroiObject.registerCustomClass(UpNote::class.java)
 
         //字体初始化
         val fontCache = FontCache(this)

@@ -2,27 +2,34 @@ package com.wuruoye.note.view
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
+import android.support.v7.app.AlertDialog
+import android.support.v7.widget.AlertDialogLayout
 import android.view.View
+import android.widget.CompoundButton
+import com.droi.sdk.core.DroiUser
 import com.wuruoye.note.R
 import com.wuruoye.note.base.BaseActivity
 import com.wuruoye.note.base.IAbsView
 import com.wuruoye.note.model.Note
+import com.wuruoye.note.model.NoteCache
 import com.wuruoye.note.presenter.NoteGet
-import com.wuruoye.note.util.toast
+import com.wuruoye.note.util.Extensions.toast
 import kotlinx.android.synthetic.main.activity_setting.*
 
 /**
  * Created by wuruoye on 2017/5/29.
  * this file is to do
  */
-class SettingActivity : BaseActivity(), View.OnClickListener{
+class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnCheckedChangeListener{
     private lateinit var noteGet: NoteGet
+    private lateinit var noteCache: NoteCache
     private var isChange = false
 
     private var noteView = object : IAbsView<ArrayList<Note>>{
@@ -39,17 +46,20 @@ class SettingActivity : BaseActivity(), View.OnClickListener{
         get() = R.layout.activity_setting
 
     override fun initData(bundle: Bundle?) {
-
+        noteCache = NoteCache(this)
     }
 
     override fun initView() {
         noteGet.requestAllNote()
+
+        switch_backup.isChecked = noteCache.backup
 
         ll_setting_show.setOnClickListener(this)
         ll_setting_font.setOnClickListener(this)
         ll_setting_feedback.setOnClickListener(this)
         tv_setting_back.setOnClickListener(this)
         ll_setting_user.setOnClickListener(this)
+        switch_backup.setOnCheckedChangeListener(this)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -106,6 +116,34 @@ class SettingActivity : BaseActivity(), View.OnClickListener{
                 startAc(Intent(this, LoginActivity::class.java), USER_MANAGER)
             }
         }
+    }
+
+    override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
+        when (isChecked){
+            true -> {
+                val user = DroiUser.getCurrentUser()
+                if (user != null && user.isLoggedIn && user.isAuthorized && !user.isAnonymous){
+                    noteCache.backup = true
+                }else{
+                    goToLogin()
+                    switch_backup.isChecked = false
+                }
+            }
+            false -> {
+                noteCache.backup = false
+            }
+        }
+    }
+
+    private fun goToLogin(){
+        AlertDialog.Builder(this)
+                .setTitle("您还未登录账号，是否前往登录？")
+                .setPositiveButton("是") { _, _ ->
+                    startAc(Intent(this,LoginActivity::class.java), USER_MANAGER)
+                }
+                .setNegativeButton("否") { _, _ ->
+                }
+                .show()
     }
 
     override fun onBackPressed() {

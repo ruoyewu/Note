@@ -1,0 +1,35 @@
+package com.wuruoye.note.util
+
+import android.content.Context
+import android.support.v4.app.Fragment
+import android.util.TypedValue
+import android.widget.Toast
+import java.util.regex.Pattern
+
+/**
+ * Created by wuruoye on 2017/5/27.
+ * this file is to do
+ */
+object Extensions{
+
+    fun Context.toast(message: String){
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show()
+    }
+    fun Fragment.toast(message: String){
+        context.toast(message)
+    }
+
+    /**
+     * 单位转换
+     */
+    fun Context.dp2px(dp: Float): Int{
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                dp,resources.displayMetrics).toInt()
+    }
+
+    fun String.isPhone(): Boolean{
+        val p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$")
+        val m = p.matcher(this)
+        return m.matches()
+    }
+}

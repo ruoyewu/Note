@@ -29,9 +29,10 @@ import com.wuruoye.note.model.Config
 import com.wuruoye.note.model.Note
 import com.wuruoye.note.model.NoteCache
 import com.wuruoye.note.presenter.NoteGet
+import com.wuruoye.note.util.BackupUtil
+import com.wuruoye.note.util.Extensions.toast
 import com.wuruoye.note.util.NoteUtil
 import com.wuruoye.note.util.SQLiteUtil
-import com.wuruoye.note.util.toast
 import com.wuruoye.note.widget.SpringScrollView
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -45,7 +46,6 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
     private var isSearch = false
     private var search = ""
     private var isUpDirect = true
-
 
 
     private val noteView = object : IAbsView<ArrayList<Note>>{
@@ -68,6 +68,16 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
         }
 
     }
+    private val backupListener = object : BackupUtil.OnBackupListener{
+        override fun onBackupSuccess() {
+            toast("备份成功")
+            noteCache.lastBackup = System.currentTimeMillis()
+        }
+
+        override fun onBackupFail(message: String) {
+            toast(message)
+        }
+    }
 
     override val contentView: Int
         get() = R.layout.activity_main
@@ -76,6 +86,7 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
         noteCache = NoteCache(this)
         mMonth = NoteUtil.getMonth()
         mYear = NoteUtil.getYear()
+
     }
 
     override fun initPresenter() {
@@ -119,6 +130,9 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
         tv_note_close.setOnClickListener(this)
         tv_note_search.setOnClickListener(this)
         tv_note_setting.setOnClickListener(this)
+
+
+        checkBackup()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -210,6 +224,14 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
             openSearch(false)
         }else {
             super.onBackPressed()
+        }
+    }
+
+    private fun checkBackup(){
+        if (noteCache.backup){
+            if (System.currentTimeMillis() - noteCache.lastBackup > 1000 * 60 * 60 * 24){
+                BackupUtil.backupNote(applicationContext,backupListener)
+            }
         }
     }
 
