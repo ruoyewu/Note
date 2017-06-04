@@ -59,6 +59,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
         ll_setting_feedback.setOnClickListener(this)
         tv_setting_back.setOnClickListener(this)
         ll_setting_user.setOnClickListener(this)
+        ll_setting_backup.setOnClickListener(this)
         switch_backup.setOnCheckedChangeListener(this)
     }
 
@@ -74,6 +75,12 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
                 if (resultCode == Activity.RESULT_OK){
                     isChange = true
                     recreate()
+                }
+            }
+            USER_MANAGER -> {
+                if (resultCode == Activity.RESULT_OK){
+                    switch_backup.isChecked = false
+                    noteCache.backup = false
                 }
             }
         }
@@ -114,6 +121,9 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
             }
             R.id.ll_setting_user -> {
                 startAc(Intent(this, LoginActivity::class.java), USER_MANAGER)
+            }
+            R.id.ll_setting_backup -> {
+
             }
         }
     }

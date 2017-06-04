@@ -21,13 +21,31 @@ class NoteCache(context: Context) : BaseCache(context) {
         get() = mSP!!.getLong(LAST_BACKUP, LAST_BACKUP_DEFAULT)
         set(value) = mSP!!.edit().putLong(LAST_BACKUP,value).apply()
 
+    var isLogin: Boolean
+        get() = mSP!!.getBoolean(IS_LOGIN, IS_LOGIN_DEFAULT)
+        set(value) = mSP!!.edit().putBoolean(IS_LOGIN, value).apply()
+
+    var userName: String
+        get() = mSP!!.getString(USER_NAME, USER_NAME_DEFAULT)
+        set(value) = mSP!!.edit().putString(USER_NAME, value).apply()
+
+    var userPass: String
+        get() = mSP!!.getString(USER_PASS, USER_PASS_DEFAULT)
+        set(value) = mSP!!.edit().putString(USER_PASS, value).apply()
+
     companion object{
         val ITEM_SHOW = "item_show"
         val BACKUP = "backup"
         val LAST_BACKUP = "last_back"
+        val IS_LOGIN = "is_login"
+        val USER_NAME = "user_name"
+        val USER_PASS = "user_pass"
 
         val ITEM_SHOW_DEFAULT = 1
         val BACKUP_DEFAULT = false
         val LAST_BACKUP_DEFAULT = 0L
+        val IS_LOGIN_DEFAULT = false
+        val USER_NAME_DEFAULT = ""
+        val USER_PASS_DEFAULT = ""
     }
 }

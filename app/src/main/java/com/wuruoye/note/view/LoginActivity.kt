@@ -1,6 +1,7 @@
 package com.wuruoye.note.view
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -11,6 +12,7 @@ import com.transitionseverywhere.TransitionManager
 import com.wuruoye.note.R
 
 import com.wuruoye.note.base.BaseActivity
+import com.wuruoye.note.model.NoteCache
 import com.wuruoye.note.util.Extensions.toast
 import com.wuruoye.note.util.Extensions.isPhone
 import kotlinx.android.synthetic.main.activity_user.*
@@ -21,12 +23,16 @@ import kotlinx.android.synthetic.main.activity_user.*
  */
 
 class LoginActivity : BaseActivity(), View.OnClickListener{
+    private lateinit var noteCache: NoteCache
     private var currentView = DEFAULT_VIEW
+    private var isChange = false
 
     override val contentView: Int
         get() = R.layout.activity_user
 
     override fun initData(bundle: Bundle?) {
+        noteCache = NoteCache(this)
+
         val user = DroiUser.getCurrentUser()
         if (user != null && user.isLoggedIn && !user.isAnonymous){
             currentView = DEFAULT_VIEW
@@ -78,7 +84,9 @@ class LoginActivity : BaseActivity(), View.OnClickListener{
                         if (p1!!.isOk){
                             currentView = LOGIN_VIEW
                             loginView()
+                            isChange = true
                             toast("注销成功")
+                            noteCache.isLogin = false
                         }
                     }
                 })
@@ -99,6 +107,9 @@ class LoginActivity : BaseActivity(), View.OnClickListener{
                         currentView = DEFAULT_VIEW
                         defaultView()
                         toast("登录成功")
+                        noteCache.isLogin = true
+                        noteCache.userName = name
+                        noteCache.userPass = pass
                     }else{
                         val error =
                                 when (p1.code){
@@ -200,6 +211,9 @@ class LoginActivity : BaseActivity(), View.OnClickListener{
     }
 
     override fun onBackPressed() {
+        if (isChange){
+            setResult(Activity.RESULT_OK)
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             finishAfterTransition()
         }else{
