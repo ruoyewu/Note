@@ -43,6 +43,14 @@ object NoteUtil {
         return getCalender().get(Calendar.DAY_OF_WEEK)
     }
 
+    fun getWeek(year: Int, month: Int, day: Int): Int{
+        val calender = Calendar.getInstance()
+        calender.set(Calendar.YEAR, year)
+        calender.set(Calendar.MONTH, month - 1)
+        calender.set(Calendar.DAY_OF_MONTH, day)
+        return calender.get(Calendar.DAY_OF_WEEK)
+    }
+
     fun getTime(): String{
         val calender =  getCalender()
         val hour = calender.get(Calendar.HOUR_OF_DAY)

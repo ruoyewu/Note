@@ -83,6 +83,12 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
                     noteCache.backup = false
                 }
             }
+            BACKUP_MANAGER -> {
+                if (resultCode == Activity.RESULT_OK){
+                    isChange = true
+                    recreate()
+                }
+            }
         }
     }
 
@@ -123,7 +129,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
                 startAc(Intent(this, LoginActivity::class.java), USER_MANAGER)
             }
             R.id.ll_setting_backup -> {
-
+                startAc(Intent(this, BackupActivity::class.java), BACKUP_MANAGER)
             }
         }
     }
@@ -199,6 +205,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
         val CHANGE_ITEM = 1
         val CHANGE_FONT = 2
         val USER_MANAGER = 3
+        val BACKUP_MANAGER = 4
 
         val CREATE_EMAIL = "2455929518@qq.com"
     }

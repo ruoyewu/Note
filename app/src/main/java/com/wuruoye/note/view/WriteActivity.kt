@@ -2,6 +2,7 @@ package com.wuruoye.note.view
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.graphics.PorterDuff
 import android.graphics.Rect
 import android.os.Build
@@ -20,6 +21,7 @@ import com.wuruoye.note.R
 import com.wuruoye.note.base.BaseActivity
 import com.wuruoye.note.model.Config
 import com.wuruoye.note.model.Note
+import com.wuruoye.note.util.BackupUtil
 import com.wuruoye.note.util.NoteUtil
 import com.wuruoye.note.util.SQLiteUtil
 import com.wuruoye.note.widget.CustomRelativeLayout
@@ -152,8 +154,10 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
             note.direct = mDirect
             if (note.content == "" && note.style == 0){
                 SQLiteUtil.deleteNote(this,note)
-            }else
+            }else{
                 SQLiteUtil.saveNote(this,note)
+                BackupUtil.upNote(applicationContext,note)
+            }
             setResult(Activity.RESULT_OK)
         }
 

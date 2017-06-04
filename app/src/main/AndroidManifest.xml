@@ -32,6 +32,7 @@
         <activity android:name=".view.ShowFontActivity"/>
         <activity android:name=".view.FontDownloadActivity" />
         <activity android:name=".view.LoginActivity" />
+        <activity android:name=".view.BackupActivity" />
 
         <!--友盟统计-->
         <meta-data android:value="KuAn" android:name="UMENG_CHANNEL"/>

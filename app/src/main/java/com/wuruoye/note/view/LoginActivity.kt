@@ -4,7 +4,10 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Build
 import android.os.Bundle
+import android.text.InputType
 import android.view.View
+import android.widget.EditText
+import android.widget.TextView
 import com.droi.sdk.DroiCallback
 import com.droi.sdk.DroiError
 import com.droi.sdk.core.DroiUser
@@ -47,6 +50,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener{
             DEFAULT_VIEW -> defaultView()
             LOGIN_VIEW -> loginView()
         }
+
+        et_login_pass
 
         tv_login_back.setOnClickListener(this)
         btn_login_login.setOnClickListener(this)
