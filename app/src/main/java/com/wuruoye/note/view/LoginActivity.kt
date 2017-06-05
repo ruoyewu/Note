@@ -124,6 +124,9 @@ class LoginActivity : BaseActivity(), View.OnClickListener{
                                     else -> "其他错误"
                                 }
                         til_login_name.error = error
+                        if (error == "用户已登录"){
+                            defaultView()
+                        }
                     }
                 }
             })
@@ -157,8 +160,10 @@ class LoginActivity : BaseActivity(), View.OnClickListener{
                         val error =
                         when (p1.code){
                             DroiError.USER_ALREADY_EXISTS -> "用户已存在"
+                            DroiError.USER_ALREADY_LOGIN -> ""
                             else -> "其他错误"
                         }
+                        noteCache.isLogin = DroiUser.getCurrentUser().isLoggedIn
                     }
                 }
             })

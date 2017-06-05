@@ -21,6 +21,7 @@ import com.wuruoye.note.R
 import com.wuruoye.note.base.BaseActivity
 import com.wuruoye.note.model.Config
 import com.wuruoye.note.model.Note
+import com.wuruoye.note.model.NoteCache
 import com.wuruoye.note.util.BackupUtil
 import com.wuruoye.note.util.NoteUtil
 import com.wuruoye.note.util.SQLiteUtil
@@ -156,7 +157,9 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
                 SQLiteUtil.deleteNote(this,note)
             }else{
                 SQLiteUtil.saveNote(this,note)
-                BackupUtil.upNote(applicationContext,note)
+                if (NoteCache(this).backup){
+                    BackupUtil.upNote(applicationContext,note)
+                }
             }
             setResult(Activity.RESULT_OK)
         }

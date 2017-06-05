@@ -28,7 +28,7 @@ object Extensions{
     }
 
     fun String.isPhone(): Boolean{
-        val p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$")
+        val p = Pattern.compile("^1(3[0-9]|4[579]|5[0-3,5-9]|7[0135678]|8[0-9])\\d{8}$")
         val m = p.matcher(this)
         return m.matches()
     }
