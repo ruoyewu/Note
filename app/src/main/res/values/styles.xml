@@ -11,6 +11,7 @@
         <item name="colorAccent">@color/gray</item>
         <item name="android:popupMenuStyle">@style/popMenu</item>
         <item name="android:popupWindowStyle">@style/popMenu</item>
+        <item name="android:alertDialogTheme">@style/dialogTheme</item>
     </style>w
 
     <style name="windowAnim" parent="@android:style/Animation.Activity">
@@ -23,5 +24,10 @@
         <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="dialogTheme" parent="AlertDialog.AppCompat.Light">
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:textColorSecondary">@color/gray</item>
     </style>
 </resources>

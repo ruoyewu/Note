@@ -3,12 +3,16 @@ package com.wuruoye.note.view
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.PorterDuff
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.ActivityCompat
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ImageSpan
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -71,6 +75,13 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
         tv_write_paper.setOnClickListener(this)
         tv_write_submit.setOnClickListener(this)
         tv_write_time.setOnClickListener(this)
+
+//        val text = "ruoye"
+//        val bitmap = BitmapFactory.decodeResource(resources,R.drawable.yuanti)
+//        val imageSpan = ImageSpan(this,bitmap)
+//        val span = SpannableString(text)
+//        span.setSpan(imageSpan, 0, text.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+//        et_write.append(span)
     }
 
     override fun onClick(v: View?) {

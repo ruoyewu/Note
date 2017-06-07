@@ -27,26 +27,32 @@ import io.reactivex.schedulers.Schedulers
 
 object BackupUtil{
 
-    fun backupNote(context: Context, listener: BackupUtil.OnBackupListener){
-        val noteCache = NoteCache(context)
-        var name = ""
-        Observable.create(object : ObservableOnSubscribe<DroiUser>{
-            override fun subscribe(p0: ObservableEmitter<DroiUser>?) {
-                val user = DroiUser.getCurrentUser()
-                if (user != null && user.isLoggedIn && user.isAuthorized && !user.isAnonymous){
-                    p0!!.onNext(user)
-                }else if (noteCache.isLogin){
-                    val error = DroiError()
-                    DroiUser.login(noteCache.userName,noteCache.userPass,error)
-                    if (error.isOk){
-                        p0!!.onNext(DroiUser.getCurrentUser())
-                    }else{
-                        listener.onBackupFail("登录失败")
+    private fun getUser(noteCache: NoteCache, listener: OnBackupListener): Observable<DroiUser>{
+        return Observable.create(object : ObservableOnSubscribe<DroiUser>{
+                override fun subscribe(p0: ObservableEmitter<DroiUser>?) {
+                    val user = DroiUser.getCurrentUser()
+                    if (user != null && user.isLoggedIn && user.isAuthorized && !user.isAnonymous){
+                        p0!!.onNext(user)
+                    }else if (noteCache.isLogin){
+                        val error = DroiError()
+                        DroiUser.login(noteCache.userName,noteCache.userPass,error)
+                        if (error.isOk){
+                            p0!!.onNext(DroiUser.getCurrentUser())
+                        }else{
+                            listener.onBackupFail("登录失败")
+                        }
                     }
                 }
-            }
-        })
+            })
                 .subscribeOn(Schedulers.newThread())
+    }
+
+    fun backupNote(context: Context, listener: OnBackupListener){
+        val noteCache = NoteCache(context)
+        var name = ""
+                //得到当前user
+                getUser(noteCache, listener)
+                        //得到云端的note数据
                 .map(object : Function<DroiUser,ArrayList<UpNote>>{
                     override fun apply(p0: DroiUser?): ArrayList<UpNote> {
                         name = p0!!.userId
@@ -65,6 +71,7 @@ object BackupUtil{
                         return l
                     }
                 })
+                        //将云端与本地对比得到最终需要处理的note
                 .map(object : Function<ArrayList<UpNote>, ArrayList<UpNote>>{
                     override fun apply(p0: ArrayList<UpNote>?): ArrayList<UpNote> {
                         val list = SQLiteUtil.getAllNote(context)
@@ -95,13 +102,14 @@ object BackupUtil{
                         return l
                     }
                 })
+                        //保存到云端
                 .map(object : Function<ArrayList<UpNote>, DroiError>{
                     override fun apply(p0: ArrayList<UpNote>?): DroiError {
                         return DroiObject.saveAll(p0)
                     }
                 })
-                .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
+                        //回调处理结果
                 .subscribe { error ->
                     if (error.isOk){
                         listener.onBackupSuccess()
@@ -115,23 +123,8 @@ object BackupUtil{
     fun downloadNote(context: Context, listener: OnBackupListener){
         val noteCache = NoteCache(context)
         var name = ""
-        Observable.create(object : ObservableOnSubscribe<DroiUser>{
-            override fun subscribe(p0: ObservableEmitter<DroiUser>?) {
-                val user = DroiUser.getCurrentUser()
-                if (user != null && user.isLoggedIn && user.isAuthorized && !user.isAnonymous){
-                    p0!!.onNext(user)
-                }else if (noteCache.isLogin){
-                    val error = DroiError()
-                    DroiUser.login(noteCache.userName,noteCache.userPass,error)
-                    if (error.isOk){
-                        p0!!.onNext(DroiUser.getCurrentUser())
-                    }else{
-                        listener.onBackupFail("登录失败")
-                    }
-                }
-            }
-        })
-                .subscribeOn(Schedulers.newThread())
+                getUser(noteCache, listener)
+                        //获取云端笔记
                 .map(object : Function<DroiUser,ArrayList<UpNote>>{
                     override fun apply(p0: DroiUser?): ArrayList<UpNote> {
                         name = p0!!.userId
@@ -150,6 +143,7 @@ object BackupUtil{
                         return l
                     }
                 })
+                        //对比得到最终结果并保存
                 .map(object : Function<ArrayList<UpNote>, String>{
                     override fun apply(p0: ArrayList<UpNote>?): String {
                         try {
@@ -176,6 +170,7 @@ object BackupUtil{
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
+                        //回调结果
                 .subscribe(object : Consumer<String>{
                     override fun accept(p0: String?) {
                         listener.onBackupFail(p0!!)
@@ -184,32 +179,25 @@ object BackupUtil{
 
     }
 
+    //保存本地日记的同时保存到云端
+    //
     fun upNote(context: Context, note: Note){
         val noteCache = NoteCache(context)
         var name = ""
-        Observable.create(object : ObservableOnSubscribe<DroiUser>{
-            override fun subscribe(p0: ObservableEmitter<DroiUser>?) {
-                val user = DroiUser.getCurrentUser()
-                if (user != null && user.isLoggedIn && user.isAuthorized && !user.isAnonymous){
-                    p0!!.onNext(user)
-                }else if (noteCache.isLogin){
-                    val error = DroiError()
-                    DroiUser.login(noteCache.userName,noteCache.userPass,error)
-                    if (error.isOk){
-                        p0!!.onNext(DroiUser.getCurrentUser())
-                    }else{
+                getUser(noteCache, object : BackupUtil.OnBackupListener{
+                    override fun onBackupSuccess() {
+
                     }
-                }
-            }
-        })
-                .subscribeOn(Schedulers.newThread())
+
+                    override fun onBackupFail(message: String) {
+
+                    }
+
+                })
                 .map(object : Function<DroiUser, DroiError>{
                     override fun apply(p0: DroiUser?): DroiError {
                         name = p0!!.userId
                         val cond1 = DroiCondition.cond("user",DroiCondition.Type.EQ,name)
-                        val cond2 = DroiCondition.cond("year",DroiCondition.Type.EQ,note.year)
-                        val cond3 = DroiCondition.cond("month",DroiCondition.Type.EQ,note.month)
-                        val cond4 = DroiCondition.cond("day",DroiCondition.Type.EQ,note.day)
                         val query = DroiQuery.Builder.newBuilder()
                                 .query(UpNote::class.java)
                                 .where(cond1)

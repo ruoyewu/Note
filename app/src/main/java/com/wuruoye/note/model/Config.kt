@@ -1,6 +1,7 @@
 package com.wuruoye.note.model
 
 import android.Manifest
+import android.os.Environment
 import com.wuruoye.note.R
 
 /**
@@ -8,6 +9,8 @@ import com.wuruoye.note.R
  * this file is to do
  */
 object Config {
+    val outDirect = Environment.getExternalStorageDirectory().absolutePath + "/com.wuruoye.note/out/"
+
     val fontList = arrayOf(
             R.drawable.chenjishi,
             R.drawable.guojinfang,

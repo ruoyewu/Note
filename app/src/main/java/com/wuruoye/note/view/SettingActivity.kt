@@ -2,6 +2,7 @@ package com.wuruoye.note.view
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.ProgressDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
@@ -21,6 +22,7 @@ import com.wuruoye.note.model.Note
 import com.wuruoye.note.model.NoteCache
 import com.wuruoye.note.presenter.NoteGet
 import com.wuruoye.note.util.Extensions.toast
+import com.wuruoye.note.util.TextOutUtil
 import kotlinx.android.synthetic.main.activity_setting.*
 
 /**
@@ -32,6 +34,9 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
     private lateinit var noteCache: NoteCache
     private var isChange = false
 
+    private lateinit var progressBar: ProgressDialog
+    private var outDialog: AlertDialog.Builder? = null
+
     private var noteView = object : IAbsView<ArrayList<Note>>{
         override fun setModel(model: ArrayList<Note>) {
             setNote(model)
@@ -40,6 +45,23 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
         override fun setWorn(message: String) {
             toast(message)
         }
+    }
+
+    private var outNoteListener = object : TextOutUtil.TextOutListener{
+        override fun onOutSuccess(path: String) {
+            runOnUiThread {
+                toast("导出成功...文件地址为 " + path)
+                progressBar.dismiss()
+            }
+        }
+
+        override fun onOutFail(message: String) {
+            runOnUiThread {
+                toast(message)
+                progressBar.dismiss()
+            }
+        }
+
     }
 
     override val contentView: Int
@@ -53,6 +75,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
         noteGet.requestAllNote()
 
         switch_backup.isChecked = noteCache.backup
+        progressBar = ProgressDialog(this)
 
         ll_setting_show.setOnClickListener(this)
         ll_setting_font.setOnClickListener(this)
@@ -60,6 +83,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
         tv_setting_back.setOnClickListener(this)
         ll_setting_user.setOnClickListener(this)
         ll_setting_backup.setOnClickListener(this)
+        ll_setting_out.setOnClickListener(this)
         switch_backup.setOnCheckedChangeListener(this)
     }
 
@@ -131,6 +155,9 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
             R.id.ll_setting_backup -> {
                 startAc(Intent(this, BackupActivity::class.java), BACKUP_MANAGER)
             }
+            R.id.ll_setting_out -> {
+                showOutDialog()
+            }
         }
     }
 
@@ -160,6 +187,32 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
                 .setNegativeButton("否") { _, _ ->
                 }
                 .show()
+    }
+
+    private fun showOutDialog(){
+        if (outDialog == null){
+            outDialog = AlertDialog.Builder(this)
+                    .setTitle("选择导出格式:")
+                    .setItems(outItem) { _, position ->
+                        when (position){
+                            0 -> {
+                                outToText()
+                            }
+                            else -> {
+
+                            }
+                        }
+                    }
+        }
+        outDialog!!.show()
+    }
+
+    private fun outToText(){
+        Thread({
+            TextOutUtil.outToText(this,outNoteListener)
+        }).start()
+        progressBar.setTitle("正在导出中...")
+        progressBar.show()
     }
 
     override fun onBackPressed() {
@@ -208,5 +261,8 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
         val BACKUP_MANAGER = 4
 
         val CREATE_EMAIL = "2455929518@qq.com"
+        val outItem = arrayOf(
+                "导出到文本"
+        )
     }
 }
