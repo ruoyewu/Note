@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
+import android.support.v4.content.FileProvider
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.AlertDialogLayout
 import android.view.View
@@ -24,6 +25,7 @@ import com.wuruoye.note.presenter.NoteGet
 import com.wuruoye.note.util.Extensions.toast
 import com.wuruoye.note.util.TextOutUtil
 import kotlinx.android.synthetic.main.activity_setting.*
+import java.io.File
 
 /**
  * Created by wuruoye on 2017/5/29.
@@ -34,7 +36,6 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
     private lateinit var noteCache: NoteCache
     private var isChange = false
 
-    private lateinit var progressBar: ProgressDialog
     private var outDialog: AlertDialog.Builder? = null
 
     private var noteView = object : IAbsView<ArrayList<Note>>{
@@ -45,23 +46,6 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
         override fun setWorn(message: String) {
             toast(message)
         }
-    }
-
-    private var outNoteListener = object : TextOutUtil.TextOutListener{
-        override fun onOutSuccess(path: String) {
-            runOnUiThread {
-                toast("导出成功...文件地址为 " + path)
-                progressBar.dismiss()
-            }
-        }
-
-        override fun onOutFail(message: String) {
-            runOnUiThread {
-                toast(message)
-                progressBar.dismiss()
-            }
-        }
-
     }
 
     override val contentView: Int
@@ -75,7 +59,6 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
         noteGet.requestAllNote()
 
         switch_backup.isChecked = noteCache.backup
-        progressBar = ProgressDialog(this)
 
         ll_setting_show.setOnClickListener(this)
         ll_setting_font.setOnClickListener(this)
@@ -208,11 +191,11 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
     }
 
     private fun outToText(){
-        Thread({
-            TextOutUtil.outToText(this,outNoteListener)
-        }).start()
-        progressBar.setTitle("正在导出中...")
-        progressBar.show()
+        val intent = Intent(this, ShowNoteActivity::class.java)
+        val bundle = Bundle()
+        bundle.putInt("type", 0)
+        intent.putExtras(bundle)
+        startAc(intent, OPEN_NOTE)
     }
 
     override fun onBackPressed() {
@@ -259,10 +242,17 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
         val CHANGE_FONT = 2
         val USER_MANAGER = 3
         val BACKUP_MANAGER = 4
+        val OPEN_NOTE = 5
 
         val CREATE_EMAIL = "2455929518@qq.com"
+        val AUTHORITY = "com.wuruoye.note.fileprovider"
         val outItem = arrayOf(
                 "导出到文本"
+        )
+        val shareItem = arrayOf(
+                "打开文件",
+                "分享文件",
+                "不操作"
         )
     }
 }

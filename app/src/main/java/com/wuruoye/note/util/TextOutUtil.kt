@@ -18,6 +18,22 @@ object TextOutUtil{
         toText(list, listener)
     }
 
+    fun readText(path: String): String{
+        val read = InputStreamReader(FileInputStream(path), "gbk")
+        val inFile = BufferedReader(read)
+        try {
+            return inFile.readText()
+        }finally {
+            inFile.close()
+            read.close()
+        }
+    }
+
+    fun getNoteString(context: Context): String{
+        val list = SQLiteUtil.getAllNote(context)
+        return noteToString(list)
+    }
+
     private fun toText(noteList: ArrayList<Note>, listener: TextOutListener){
         //判断文件夹是否存在
         val direct = File(Config.outDirect)
@@ -57,7 +73,7 @@ object TextOutUtil{
         val build = StringBuilder()
         for (i in noteList){
             build.append(i.year).append("年").append(i.month).append("月").append(i.day).append("日").append("\n")
-                    .append(i.content).append("\n")
+                    .append(i.content).append("\n\n")
         }
         return build.toString()
     }

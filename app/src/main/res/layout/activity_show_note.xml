@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:text="导出日记"
+        android:textAlignment="center"
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.wuruoye.note.widget.SpringScrollView
+        android:layout_width="match_parent"
+        android:padding="10dp"
+        android:layout_weight="1"
+        android:layout_height="0dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/tv_show_note"
+                android:textIsSelectable="true"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </RelativeLayout>
+    </com.wuruoye.note.widget.SpringScrollView>
+
+
+    <TextView
+        android:id="@+id/tv_show_note_back"
+        android:background="@drawable/back"
+        android:text="设"
+        android:transitionName="@string/translate_note_button"
+        android:gravity="center"
+        android:textColor="@color/romance"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        tools:ignore="UnusedAttribute" />
+</LinearLayout>
