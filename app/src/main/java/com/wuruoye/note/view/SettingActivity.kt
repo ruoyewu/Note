@@ -245,7 +245,6 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
         val OPEN_NOTE = 5
 
         val CREATE_EMAIL = "2455929518@qq.com"
-        val AUTHORITY = "com.wuruoye.note.fileprovider"
         val outItem = arrayOf(
                 "导出到文本"
         )
