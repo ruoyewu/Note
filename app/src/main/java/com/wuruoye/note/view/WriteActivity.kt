@@ -6,10 +6,16 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.PorterDuff
 import android.graphics.Rect
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.LayerDrawable
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.provider.MediaStore
 import android.support.v4.app.ActivityCompat
+import android.support.v4.content.FileProvider
+import android.support.v7.app.AlertDialog
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ImageSpan
@@ -27,10 +33,13 @@ import com.wuruoye.note.model.Config
 import com.wuruoye.note.model.Note
 import com.wuruoye.note.model.NoteCache
 import com.wuruoye.note.util.BackupUtil
+import com.wuruoye.note.util.BitmapOverlay
 import com.wuruoye.note.util.NoteUtil
 import com.wuruoye.note.util.SQLiteUtil
+import com.wuruoye.note.view.ShowNoteActivity.Companion.AUTHORITY
 import com.wuruoye.note.widget.CustomRelativeLayout
 import kotlinx.android.synthetic.main.activity_write.*
+import java.io.File
 
 /**
  * Created by wuruoye on 2017/5/27.
@@ -41,7 +50,9 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
     private var paperColor = 0
     private lateinit var date: String
     private var isShowPaper = false
-    private  var mDirect = 1
+    private var mDirect = 1
+    private var fileName = ""
+
 
     override val contentView: Int
         get() = R.layout.activity_write
@@ -63,6 +74,7 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
         initPapers()
         tv_write_date.text = date
         iv_write.setColorFilter(ActivityCompat.getColor(this,Config.paperStyle[paperColor]),PorterDuff.Mode.MULTIPLY)
+
         tv_write_direct.text = if (mDirect == 1) "左" else if (mDirect == 2) "中" else "右"
         et_write.gravity = if (mDirect == 1) Gravity.START else if (mDirect == 2) Gravity.CENTER_HORIZONTAL else Gravity.END
         et_write.setText(note.content)
@@ -157,6 +169,20 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
         changeMargin()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK){
+            when (requestCode){
+                OPEN_ALBUM -> {
+                    setBackground(data!!.data)
+                }
+                OPEN_CAMERA -> {
+                    setBackground(FileProvider.getUriForFile(this, AUTHORITY, File(fileName)))
+                }
+            }
+        }
+    }
+
     private fun closeActivity(){
         if (note.content != et_write.text.toString() ||
                 note.style != paperColor ||
@@ -200,9 +226,73 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
         ll_write_edit.layoutParams = param
     }
 
+    private fun addBackground(){
+        AlertDialog.Builder(this)
+                .setTitle("选择获取图片方式")
+                .setItems(imageItem, { _, position ->
+                    when (position){
+                        0 -> {
+                            openAlbum()
+                        }
+                        1 -> {
+                            openCamera()
+                        }
+                    }
+                })
+                .show()
+    }
+
+    private fun setBackground(uri: Uri){
+        val bmp1 = BitmapFactory.decodeResource(resources, R.drawable.paper)
+        val bmp2 = BitmapFactory.decodeFile(fileName)
+        val bmp3 = BitmapOverlay.overlay(bmp1, bmp2, this)
+        iv_write.setImageBitmap(bmp3)
+    }
+
+    private fun openAlbum(){
+        val intent: Intent =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    Intent(Intent.ACTION_OPEN_DOCUMENT)
+                } else {
+                    Intent(Intent.ACTION_GET_CONTENT)
+                }
+        intent.type = "image/*"
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivityForResult(intent, OPEN_ALBUM)
+        }
+    }
+
+    private fun openCamera(){
+        fileName = Config.imagePath + "note_" + System.currentTimeMillis().toString() + ".jpg"
+        val directory = File(Config.imagePath)
+        if (!directory.exists()){
+            directory.mkdirs()
+        }
+        val file = File(fileName)
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        val uri: Uri =
+        if (Build.VERSION.SDK_INT < 21) {
+            Uri.fromFile(file)
+        } else {
+            FileProvider.getUriForFile(applicationContext, AUTHORITY, file)
+        }
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
+        startActivityForResult(intent, OPEN_CAMERA)
+    }
+
     private fun initPapers(){
         val param = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.MATCH_PARENT)
         param.width = 500
+        val addImage = ImageView(this)
+        addImage.setImageResource(R.drawable.ic_add)
+        addImage.layoutParams = param
+        addImage.scaleType = ImageView.ScaleType.CENTER_CROP
+        addImage.setOnClickListener({
+            addBackground()
+        })
+        ll_write_paper.addView(addImage)
         for (i in 0..Config.paperStyle.size - 1){
             val image = ImageView(this)
             image.tag = i
@@ -225,6 +315,11 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
 
     companion object{
         val FIRST_YEAR = 2013
-        val TAG = "ruoyenote"
+        val OPEN_ALBUM = 1
+        val OPEN_CAMERA = 2
+        val imageItem = arrayOf(
+                "打开相册",
+                "打开相机"
+        )
     }
 }

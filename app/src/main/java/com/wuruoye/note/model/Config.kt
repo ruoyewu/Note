@@ -10,6 +10,7 @@ import com.wuruoye.note.R
  */
 object Config {
     val outDirect = Environment.getExternalStorageDirectory().absolutePath + "/noteOut/"
+    val imagePath = Environment.getExternalStorageDirectory().absolutePath + "/com.wuruoye.note/image/"
 
     val fontList = arrayOf(
             R.drawable.chenjishi,
