@@ -2,15 +2,20 @@ package com.wuruoye.note.view
 
 import android.app.ProgressDialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
+import android.support.v4.app.ShareCompat
 import android.support.v4.content.FileProvider
+import android.support.v4.view.ViewCompat
 import android.support.v7.app.AlertDialog
 import android.view.View
 
 import com.wuruoye.note.R
 import com.wuruoye.note.base.BaseActivity
+import com.wuruoye.note.model.Config
 import com.wuruoye.note.model.Date
 import com.wuruoye.note.util.Extensions.toast
 import com.wuruoye.note.util.TextOutUtil
@@ -53,7 +58,7 @@ class ShowNoteActivity : BaseActivity(), View.OnClickListener{
                 onBackPressed()
             }
             R.id.tv_show_note_save -> {
-                saveNote()
+//                saveNote()
             }
             R.id.tv_show_note_share -> {
                 shareNote()
@@ -74,16 +79,25 @@ class ShowNoteActivity : BaseActivity(), View.OnClickListener{
     }
 
     private fun saveNote(){
-        val string = tv_show_note.text.toString()
-        TextOutUtil.outToText(string, object : TextOutUtil.TextOutListener{
-            override fun onOutSuccess(path: String) {
-                showSaveDialog(path)
+        var isOk = true
+        for (i in Config.permission){
+            if (ActivityCompat.checkSelfPermission(this,i) == PackageManager.PERMISSION_DENIED){
+                isOk = false
+                ActivityCompat.requestPermissions(this, arrayOf(i),1)
             }
+        }
+        if (isOk) {
+            val string = tv_show_note.text.toString()
+            TextOutUtil.outToText(string, object : TextOutUtil.TextOutListener{
+                override fun onOutSuccess(path: String) {
+                    showSaveDialog(path)
+                }
 
-            override fun onOutFail(message: String) {
-                toast(message)
-            }
-        })
+                override fun onOutFail(message: String) {
+                    toast(message)
+                }
+            })
+        }
     }
 
     private fun shareNote(){
@@ -95,17 +109,21 @@ class ShowNoteActivity : BaseActivity(), View.OnClickListener{
     }
 
     private fun showSaveDialog(path: String){
+//        if (saveDialog == null){
+//            saveDialog = AlertDialog.Builder(this)
+//                    .setTitle("导出完成,请到\n根目录/outNote/文件夹查看")
+//                    .setPositiveButton("确定", { _, _ -> })
+//                    .setNegativeButton("取消", { _, _ -> })
+//        }
         if (saveDialog == null){
             saveDialog = AlertDialog.Builder(this)
-                    .setTitle("导出完成\n是否打开？")
-                    .setPositiveButton("确定", { _, _ ->
+                    .setTitle("导出完成,路径为\n根目录/outNote/")
+                    .setPositiveButton("打开", { _, _ ->
                         val intent = Intent(Intent.ACTION_VIEW)
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                            intent.flags = Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
-                        }
-                        intent.setDataAndType(FileProvider.getUriForFile(this, AUTHORITY, File(path)), "application/txt")
+//                        intent.addCategory(Intent.CATEGORY_DEFAULT)
+//                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        intent.setDataAndType(FileProvider.getUriForFile(this, AUTHORITY, File(path)), "text/*")
                         startActivity(intent)
-
                     })
                     .setNegativeButton("取消", { _, _ -> })
         }

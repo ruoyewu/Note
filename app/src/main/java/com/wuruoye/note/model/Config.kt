@@ -9,7 +9,7 @@ import com.wuruoye.note.R
  * this file is to do
  */
 object Config {
-    val outDirect = Environment.getExternalStorageDirectory().absolutePath + "/com.wuruoye.note/out/"
+    val outDirect = Environment.getExternalStorageDirectory().absolutePath + "/noteOut/"
 
     val fontList = arrayOf(
             R.drawable.chenjishi,
