@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.PorterDuff
 import android.graphics.Rect
@@ -327,6 +328,7 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
         val FIRST_YEAR = 2013
         val OPEN_ALBUM = 1
         val OPEN_CAMERA = 2
+        val OPEN_CROP = 3
         val imageItem = arrayOf(
                 "打开相册",
                 "打开相机"

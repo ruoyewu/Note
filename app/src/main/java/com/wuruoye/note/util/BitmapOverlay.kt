@@ -16,7 +16,23 @@ object BitmapOverlay {
      * *
      * @return
      */
-    fun overlay(bmp1: Bitmap, overlay: Bitmap): Bitmap {
+    fun overlay(bmp1: Bitmap, over: Bitmap): Bitmap {
+        val ow = over.width
+        val oh = over.height
+        var tow = 0
+        var toh = 0
+        var sx = 0
+        var sy = 0
+        if (ow / oh < 9 / 16){
+            tow = ow
+            toh = tow * 16 / 9
+            sy = (oh - toh) / 2
+        }else {
+            toh = oh
+            tow = oh * 9 / 16
+            sx = (ow - tow) / 2
+        }
+        val overlay = Bitmap.createBitmap(over, sx, sy, tow, toh)
         val width = bmp1.width
         val height = bmp1.height
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
@@ -88,7 +104,6 @@ object BitmapOverlay {
         }
 
         bitmap.setPixels(srcPixels, 0, width, 0, 0, width, height)
-        val end = System.currentTimeMillis()
         return bitmap
     }
 }
