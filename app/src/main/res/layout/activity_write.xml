@@ -41,6 +41,7 @@
 
         <EditText
             android:id="@+id/et_write"
+            android:textSize="15sp"
             android:gravity="start"
             android:background="@null"
             android:layout_width="match_parent"

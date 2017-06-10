@@ -23,7 +23,7 @@ public class UpNote extends DroiObject {
     private int month;
     @DroiExpose
     private int day;
-    @DroiReference
+    @DroiExpose
     private DroiFile bkFile;
 
     public String getUser() {

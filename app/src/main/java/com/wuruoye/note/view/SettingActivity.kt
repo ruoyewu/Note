@@ -38,15 +38,22 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
     private var isChange = false
     private lateinit var dateFrom: Date
     private lateinit var dateTo: Date
+    private var isNoteNull = false
 
     private var outDialog: AlertDialog.Builder? = null
 
     private var noteView = object : IAbsView<ArrayList<Note>>{
         override fun setModel(model: ArrayList<Note>) {
-            val noteFrom = model[0]
-            val noteTo = model[model.size - 1]
-            dateFrom = Date(noteFrom.year, noteFrom.month, noteFrom.day)
-            dateTo = Date(noteTo.year, noteTo.month, noteTo.day)
+            val noteFrom: Note
+            val noteTo: Note
+            if (model.size > 0) {
+                noteFrom = model[0]
+                noteTo = model[model.size - 1]
+                dateFrom = Date(noteFrom.year, noteFrom.month, noteFrom.day)
+                dateTo = Date(noteTo.year, noteTo.month, noteTo.day)
+            }else{
+                isNoteNull = true
+            }
             setNote(model)
         }
 
@@ -146,7 +153,11 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
                 startAc(Intent(this, BackupActivity::class.java), BACKUP_MANAGER)
             }
             R.id.ll_setting_out -> {
-                showTimeDialog()
+                if (isNoteNull){
+                    toast("还没有日记呢！\n先去写一篇日记吧")
+                }else{
+                    showTimeDialog()
+                }
             }
         }
     }

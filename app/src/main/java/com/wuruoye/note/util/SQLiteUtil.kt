@@ -145,7 +145,10 @@ object SQLiteUtil{
         val month = cursor.getInt(cursor.getColumnIndex("month"))
         val day = cursor.getInt(cursor.getColumnIndex("day"))
         val week = cursor.getInt(cursor.getColumnIndex("week"))
-        val image = cursor.getString(cursor.getColumnIndex("bkImage"))
+        var image = cursor.getString(cursor.getColumnIndex("bkImage"))
+        if (image == null){
+            image = ""
+        }
         return Note(id,style,direct,content, year, month, day, week, image)
     }
 

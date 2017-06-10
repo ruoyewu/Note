@@ -1,16 +1,16 @@
 package com.wuruoye.note.view
 
+import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
+import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.graphics.PorterDuff
 import android.graphics.Rect
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.provider.MediaStore
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.FileProvider
@@ -44,9 +44,8 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
     private lateinit var date: String
     private var isShowPaper = false
     private var mDirect = 1
-    private var filePath = ""
-    private var imageWidth = 0
-    private var imageHeight = 0
+    private var fileName = ""
+    private var isChangeImage = false
 
 
     override val contentView: Int
@@ -63,15 +62,16 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
         date = Config.yearList[note.year - FIRST_YEAR] + "年" +
                 Config.numList[note.month] + "月" +
                 Config.numList[note.day] + "日"
-        filePath = Config.imagePath + "note_${note.year}-${note.month}-${note.day}" + ".jpg"
+        fileName = "note_${note.year}-${note.month}-${note.day}" + ".jpg"
     }
 
     override fun initView() {
         initPapers()
         tv_write_date.text = date
         iv_write.setColorFilter(ActivityCompat.getColor(this,Config.paperStyle[paperColor]),PorterDuff.Mode.MULTIPLY)
-        imageWidth = iv_write.measuredWidth
-        imageHeight = iv_write.measuredHeight
+        if (note.bkImage != ""){
+            setBackground()
+        }
 
         tv_write_direct.text = if (mDirect == 1) "左" else if (mDirect == 2) "中" else "右"
         et_write.gravity = if (mDirect == 1) Gravity.START else if (mDirect == 2) Gravity.CENTER_HORIZONTAL else Gravity.END
@@ -85,13 +85,6 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
         tv_write_paper.setOnClickListener(this)
         tv_write_submit.setOnClickListener(this)
         tv_write_time.setOnClickListener(this)
-
-//        val text = "ruoye"
-//        val bitmap = BitmapFactory.decodeResource(resources,R.drawable.yuanti)
-//        val imageSpan = ImageSpan(this,bitmap)
-//        val span = SpannableString(text)
-//        span.setSpan(imageSpan, 0, text.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-//        et_write.append(span)
     }
 
     override fun onClick(v: View?) {
@@ -171,14 +164,18 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK){
+            isChangeImage = true
             when (requestCode){
                 OPEN_ALBUM -> {
-                    setBackground(BitmapFactory.decodeFile(
-                            FilePathUtil.getPathFromUri(this, data!!.data)
-                    ))
+                    toast("正在修改中...")
+                    ImageCompressUtil.compressAndSave(BitmapFactory.decodeFile(
+                            FilePathUtil.getPathFromUri(this, data!!.data)), fileName)
+                    setBackground()
                 }
                 OPEN_CAMERA -> {
-                    setBackground(BitmapFactory.decodeFile(filePath))
+                    toast("正在修改中...")
+                    ImageCompressUtil.compressAndSave(BitmapFactory.decodeFile(Config.imagePath + fileName), fileName)
+                    setBackground()
                 }
             }
         }
@@ -187,10 +184,12 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
     private fun closeActivity(){
         if (note.content != et_write.text.toString() ||
                 note.style != paperColor ||
-                note.direct != mDirect) {
+                note.direct != mDirect ||
+                isChangeImage) {
             note.content = et_write.text.toString()
             note.style = paperColor
             note.direct = mDirect
+            if (isChangeImage) note.bkImage = fileName
             if (note.content == "" && note.style == 0){
                 SQLiteUtil.deleteNote(this,note)
             }else{
@@ -243,12 +242,10 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
                 .show()
     }
 
-    private fun setBackground(bitmap: Bitmap){
-        toast("正在修改中...")
+    private fun setBackground() {
         Thread({
-            ImageCompressUtil.compressAndSave(bitmap, filePath)
             val bmp1 = BitmapFactory.decodeResource(resources, R.drawable.paper)
-            val bmp2 = BitmapFactory.decodeFile(filePath)
+            val bmp2 = BitmapFactory.decodeFile(Config.imagePath + fileName)
             val bmp3 = BitmapOverlay.overlay(bmp1, bmp2)
             runOnUiThread { iv_write.setImageBitmap(bmp3) }
         }).start()
@@ -270,20 +267,29 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
     }
 
     private fun openCamera(){
-        val directory = File(Config.imagePath)
-        if (!directory.exists()){
-            directory.mkdirs()
+        var isOk = true
+        for (i in Config.permission){
+            if (ActivityCompat.checkSelfPermission(this,i) == PackageManager.PERMISSION_DENIED){
+                isOk = false
+                ActivityCompat.requestPermissions(this, arrayOf(i),1)
+            }
         }
-        val file = File(filePath)
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        val uri: Uri =
-        if (Build.VERSION.SDK_INT < 21) {
-            Uri.fromFile(file)
-        } else {
-            FileProvider.getUriForFile(applicationContext, AUTHORITY, file)
+        if (isOk) {
+            val directory = File(Config.imagePath)
+            if (!directory.exists()){
+                directory.mkdirs()
+            }
+            val file = File(Config.imagePath + fileName)
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            val uri: Uri =
+            if (Build.VERSION.SDK_INT < 21) {
+                Uri.fromFile(file)
+            } else {
+                FileProvider.getUriForFile(applicationContext, AUTHORITY, file)
+            }
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
+            startActivityForResult(intent, OPEN_CAMERA)
         }
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
-        startActivityForResult(intent, OPEN_CAMERA)
     }
 
     private fun initPapers(){
@@ -324,6 +330,10 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
         val imageItem = arrayOf(
                 "打开相册",
                 "打开相机"
+        )
+        val permission = arrayOf(
+                Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
         )
     }
 }

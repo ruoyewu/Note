@@ -3,10 +3,8 @@ package com.wuruoye.note.util
 import android.content.Context
 import com.droi.sdk.DroiCallback
 import com.droi.sdk.DroiError
-import com.droi.sdk.core.DroiCondition
-import com.droi.sdk.core.DroiObject
-import com.droi.sdk.core.DroiQuery
-import com.droi.sdk.core.DroiUser
+import com.droi.sdk.core.*
+import com.wuruoye.note.model.Config
 import com.wuruoye.note.model.Note
 import com.wuruoye.note.model.NoteCache
 import com.wuruoye.note.model.UpNote
@@ -19,6 +17,7 @@ import io.reactivex.functions.Consumer
 import io.reactivex.functions.Function
 import io.reactivex.functions.Predicate
 import io.reactivex.schedulers.Schedulers
+import java.io.File
 
 /**
  * Created by wuruoye on 2017/6/4.
@@ -85,6 +84,9 @@ object BackupUtil{
                             note.year = i.year
                             note.month = i.month
                             note.day = i.day
+                            if (i.bkImage != "") {
+                                note.bkFile = DroiFile(File(Config.imagePath + i.bkImage))
+                            }
                             l.add(note)
                         }
                         for (i in p0!!){
@@ -133,13 +135,37 @@ object BackupUtil{
                                 .query(UpNote::class.java)
                                 .where(cond)
                                 .build()
+                        val l = ArrayList<UpNote>()
                         val error = DroiError()
                         val list = query.runQuery<UpNote>(error)
-                        val l = ArrayList<UpNote>()
-                        if (error.isOk){
-                            l += list
-                        }else{
+                        for (i in list){
+                            if (i.bkFile != null){
+                                val er = DroiError()
+                                val byte = i.bkFile.get(er)
+                                if (er.isOk){
+                                    ImageCompressUtil.writeToFile(byte, "note_${i.year}-${i.month}-${i.day}.jpg")
+                                }
+                            }
+                            l.add(i)
                         }
+
+//                        query.runQueryInBackground(object : DroiQueryCallback<UpNote>{
+//                            override fun result(p0: MutableList<UpNote>?, p1: DroiError?) {
+//                                if (p1!!.isOk){
+//                                    l += p0
+//                                    for (i in p0!!){
+//                                        l.add(i)
+//                                        if (i.bkFile != null){
+//                                            val error = DroiError()
+//                                            val byte = i.bkFile.get(error)
+//                                            if (error.isOk){
+//
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        })
                         return l
                     }
                 })
@@ -161,6 +187,9 @@ object BackupUtil{
                                 val note = Note(year, month, day, week)
                                 note.style = i.color
                                 note.content = i.content
+                                if (i.bkFile != null){
+                                    note.bkImage = "note_${i.year}-${i.month}-${i.day}.jpg"
+                                }
                                 SQLiteUtil.saveNote(context,note)
                             }
                             return "同步成功"
@@ -219,6 +248,9 @@ object BackupUtil{
                         upNote.year = note.year
                         upNote.month = note.month
                         upNote.day = note.day
+                        if (note.bkImage != ""){
+                            upNote.bkFile = DroiFile(File(Config.imagePath + note.bkImage))
+                        }
                         error = upNote.save()
                         return error
                     }
