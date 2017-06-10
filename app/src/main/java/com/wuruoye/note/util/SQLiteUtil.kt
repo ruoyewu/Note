@@ -4,8 +4,10 @@ import android.content.ClipData
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
+import com.wuruoye.note.model.Date
 import com.wuruoye.note.model.Note
 import com.wuruoye.note.model.SQLiteHelper
+import java.util.*
 
 /**
  * Created by wuruoye on 2017/5/27.
@@ -66,6 +68,18 @@ object SQLiteUtil{
             }while (cursor.moveToNext())
         }
         cursor.close()
+        Collections.sort(noteList, Comparator<Note> { o1, o2 ->
+            val x = o1!!.year - o2!!.year
+            val y = o1.month - o2.month
+            val z = o1.day - o2.day
+            if (x == 0){
+                if (y == 0){
+                    return@Comparator z
+                }
+                return@Comparator y
+            }
+            x
+        })
         return noteList
     }
 
@@ -80,6 +94,32 @@ object SQLiteUtil{
             }while (cursor.moveToNext())
         }
         cursor.close()
+        Collections.sort(list, Comparator<Note> { o1, o2 ->
+            val x = o1!!.year - o2!!.year
+            val y = o1.month - o2.month
+            val z = o1.day - o2.day
+            if (x == 0){
+                if (y == 0){
+                    return@Comparator z
+                }
+                return@Comparator y
+            }
+            x
+        })
+        return list
+    }
+
+    fun getNote(context: Context, from: Date, to: Date): ArrayList<Note>{
+        val allNote = getAllNote(context)
+        val list = ArrayList<Note>()
+        val fromT = NoteUtil.getTime(from.year, from.month, from.day)
+        val toT = NoteUtil.getTime(to.year, to.month, to.day)
+        for (i in allNote){
+            val time = NoteUtil.getTime(i.year, i.month, i.day)
+            if (time in fromT..toT){
+                list.add(i)
+            }
+        }
         return list
     }
 

@@ -2,30 +2,31 @@ package com.wuruoye.note.view
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.ProgressDialog
-import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
-import android.support.v4.content.FileProvider
 import android.support.v7.app.AlertDialog
-import android.support.v7.widget.AlertDialogLayout
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.CompoundButton
+import android.widget.DatePicker
+import android.widget.LinearLayout
+import android.widget.NumberPicker
 import com.droi.sdk.core.DroiUser
 import com.wuruoye.note.R
 import com.wuruoye.note.base.BaseActivity
 import com.wuruoye.note.base.IAbsView
+import com.wuruoye.note.model.Date
 import com.wuruoye.note.model.Note
 import com.wuruoye.note.model.NoteCache
 import com.wuruoye.note.presenter.NoteGet
 import com.wuruoye.note.util.Extensions.toast
-import com.wuruoye.note.util.TextOutUtil
+import com.wuruoye.note.util.NoteUtil
 import kotlinx.android.synthetic.main.activity_setting.*
-import java.io.File
 
 /**
  * Created by wuruoye on 2017/5/29.
@@ -35,11 +36,17 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
     private lateinit var noteGet: NoteGet
     private lateinit var noteCache: NoteCache
     private var isChange = false
+    private lateinit var dateFrom: Date
+    private lateinit var dateTo: Date
 
     private var outDialog: AlertDialog.Builder? = null
 
     private var noteView = object : IAbsView<ArrayList<Note>>{
         override fun setModel(model: ArrayList<Note>) {
+            val noteFrom = model[0]
+            val noteTo = model[model.size - 1]
+            dateFrom = Date(noteFrom.year, noteFrom.month, noteFrom.day)
+            dateTo = Date(noteTo.year, noteTo.month, noteTo.day)
             setNote(model)
         }
 
@@ -139,7 +146,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
                 startAc(Intent(this, BackupActivity::class.java), BACKUP_MANAGER)
             }
             R.id.ll_setting_out -> {
-                showOutDialog()
+                showTimeDialog()
             }
         }
     }
@@ -172,28 +179,54 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
                 .show()
     }
 
-    private fun showOutDialog(){
+    private fun showOutDialog(from: Date, to: Date){
         if (outDialog == null){
             outDialog = AlertDialog.Builder(this)
                     .setTitle("选择导出格式:")
                     .setItems(outItem) { _, position ->
-                        when (position){
-                            0 -> {
-                                outToText()
-                            }
-                            else -> {
-
-                            }
-                        }
+                        outTo(position, from, to)
                     }
         }
         outDialog!!.show()
     }
 
-    private fun outToText(){
+    private fun showTimeDialog(){
+        val view = LayoutInflater.from(this)
+        .inflate(R.layout.item_time, null)
+        val dp1 = view.findViewById(R.id.dp_data_from) as DatePicker
+        val dp2 = view.findViewById(R.id.dp_data_to) as DatePicker
+        initDatePicker(dp1, dp2)
+        AlertDialog.Builder(this)
+                .setView(view)
+                .setPositiveButton("确定", { _, _ ->
+                    val yearF = dp1.year
+                    val monthF = dp1.month + 1
+                    val dayF = dp1.dayOfMonth
+                    val yearT = dp2.year
+                    val monthT = dp2.month + 1
+                    val dayT = dp2.dayOfMonth
+//                    toast("$yearF 年 $monthF 月 $dayF to $yearT 年 $monthT 月 $dayT")
+                    val timeF = NoteUtil.getTime(yearF, monthF, dayF)
+                    val timeT = NoteUtil.getTime(yearT, monthT, dayT)
+                    if (timeF > timeT){
+                        toast("开始时间不能大于结束时间")
+                    }else{
+//                        showOutDialog(Date(yearF, monthF, dayF), Date(yearT, monthT, dayT))
+                        outTo(0, Date(yearF, monthF, dayF), Date(yearT, monthT, dayT))
+                    }
+                })
+                .setNegativeButton("取消", { _, _ ->
+
+                })
+                .show()
+    }
+
+    private fun outTo(flag: Int, from: Date, to: Date){
         val intent = Intent(this, ShowNoteActivity::class.java)
         val bundle = Bundle()
-        bundle.putInt("type", 0)
+        bundle.putInt("type", flag)
+        bundle.putParcelable("from", from)
+        bundle.putParcelable("to", to)
         intent.putExtras(bundle)
         startAc(intent, OPEN_NOTE)
     }
@@ -235,6 +268,40 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
         }else{
             finish()
         }
+    }
+
+    private fun deleteDivider(datePicker: DatePicker){
+        try {
+            val llFirst = datePicker.getChildAt(0) as LinearLayout
+            val spinner = llFirst.getChildAt(0) as LinearLayout
+            for (i in 0..spinner.childCount){
+                if (spinner.getChildAt(i) is NumberPicker) {
+                    val picker = spinner.getChildAt(i) as NumberPicker
+                    val pickerFields = NumberPicker::class.java.declaredFields
+                    for (j in pickerFields){
+                        if (j.name == "mSelectionDivider"){
+                            j.isAccessible = true
+                            j.set(picker, ColorDrawable())
+                        }
+                    }
+                }
+            }
+        } catch(e: Exception) {
+        }
+
+    }
+
+    private fun initDatePicker(dp1: DatePicker, dp2: DatePicker){
+        dp1.init(dateFrom.year, dateFrom.month - 1, dateFrom.day, null)
+        dp2.init(dateTo.year, dateTo.month - 1, dateTo.day, null)
+        val maxTime = NoteUtil.getTime(dateTo.year, dateTo.month, dateTo.day)
+        val minTime = NoteUtil.getTime(dateFrom.year, dateFrom.month, dateFrom.day)
+        dp1.maxDate = maxTime
+        dp1.minDate = minTime
+        dp2.maxDate = maxTime
+        dp2.minDate = minTime
+        deleteDivider(dp1)
+        deleteDivider(dp2)
     }
 
     companion object{

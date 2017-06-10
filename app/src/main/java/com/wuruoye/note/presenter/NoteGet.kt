@@ -9,6 +9,7 @@ import com.wuruoye.note.model.Config
 import com.wuruoye.note.model.Note
 import com.wuruoye.note.util.NoteUtil
 import com.wuruoye.note.util.SQLiteUtil
+import java.util.*
 
 /**
  * Created by wuruoye on 2017/5/27.

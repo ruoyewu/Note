@@ -68,6 +68,17 @@ object NoteUtil {
         return Note(year,month,1,week)
     }
 
+    fun getTime(year: Int, month: Int, day: Int): Long{
+        val calender = Calendar.getInstance()
+        calender.set(Calendar.YEAR, year)
+        calender.set(Calendar.MONTH, month - 1)
+        calender.set(Calendar.DAY_OF_MONTH, day)
+        calender.set(Calendar.HOUR_OF_DAY, 0)
+        calender.set(Calendar.MINUTE, 0)
+        calender.set(Calendar.SECOND, 0)
+        return calender.timeInMillis
+    }
+
     private fun getCalender(): Calendar{
         val calender = Calendar.getInstance()
         calender.timeInMillis = System.currentTimeMillis()
