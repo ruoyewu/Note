@@ -1,7 +1,9 @@
 package com.wuruoye.note.model;
 
 import com.droi.sdk.core.DroiExpose;
+import com.droi.sdk.core.DroiFile;
 import com.droi.sdk.core.DroiObject;
+import com.droi.sdk.core.DroiReference;
 
 /**
  * Created by wuruoye on 2017/6/4.
@@ -21,6 +23,8 @@ public class UpNote extends DroiObject {
     private int month;
     @DroiExpose
     private int day;
+    @DroiReference
+    private DroiFile bkFile;
 
     public String getUser() {
         return user;
@@ -68,5 +72,13 @@ public class UpNote extends DroiObject {
 
     public void setDay(int day) {
         this.day = day;
+    }
+
+    public DroiFile getBkFile() {
+        return bkFile;
+    }
+
+    public void setBkFile(DroiFile bkFile) {
+        this.bkFile = bkFile;
     }
 }

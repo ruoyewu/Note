@@ -15,11 +15,11 @@ class Note (
         var year: Int,
         var month: Int,
         var day: Int,
-        var week: Int
+        var week: Int,
+        var bkImage: String
 ) : Parcelable {
-    constructor(): this(0, 0, 1, "", 0, 0, 0, 0)
 
-    constructor(year: Int, month: Int, day: Int, week: Int): this(0, 0, 1, "", year, month, day, week)
+    constructor(year: Int, month: Int, day: Int, week: Int): this(0, 0, 0, "", year, month, day, week, "")
 
     companion object {
         @JvmField val CREATOR: Parcelable.Creator<Note> = object : Parcelable.Creator<Note> {
@@ -36,7 +36,8 @@ class Note (
     source.readInt(),
     source.readInt(),
     source.readInt(),
-    source.readInt()
+    source.readInt(),
+    source.readString()
     )
 
     override fun describeContents() = 0
@@ -50,5 +51,6 @@ class Note (
         dest.writeInt(month)
         dest.writeInt(day)
         dest.writeInt(week)
+        dest.writeString(bkImage)
     }
 }

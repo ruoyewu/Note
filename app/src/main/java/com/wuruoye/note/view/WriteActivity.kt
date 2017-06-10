@@ -3,11 +3,10 @@ package com.wuruoye.note.view
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.PorterDuff
 import android.graphics.Rect
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.LayerDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -16,12 +15,8 @@ import android.provider.MediaStore
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.FileProvider
 import android.support.v7.app.AlertDialog
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.ImageSpan
 import android.view.*
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import com.transitionseverywhere.Slide
@@ -32,10 +27,8 @@ import com.wuruoye.note.base.BaseActivity
 import com.wuruoye.note.model.Config
 import com.wuruoye.note.model.Note
 import com.wuruoye.note.model.NoteCache
-import com.wuruoye.note.util.BackupUtil
-import com.wuruoye.note.util.BitmapOverlay
-import com.wuruoye.note.util.NoteUtil
-import com.wuruoye.note.util.SQLiteUtil
+import com.wuruoye.note.util.*
+import com.wuruoye.note.util.Extensions.toast
 import com.wuruoye.note.view.ShowNoteActivity.Companion.AUTHORITY
 import com.wuruoye.note.widget.CustomRelativeLayout
 import kotlinx.android.synthetic.main.activity_write.*
@@ -51,7 +44,9 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
     private lateinit var date: String
     private var isShowPaper = false
     private var mDirect = 1
-    private var fileName = ""
+    private var filePath = ""
+    private var imageWidth = 0
+    private var imageHeight = 0
 
 
     override val contentView: Int
@@ -68,12 +63,15 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
         date = Config.yearList[note.year - FIRST_YEAR] + "年" +
                 Config.numList[note.month] + "月" +
                 Config.numList[note.day] + "日"
+        filePath = Config.imagePath + "note_${note.year}-${note.month}-${note.day}" + ".jpg"
     }
 
     override fun initView() {
         initPapers()
         tv_write_date.text = date
         iv_write.setColorFilter(ActivityCompat.getColor(this,Config.paperStyle[paperColor]),PorterDuff.Mode.MULTIPLY)
+        imageWidth = iv_write.measuredWidth
+        imageHeight = iv_write.measuredHeight
 
         tv_write_direct.text = if (mDirect == 1) "左" else if (mDirect == 2) "中" else "右"
         et_write.gravity = if (mDirect == 1) Gravity.START else if (mDirect == 2) Gravity.CENTER_HORIZONTAL else Gravity.END
@@ -143,6 +141,7 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
             }
             R.id.et_write -> {
                 hsv_paper.visibility = View.GONE
+                isShowPaper = false
             }
             else -> {
                 val color = v.tag as Int
@@ -174,10 +173,12 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
         if (resultCode == Activity.RESULT_OK){
             when (requestCode){
                 OPEN_ALBUM -> {
-                    setBackground(data!!.data)
+                    setBackground(BitmapFactory.decodeFile(
+                            FilePathUtil.getPathFromUri(this, data!!.data)
+                    ))
                 }
                 OPEN_CAMERA -> {
-                    setBackground(FileProvider.getUriForFile(this, AUTHORITY, File(fileName)))
+                    setBackground(BitmapFactory.decodeFile(filePath))
                 }
             }
         }
@@ -242,11 +243,15 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
                 .show()
     }
 
-    private fun setBackground(uri: Uri){
-        val bmp1 = BitmapFactory.decodeResource(resources, R.drawable.paper)
-        val bmp2 = BitmapFactory.decodeFile(fileName)
-        val bmp3 = BitmapOverlay.overlay(bmp1, bmp2, this)
-        iv_write.setImageBitmap(bmp3)
+    private fun setBackground(bitmap: Bitmap){
+        toast("正在修改中...")
+        Thread({
+            ImageCompressUtil.compressAndSave(bitmap, filePath)
+            val bmp1 = BitmapFactory.decodeResource(resources, R.drawable.paper)
+            val bmp2 = BitmapFactory.decodeFile(filePath)
+            val bmp3 = BitmapOverlay.overlay(bmp1, bmp2)
+            runOnUiThread { iv_write.setImageBitmap(bmp3) }
+        }).start()
     }
 
     private fun openAlbum(){
@@ -265,12 +270,11 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
     }
 
     private fun openCamera(){
-        fileName = Config.imagePath + "note_" + System.currentTimeMillis().toString() + ".jpg"
         val directory = File(Config.imagePath)
         if (!directory.exists()){
             directory.mkdirs()
         }
-        val file = File(fileName)
+        val file = File(filePath)
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         val uri: Uri =
         if (Build.VERSION.SDK_INT < 21) {

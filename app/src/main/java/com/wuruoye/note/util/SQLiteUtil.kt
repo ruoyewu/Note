@@ -15,7 +15,7 @@ import java.util.*
  */
 
 object SQLiteUtil{
-    const val VERSION = 1
+    const val VERSION = 2
     const val NAME = "wuruoye.note"
     const val NOTE_TABLE = "note"
 
@@ -132,6 +132,7 @@ object SQLiteUtil{
         values.put("month",note.month)
         values.put("day",note.day)
         values.put("week",note.week)
+        values.put("bkImage",note.bkImage)
         return values
     }
 
@@ -144,7 +145,8 @@ object SQLiteUtil{
         val month = cursor.getInt(cursor.getColumnIndex("month"))
         val day = cursor.getInt(cursor.getColumnIndex("day"))
         val week = cursor.getInt(cursor.getColumnIndex("week"))
-        return Note(id,style,direct,content, year, month, day, week)
+        val image = cursor.getString(cursor.getColumnIndex("bkImage"))
+        return Note(id,style,direct,content, year, month, day, week, image)
     }
 
     fun isContain(context: Context, year: Int, month: Int, day: Int): Note?{

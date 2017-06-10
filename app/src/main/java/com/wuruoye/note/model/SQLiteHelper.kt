@@ -18,7 +18,11 @@ class SQLiteHelper(context: Context,
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-
+        when (newVersion){
+            2 -> {
+                db!!.execSQL(ADD_IMAGE)
+            }
+        }
     }
 
     companion object{
@@ -30,6 +34,8 @@ class SQLiteHelper(context: Context,
                 "year integer," +
                 "month integer," +
                 "day integer," +
-                "week integer)"
+                "week integer," +
+                "bkImage text)"
+        val ADD_IMAGE = "ALTER TABLE note ADD COLUMN bkImage text"
     }
 }
