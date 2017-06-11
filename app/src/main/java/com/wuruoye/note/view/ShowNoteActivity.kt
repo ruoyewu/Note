@@ -58,7 +58,7 @@ class ShowNoteActivity : BaseActivity(), View.OnClickListener{
                 onBackPressed()
             }
             R.id.tv_show_note_save -> {
-//                saveNote()
+                saveNote()
             }
             R.id.tv_show_note_share -> {
                 shareNote()
@@ -117,15 +117,15 @@ class ShowNoteActivity : BaseActivity(), View.OnClickListener{
 //        }
         if (saveDialog == null){
             saveDialog = AlertDialog.Builder(this)
-                    .setTitle("导出完成,路径为\n根目录/outNote/")
-                    .setPositiveButton("打开", { _, _ ->
-                        val intent = Intent(Intent.ACTION_VIEW)
+                    .setTitle("导出完成,路径为\n根目录/noteOut/")
+                    .setPositiveButton("确定", { _, _ ->
+//                        val intent = Intent(Intent.ACTION_VIEW)
 //                        intent.addCategory(Intent.CATEGORY_DEFAULT)
 //                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                        intent.setDataAndType(FileProvider.getUriForFile(this, AUTHORITY, File(path)), "text/*")
-                        startActivity(intent)
+//                        intent.setDataAndType(FileProvider.getUriForFile(this, AUTHORITY, File(path)), "text/*")
+//                        startActivity(intent)
                     })
-                    .setNegativeButton("取消", { _, _ -> })
+//                    .setNegativeButton("取消", { _, _ -> })
         }
         saveDialog!!.show()
     }
