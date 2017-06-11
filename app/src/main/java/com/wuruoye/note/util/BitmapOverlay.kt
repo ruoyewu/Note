@@ -23,7 +23,7 @@ object BitmapOverlay {
         var toh = 0
         var sx = 0
         var sy = 0
-        if (ow / oh < 9 / 16){
+        if ((ow / oh) < (9 / 16)){
             tow = ow
             toh = tow * 16 / 9
             sy = (oh - toh) / 2
@@ -31,6 +31,18 @@ object BitmapOverlay {
             toh = oh
             tow = oh * 9 / 16
             sx = (ow - tow) / 2
+        }
+        if (sx < 0){
+            sx = 0
+        }
+        if (sy < 0){
+            sy = 0
+        }
+        if (sx + tow > over.width){
+            tow = over.width - sx
+        }
+        if (sy + toh > over.height){
+            toh = over.height - sy
         }
         val overlay = Bitmap.createBitmap(over, sx, sy, tow, toh)
         val width = bmp1.width

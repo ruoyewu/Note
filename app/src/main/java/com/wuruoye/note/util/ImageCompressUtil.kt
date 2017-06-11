@@ -11,22 +11,23 @@ import java.io.*
 
 object ImageCompressUtil {
 
-    fun compressAndSave(bmp: Bitmap, name: String){
+    fun writeToFile(bmp: Bitmap, name: String){
         val directory = File(Config.imagePath)
         if (!directory.exists()){
             directory.mkdirs()
         }
 
-        var option = 50
+        val option = 60
         val file = File(Config.imagePath + name)
         val outStream = FileOutputStream(file)
         bmp.compress(Bitmap.CompressFormat.JPEG, option, outStream)
-        var length = file.length()
-        while (length / 1024 > 100 && option > 0){
-            option -= 10
-            bmp.compress(Bitmap.CompressFormat.JPEG, option, outStream)
-            length = file.length()
-        }
+//        while (file.length() / 1024 > 100 && option > 0){
+//            option -= 10
+//            outStream.flush()
+//            bmp.compress(Bitmap.CompressFormat.JPEG, option, outStream)
+//        }
+        outStream.flush()
+        outStream.close()
     }
 
     fun writeToFile(byte: ByteArray, path: String){
@@ -39,10 +40,5 @@ object ImageCompressUtil {
         out.write(byte)
         out.flush()
         out.close()
-//        val out = BufferedWriter(OutputStreamWriter(FileOutputStream(path)))
-//        val write = FileWriter(path)
-//        val byteOut = ByteArrayOutputStream()
-//        byteOut.write(byte)
-//        byteOut.writeTo(    )
     }
 }

@@ -1,12 +1,15 @@
 package com.wuruoye.note.view
 
 import android.app.Activity
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
 import android.view.View
 
 import com.wuruoye.note.R
 import com.wuruoye.note.base.BaseActivity
+import com.wuruoye.note.model.Config
 import com.wuruoye.note.model.NoteCache
 import com.wuruoye.note.util.BackupUtil
 import com.wuruoye.note.util.Extensions.toast
@@ -73,11 +76,20 @@ class BackupActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.ll_backup_download -> {
                 if (noteCache.isLogin) {
+                    var isOk = true
+                    for (i in Config.permission){
+                        if (ActivityCompat.checkSelfPermission(this,i) == PackageManager.PERMISSION_DENIED){
+                            isOk = false
+                            ActivityCompat.requestPermissions(this, arrayOf(i),1)
+                        }
+                    }
                     if (isClick){
                         isClick = false
-                        BackupUtil.downloadNote(applicationContext, backupListener)
-                        toast("同步中，请稍后...")
-                        isChange = true
+                        if (isOk) {
+                            BackupUtil.downloadNote(applicationContext, backupListener)
+                            toast("同步中，请稍后...")
+                            isChange = true
+                        }
                     }
                 }else{
                     toast("您还未登录，请先登录...")

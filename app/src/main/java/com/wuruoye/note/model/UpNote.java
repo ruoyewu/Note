@@ -16,6 +16,8 @@ public class UpNote extends DroiObject {
     @DroiExpose
     private String content;
     @DroiExpose
+    private int direct;
+    @DroiExpose
     private int color;
     @DroiExpose
     private int year;
@@ -80,5 +82,13 @@ public class UpNote extends DroiObject {
 
     public void setBkFile(DroiFile bkFile) {
         this.bkFile = bkFile;
+    }
+
+    public int getDirect() {
+        return direct;
+    }
+
+    public void setDirect(int direct) {
+        this.direct = direct;
     }
 }

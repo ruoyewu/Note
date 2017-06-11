@@ -25,9 +25,11 @@ import com.transitionseverywhere.TransitionManager
 import com.umeng.analytics.MobclickAgent
 import com.wuruoye.note.R
 import com.wuruoye.note.base.BaseActivity
+import com.wuruoye.note.base.IAbsView
 import com.wuruoye.note.model.Config
 import com.wuruoye.note.model.Note
 import com.wuruoye.note.model.NoteCache
+import com.wuruoye.note.presenter.ImageGet
 import com.wuruoye.note.util.*
 import com.wuruoye.note.util.Extensions.toast
 import com.wuruoye.note.view.ShowNoteActivity.Companion.AUTHORITY
@@ -48,6 +50,22 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
     private var fileName = ""
     private var isChangeImage = false
 
+    private lateinit var imageGet: ImageGet
+    private val imageListener = object : IAbsView<Bitmap>{
+        override fun setModel(model: Bitmap) {
+            runOnUiThread {
+                iv_write.setImageBitmap(model)
+                iv_write.setColorFilter(ActivityCompat.getColor(this@WriteActivity,Config.paperStyle[paperColor]),PorterDuff.Mode.MULTIPLY)
+            }
+        }
+
+        override fun setWorn(message: String) {
+            runOnUiThread {
+                toast(message)
+            }
+        }
+
+    }
 
     override val contentView: Int
         get() = R.layout.activity_write
@@ -63,7 +81,14 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
         date = Config.yearList[note.year - FIRST_YEAR] + "年" +
                 Config.numList[note.month] + "月" +
                 Config.numList[note.day] + "日"
-        fileName = "note_${note.year}-${note.month}-${note.day}" + ".jpg"
+        fileName = "note_${note.year}-${note.month}-${note.day}"
+    }
+
+    override fun initPresenter() {
+        imageGet = ImageGet(this)
+        presenterList.add(imageGet)
+        viewList.add(imageListener)
+        super.initPresenter()
     }
 
     override fun initView() {
@@ -75,7 +100,7 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
         }
 
         tv_write_direct.text = if (mDirect == 1) "左" else if (mDirect == 2) "中" else "右"
-        et_write.gravity = if (mDirect == 1) Gravity.START else if (mDirect == 2) Gravity.CENTER_HORIZONTAL else Gravity.END
+        et_write.gravity = if (mDirect == 3) Gravity.END else if (mDirect == 2) Gravity.CENTER_HORIZONTAL else Gravity.START
         et_write.setText(note.content)
         et_write.setSelection(note.content.length)
 
@@ -169,14 +194,12 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
             when (requestCode){
                 OPEN_ALBUM -> {
                     toast("正在修改中...")
-                    ImageCompressUtil.compressAndSave(BitmapFactory.decodeFile(
-                            FilePathUtil.getPathFromUri(this, data!!.data)), fileName)
-                    setBackground()
+                    val path = FilePathUtil.getPathFromUri(this, data!!.data)
+                    imageGet.writeFile(File(path), fileName)
                 }
                 OPEN_CAMERA -> {
                     toast("正在修改中...")
-                    ImageCompressUtil.compressAndSave(BitmapFactory.decodeFile(Config.imagePath + fileName), fileName)
-                    setBackground()
+                    imageGet.writeFile(File(Config.imagePath + fileName), fileName)
                 }
             }
         }
@@ -244,38 +267,28 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
     }
 
     private fun setBackground() {
-        Thread({
-            val bmp1 = BitmapFactory.decodeResource(resources, R.drawable.paper)
-            val bmp2 = BitmapFactory.decodeFile(Config.imagePath + fileName)
-            val bmp3 = BitmapOverlay.overlay(bmp1, bmp2)
-            runOnUiThread { iv_write.setImageBitmap(bmp3) }
-        }).start()
+        imageGet.readFile(fileName)
     }
 
     private fun openAlbum(){
-        val intent: Intent =
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    Intent(Intent.ACTION_OPEN_DOCUMENT)
-                } else {
-                    Intent(Intent.ACTION_GET_CONTENT)
-                }
-        intent.type = "image/*"
-        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        if (requestPermission()) {
+            val intent: Intent =
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        Intent(Intent.ACTION_OPEN_DOCUMENT)
+                    } else {
+                        Intent(Intent.ACTION_GET_CONTENT)
+                    }
+            intent.type = "image/*"
+            intent.addCategory(Intent.CATEGORY_OPENABLE)
 
-        if (intent.resolveActivity(packageManager) != null) {
-            startActivityForResult(intent, OPEN_ALBUM)
+            if (intent.resolveActivity(packageManager) != null) {
+                startActivityForResult(intent, OPEN_ALBUM)
+            }
         }
     }
 
     private fun openCamera(){
-        var isOk = true
-        for (i in Config.permission){
-            if (ActivityCompat.checkSelfPermission(this,i) == PackageManager.PERMISSION_DENIED){
-                isOk = false
-                ActivityCompat.requestPermissions(this, arrayOf(i),1)
-            }
-        }
-        if (isOk) {
+        if (requestPermission()) {
             val directory = File(Config.imagePath)
             if (!directory.exists()){
                 directory.mkdirs()
@@ -322,6 +335,17 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.windowToken,0)
         }
+    }
+
+    private fun requestPermission(): Boolean{
+        var isOk = true
+        for (i in Config.permission){
+            if (ActivityCompat.checkSelfPermission(this,i) == PackageManager.PERMISSION_DENIED){
+                isOk = false
+                ActivityCompat.requestPermissions(this, arrayOf(i),1)
+            }
+        }
+        return isOk
     }
 
     companion object{

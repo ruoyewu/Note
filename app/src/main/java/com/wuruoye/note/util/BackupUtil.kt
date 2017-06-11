@@ -25,7 +25,6 @@ import java.io.File
  */
 
 object BackupUtil{
-
     private fun getUser(noteCache: NoteCache, listener: OnBackupListener): Observable<DroiUser>{
         return Observable.create(object : ObservableOnSubscribe<DroiUser>{
                 override fun subscribe(p0: ObservableEmitter<DroiUser>?) {
@@ -84,6 +83,7 @@ object BackupUtil{
                             note.year = i.year
                             note.month = i.month
                             note.day = i.day
+                            note.direct = i.direct
                             if (i.bkImage != "") {
                                 note.bkFile = DroiFile(File(Config.imagePath + i.bkImage))
                             }
@@ -100,7 +100,12 @@ object BackupUtil{
                                 }
                             }
                         }
-                        DroiObject.deleteAll(deleteList)
+                        for (i in deleteList){
+                            if (i.bkFile != null){
+                                i.bkFile.delete()
+                            }
+                            i.delete()
+                        }
                         return l
                     }
                 })
@@ -143,7 +148,7 @@ object BackupUtil{
                                 val er = DroiError()
                                 val byte = i.bkFile.get(er)
                                 if (er.isOk){
-                                    ImageCompressUtil.writeToFile(byte, "note_${i.year}-${i.month}-${i.day}.jpg")
+                                    ImageCompressUtil.writeToFile(byte, "note_${i.year}-${i.month}-${i.day}")
                                 }
                             }
                             l.add(i)
@@ -187,8 +192,11 @@ object BackupUtil{
                                 val note = Note(year, month, day, week)
                                 note.style = i.color
                                 note.content = i.content
+                                if (i.direct != 0){
+                                    note.direct = i.direct
+                                }
                                 if (i.bkFile != null){
-                                    note.bkImage = "note_${i.year}-${i.month}-${i.day}.jpg"
+                                    note.bkImage = "note_${i.year}-${i.month}-${i.day}"
                                 }
                                 SQLiteUtil.saveNote(context,note)
                             }
@@ -236,6 +244,9 @@ object BackupUtil{
                         if (error.isOk){
                             for (i in list){
                                 if (i.year == note.year && i.month == note.month && i.day == note.day){
+                                    if (i.bkFile != null){
+                                        i.bkFile.delete()
+                                    }
                                     i.delete()
                                 }
                             }
@@ -248,6 +259,7 @@ object BackupUtil{
                         upNote.year = note.year
                         upNote.month = note.month
                         upNote.day = note.day
+                        upNote.direct = note.direct
                         if (note.bkImage != ""){
                             upNote.bkFile = DroiFile(File(Config.imagePath + note.bkImage))
                         }
@@ -256,7 +268,6 @@ object BackupUtil{
                     }
                 })
                 .subscribe()
-
     }
 
     interface OnBackupListener{
