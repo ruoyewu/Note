@@ -219,7 +219,9 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
             }else{
                 SQLiteUtil.saveNote(this,note)
                 if (NoteCache(this).backup){
-                    BackupUtil.upNote(applicationContext,note)
+                    Thread({
+                        BackupUtil.upNote(applicationContext,note)
+                    }).start()
                 }
             }
             setResult(Activity.RESULT_OK)
