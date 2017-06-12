@@ -70,12 +70,9 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
     }
     private val backupListener = object : BackupUtil.OnBackupListener{
         override fun onBackupSuccess() {
-            toast("备份成功")
-            noteCache.lastBackup = System.currentTimeMillis()
         }
 
         override fun onBackupFail(message: String) {
-            toast(message)
         }
     }
 
@@ -230,7 +227,9 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
     private fun checkBackup(){
         if (noteCache.backup){
             if (System.currentTimeMillis() - noteCache.lastBackup > 1000 * 60 * 60 * 24){
-                BackupUtil.backupNote(applicationContext,backupListener)
+                Thread({
+                    BackupUtil.backupNote(applicationContext,backupListener)
+                }).start()
             }
         }
     }

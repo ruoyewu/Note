@@ -216,13 +216,11 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
                     val yearT = dp2.year
                     val monthT = dp2.month + 1
                     val dayT = dp2.dayOfMonth
-//                    toast("$yearF 年 $monthF 月 $dayF to $yearT 年 $monthT 月 $dayT")
                     val timeF = NoteUtil.getTime(yearF, monthF, dayF)
                     val timeT = NoteUtil.getTime(yearT, monthT, dayT)
                     if (timeF > timeT){
                         toast("开始时间不能大于结束时间")
                     }else{
-//                        showOutDialog(Date(yearF, monthF, dayF), Date(yearT, monthT, dayT))
                         outTo(0, Date(yearF, monthF, dayF), Date(yearT, monthT, dayT))
                     }
                 })
@@ -305,8 +303,8 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
     private fun initDatePicker(dp1: DatePicker, dp2: DatePicker){
         dp1.init(dateFrom.year, dateFrom.month - 1, dateFrom.day, null)
         dp2.init(dateTo.year, dateTo.month - 1, dateTo.day, null)
-        val maxTime = NoteUtil.getTime(dateTo.year, dateTo.month, dateTo.day)
-        val minTime = NoteUtil.getTime(dateFrom.year, dateFrom.month, dateFrom.day)
+        val maxTime = NoteUtil.getTime(dateTo.year, dateTo.month, dateTo.day + 1)
+        val minTime = NoteUtil.getTime(dateFrom.year, dateFrom.month, dateFrom.day - 1)
         dp1.maxDate = maxTime
         dp1.minDate = minTime
         dp2.maxDate = maxTime

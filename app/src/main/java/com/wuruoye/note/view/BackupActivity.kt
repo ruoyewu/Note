@@ -27,13 +27,17 @@ class BackupActivity : BaseActivity(), View.OnClickListener {
 
     private val backupListener = object : BackupUtil.OnBackupListener{
         override fun onBackupSuccess() {
-            toast("备份成功")
-            isClick = true
+            runOnUiThread {
+                toast("备份成功")
+                isClick = true
+            }
         }
 
         override fun onBackupFail(message: String) {
-            toast(message)
-            isClick = true
+            runOnUiThread {
+                toast(message)
+                isClick = true
+            }
         }
     }
 
@@ -67,7 +71,9 @@ class BackupActivity : BaseActivity(), View.OnClickListener {
                 if (noteCache.isLogin) {
                     if (isClick) {
                         isClick = false
-                        BackupUtil.backupNote(applicationContext, backupListener)
+                        Thread({
+                            BackupUtil.backupNote(applicationContext, backupListener)
+                        }).start()
                         toast("备份中，请稍后...")
                     }
                 }else {
@@ -86,7 +92,9 @@ class BackupActivity : BaseActivity(), View.OnClickListener {
                     if (isClick){
                         isClick = false
                         if (isOk) {
-                            BackupUtil.downloadNote(applicationContext, backupListener)
+                            Thread({
+                                BackupUtil.downloadNote(applicationContext, backupListener)
+                            }).start()
                             toast("同步中，请稍后...")
                             isChange = true
                         }
