@@ -196,7 +196,6 @@
     public static ** valueOf(java.lang.String);
 }
 
-
 #Droi
 -dontwarn com.droi.sdk.**
 -dontwarn okio.**
@@ -207,7 +206,7 @@
 -keep class * extends com.droi.sdk.core.DroiObject { @com.droi.sdk.core.DroiExpose *; @com.droi.sdk.core.DroiReference *;}
 -keep class * extends com.droi.sdk.core.DroiUser { @com.droi.sdk.core.DroiExpose *; @com.droi.sdk.core.DroiReference *;}
 #如果使用eclipse请再增加以下规则
-#-keepattributes Signature
-#-keepattributes Exceptions
-#-keepattributes InnerClasses
-#-keepattributes EnclosingMethod
+-keepattributes Signature
+-keepattributes Exceptions
+-keepattributes InnerClasses
+-keepattributes EnclosingMethod
