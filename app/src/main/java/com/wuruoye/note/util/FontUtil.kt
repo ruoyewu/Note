@@ -20,16 +20,16 @@ object FontUtil {
     }
 
     fun setFont(context: Context, isAssets: Boolean, name: String){
-//        val path = getFontPath(name)
-//        val typeFace =
-//                if (isAssets){
-//                    Typeface.createFromAsset(context.assets,path)
-//                }else{
-//                    Typeface.createFromFile(path)
-//                }
-//        val field = Typeface::class.java.getDeclaredField("SERIF")
-//        field.isAccessible = true
-//        field.set(null, typeFace)
+        val path = getFontPath(name)
+        val typeFace =
+                if (isAssets){
+                    Typeface.createFromAsset(context.assets,path)
+                }else{
+                    Typeface.createFromFile(path)
+                }
+        val field = Typeface::class.java.getDeclaredField("SERIF")
+        field.isAccessible = true
+        field.set(null, typeFace)
     }
 
     fun downloadFont(name: String, listener: FileDownloadListener){
