@@ -57,6 +57,7 @@
 
 # 保留support下的所有类及其内部类
 -keep class android.support.** {*;}
+-dontwarn android.support.**
 
 # 保留继承的
 -keep public class * extends android.support.v4.**
@@ -160,7 +161,6 @@
 #    public *** get*();
 #    public *** is*();
 #}
--keep public class com.wuruoye.note.model.**{ *; }
 
 
 #-----------处理第三方依赖库---------
@@ -171,23 +171,23 @@
 -dontwarn okio.**
 
 # Retrofit
--dontwarn retrofit2.**
--keep class retrofit2.** { *; }
--keepattributes Signature
--keepattributes Exceptions
+#-dontwarn retrofit2.**
+#-keep class retrofit2.** { *; }
+#-keepattributes Signature
+#-keepattributes Exceptions
 
 # RxJava RxAndroid
--dontwarn sun.misc.**
--keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
-    long producerIndex;
-    long consumerIndex;
-}
--keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
-    rx.internal.util.atomic.LinkedQueueNode producerNode;
-}
--keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
-    rx.internal.util.atomic.LinkedQueueNode consumerNode;
-}
+#-dontwarn sun.misc.**
+#-keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
+#    long producerIndex;
+#    long consumerIndex;
+#}
+#-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
+#    rx.internal.util.atomic.LinkedQueueNode producerNode;
+#}
+#-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
+#    rx.internal.util.atomic.LinkedQueueNode consumerNode;
+#}
 
 # 友盟统计分析
 -keepclassmembers class * { public <init>(org.json.JSONObject); }
@@ -196,13 +196,6 @@
     public static ** valueOf(java.lang.String);
 }
 
-#其他
--dontwarn id.zelory.compressor.**
--keep class id.zelory.compressor.**
--dontwarn com.liulishuo.filedownloader.**
--keep class com.liulishuo.filedownloader.**
--dontwarn com.andkulikov.transitionseverywhere.**
--keep class com.andkulikov.transitionseverywhere.**
 
 #Droi
 -dontwarn com.droi.sdk.**
