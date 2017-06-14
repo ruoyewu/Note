@@ -86,6 +86,7 @@ class BackupActivity : BaseActivity(), View.OnClickListener {
                     for (i in Config.permission){
                         if (ActivityCompat.checkSelfPermission(this,i) == PackageManager.PERMISSION_DENIED){
                             isOk = false
+                            isClick = true
                             ActivityCompat.requestPermissions(this, arrayOf(i),1)
                         }
                     }

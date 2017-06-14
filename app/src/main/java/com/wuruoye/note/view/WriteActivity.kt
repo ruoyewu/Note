@@ -6,13 +6,17 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.PorterDuff
 import android.graphics.Rect
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.renderscript.Allocation
+import android.renderscript.Element
+import android.renderscript.RenderScript
+import android.renderscript.ScriptIntrinsicBlur
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.FileProvider
 import android.support.v7.app.AlertDialog
@@ -35,6 +39,10 @@ import com.wuruoye.note.util.Extensions.toast
 import com.wuruoye.note.view.ShowNoteActivity.Companion.AUTHORITY
 import com.wuruoye.note.widget.CustomRelativeLayout
 import kotlinx.android.synthetic.main.activity_write.*
+import net.robinx.lib.blurview.algorithm.rs.RSGaussian5x5Blur
+import net.robinx.lib.blurview.processor.BlurProcessorProxy
+import net.robinx.lib.blurview.processor.NdkStackBlurProcessor
+import net.robinx.lib.blurview.processor.RSGaussian5x5BlurProcessor
 import java.io.File
 
 /**
@@ -42,6 +50,8 @@ import java.io.File
  * this file is to do
  */
 class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout.OnChangeListener{
+    private lateinit var ivBk: ImageView
+
     private lateinit var note: Note
     private var paperColor = 0
     private lateinit var date: String
@@ -49,13 +59,17 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
     private var mDirect = 1
     private var fileName = ""
     private var isChangeImage = false
+    private var haveBk = false
 
     private lateinit var imageGet: ImageGet
     private val imageListener = object : IAbsView<Bitmap>{
         override fun setModel(model: Bitmap) {
             runOnUiThread {
+                haveBk = true
+                ivBk.setImageBitmap(model)
                 iv_write.setImageBitmap(model)
-                iv_write.setColorFilter(ActivityCompat.getColor(this@WriteActivity,Config.paperStyle[paperColor]),PorterDuff.Mode.MULTIPLY)
+                iv_write.setColorFilter(ActivityCompat.getColor(applicationContext,Config.paperStyle[paperColor]),
+                        PorterDuff.Mode.MULTIPLY)
             }
         }
 
@@ -82,6 +96,9 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
                 Config.numList[note.month] + "月" +
                 Config.numList[note.day] + "日"
         fileName = "note_${note.year}-${note.month}-${note.day}"
+        if (note.bkImage != ""){
+            haveBk = true
+        }
     }
 
     override fun initPresenter() {
@@ -152,11 +169,6 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
             R.id.tv_write_submit -> {
                 closeInputMethod()
                 closeActivity()
-//                TransitionManager.beginDelayedTransition(activity_write,Slide(Gravity.BOTTOM))
-//                hsv_paper.visibility = View.GONE
-//                ll_write_edit.visibility = View.GONE
-//                tv_write_back.visibility = View.VISIBLE
-//                isShowPaper = false
             }
             R.id.et_write -> {
                 hsv_paper.visibility = View.GONE
@@ -213,7 +225,13 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
             note.content = et_write.text.toString()
             note.style = paperColor
             note.direct = mDirect
-            if (isChangeImage) note.bkImage = fileName
+            if (isChangeImage){
+                if (haveBk){
+                    note.bkImage = fileName
+                }else{
+                    note.bkImage = ""
+                }
+            }
             if (note.content == "" && note.style == 0){
                 SQLiteUtil.deleteNote(this,note)
             }else{
@@ -252,16 +270,20 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
         ll_write_edit.layoutParams = param
     }
 
-    private fun addBackground(){
+    private fun showAddBackground(){
+        val item = if (haveBk) imageItem2 else imageItem
         AlertDialog.Builder(this)
                 .setTitle("选择获取图片方式")
-                .setItems(imageItem, { _, position ->
+                .setItems(item, { _, position ->
                     when (position){
                         0 -> {
                             openAlbum()
                         }
                         1 -> {
                             openCamera()
+                        }
+                        2 -> {
+                            clearBack()
                         }
                     }
                 })
@@ -308,17 +330,25 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
         }
     }
 
+    private fun clearBack(){
+        haveBk = false
+        isChangeImage = true
+        ivBk.setImageResource(R.drawable.ic_add)
+        iv_write.setImageResource(R.drawable.paper)
+        iv_write.setColorFilter(ActivityCompat.getColor(this@WriteActivity,Config.paperStyle[paperColor]),PorterDuff.Mode.MULTIPLY)
+    }
+
     private fun initPapers(){
         val param = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.MATCH_PARENT)
         param.width = 500
-        val addImage = ImageView(this)
-        addImage.setImageResource(R.drawable.ic_add)
-        addImage.layoutParams = param
-        addImage.scaleType = ImageView.ScaleType.CENTER_CROP
-        addImage.setOnClickListener({
-            addBackground()
+        ivBk = ImageView(this)
+        ivBk.setImageResource(R.drawable.ic_add)
+        ivBk.layoutParams = param
+        ivBk.scaleType = ImageView.ScaleType.CENTER_CROP
+        ivBk.setOnClickListener({
+            showAddBackground()
         })
-        ll_write_paper.addView(addImage)
+        ll_write_paper.addView(ivBk)
         for (i in 0..Config.paperStyle.size - 1){
             val image = ImageView(this)
             image.tag = i
@@ -354,10 +384,14 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
         val FIRST_YEAR = 2013
         val OPEN_ALBUM = 1
         val OPEN_CAMERA = 2
-        val OPEN_CROP = 3
         val imageItem = arrayOf(
                 "打开相册",
                 "打开相机"
+        )
+        val imageItem2 = arrayOf(
+                "打开相册",
+                "打开相机",
+                "清除背景"
         )
         val permission = arrayOf(
                 Manifest.permission.CAMERA,
