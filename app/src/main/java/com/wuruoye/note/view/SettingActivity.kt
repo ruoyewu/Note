@@ -72,7 +72,8 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
     override fun initView() {
         noteGet.requestAllNote()
 
-        switch_backup.isChecked = noteCache.backup
+        switch_backup.isChecked = noteCache.isAutoBackup
+        switch_auto_save.isChecked = noteCache.isAutoSave
 
         ll_setting_show.setOnClickListener(this)
         ll_setting_font.setOnClickListener(this)
@@ -82,6 +83,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
         ll_setting_backup.setOnClickListener(this)
         ll_setting_out.setOnClickListener(this)
         switch_backup.setOnCheckedChangeListener(this)
+        switch_auto_save.setOnCheckedChangeListener(this)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -101,7 +103,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
             USER_MANAGER -> {
                 if (resultCode == Activity.RESULT_OK){
                     switch_backup.isChecked = false
-                    noteCache.backup = false
+                    noteCache.isAutoBackup = false
                 }
             }
             BACKUP_MANAGER -> {
@@ -163,18 +165,25 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
     }
 
     override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
-        when (isChecked){
-            true -> {
-                val user = DroiUser.getCurrentUser()
-                if (user != null && user.isLoggedIn && user.isAuthorized && !user.isAnonymous){
-                    noteCache.backup = true
-                }else{
-                    goToLogin()
-                    switch_backup.isChecked = false
+        when (buttonView!!.id){
+            R.id.switch_backup -> {
+                when (isChecked){
+                    true -> {
+                        val user = DroiUser.getCurrentUser()
+                        if (user != null && user.isLoggedIn && user.isAuthorized && !user.isAnonymous){
+                            noteCache.isAutoBackup = true
+                        }else{
+                            goToLogin()
+                            switch_backup.isChecked = false
+                        }
+                    }
+                    false -> {
+                        noteCache.isAutoBackup = false
+                    }
                 }
             }
-            false -> {
-                noteCache.backup = false
+            R.id.switch_auto_save -> {
+                noteCache.isAutoSave = isChecked
             }
         }
     }

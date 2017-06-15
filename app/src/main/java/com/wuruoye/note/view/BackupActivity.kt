@@ -50,7 +50,7 @@ class BackupActivity : BaseActivity(), View.OnClickListener {
 
     override fun initView() {
         val tip =
-                if (noteCache.backup)
+                if (noteCache.isAutoBackup)
                     "自动备份\t已开启"
                 else
                     "自动备份\t未开启"

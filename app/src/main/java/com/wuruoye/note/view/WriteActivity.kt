@@ -8,18 +8,15 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.PorterDuff
 import android.graphics.Rect
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.renderscript.Allocation
-import android.renderscript.Element
-import android.renderscript.RenderScript
-import android.renderscript.ScriptIntrinsicBlur
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.FileProvider
 import android.support.v7.app.AlertDialog
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
@@ -39,10 +36,6 @@ import com.wuruoye.note.util.Extensions.toast
 import com.wuruoye.note.view.ShowNoteActivity.Companion.AUTHORITY
 import com.wuruoye.note.widget.CustomRelativeLayout
 import kotlinx.android.synthetic.main.activity_write.*
-import net.robinx.lib.blurview.algorithm.rs.RSGaussian5x5Blur
-import net.robinx.lib.blurview.processor.BlurProcessorProxy
-import net.robinx.lib.blurview.processor.NdkStackBlurProcessor
-import net.robinx.lib.blurview.processor.RSGaussian5x5BlurProcessor
 import java.io.File
 
 /**
@@ -60,6 +53,8 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
     private var fileName = ""
     private var isChangeImage = false
     private var haveBk = false
+    private lateinit var noteCache: NoteCache
+    private var isSave = false
 
     private lateinit var imageGet: ImageGet
     private val imageListener = object : IAbsView<Bitmap>{
@@ -90,6 +85,7 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
         }else{
             note = Note(NoteUtil.getYear(),NoteUtil.getMonth(),NoteUtil.getDay(),NoteUtil.getWeek())
         }
+        noteCache = NoteCache(this)
         paperColor = note.style
         mDirect = note.direct
         date = Config.yearList[note.year - FIRST_YEAR] + "年" +
@@ -128,6 +124,10 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
         tv_write_paper.setOnClickListener(this)
         tv_write_submit.setOnClickListener(this)
         tv_write_time.setOnClickListener(this)
+
+        if (noteCache.isAutoSave){
+            autoSave()
+        }
     }
 
     override fun onClick(v: View?) {
@@ -218,32 +218,8 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
     }
 
     private fun closeActivity(){
-        if (note.content != et_write.text.toString() ||
-                note.style != paperColor ||
-                note.direct != mDirect ||
-                isChangeImage) {
-            note.content = et_write.text.toString()
-            note.style = paperColor
-            note.direct = mDirect
-            if (isChangeImage){
-                if (haveBk){
-                    note.bkImage = fileName
-                }else{
-                    note.bkImage = ""
-                }
-            }
-            if (note.content == "" && note.style == 0){
-                SQLiteUtil.deleteNote(this,note)
-            }else{
-                SQLiteUtil.saveNote(this,note)
-                if (NoteCache(this).backup){
-                    Thread({
-                        BackupUtil.upNote(applicationContext,note)
-                    }).start()
-                }
-            }
+        if (saveNote() || isSave)
             setResult(Activity.RESULT_OK)
-        }
 
         if (Build.VERSION.SDK_INT > 21) {
             finishAfterTransition()
@@ -378,6 +354,54 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
             }
         }
         return isOk
+    }
+
+    private fun saveNote(): Boolean{
+        if (note.content != et_write.text.toString() ||
+            note.style != paperColor ||
+            note.direct != mDirect ||
+            isChangeImage) {
+            isSave = true
+            note.content = et_write.text.toString()
+            note.style = paperColor
+            note.direct = mDirect
+            if (isChangeImage){
+                if (haveBk){
+                    note.bkImage = fileName
+                }else{
+                    note.bkImage = ""
+                }
+            }
+            if (note.content == "" && note.style == 0){
+                SQLiteUtil.deleteNote(this,note)
+            }else{
+                SQLiteUtil.saveNote(this,note)
+                if (NoteCache(this).isAutoBackup){
+                    Thread({
+                        BackupUtil.upNote(applicationContext,note)
+                    }).start()
+                }
+            }
+            return true
+        }else
+            return false
+    }
+
+    private fun autoSave(){
+        et_write.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                saveNote()
+            }
+
+        })
     }
 
     companion object{
