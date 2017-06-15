@@ -35,9 +35,13 @@ import kotlinx.android.synthetic.main.activity_setting.*
 class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnCheckedChangeListener{
     private lateinit var noteGet: NoteGet
     private lateinit var noteCache: NoteCache
+    //save the state if we should refresh main activity, if true, yes
     private var isChange = false
+    //save the date of the first note we write
     private lateinit var dateFrom: Date
+    //save the date of the last note we write
     private lateinit var dateTo: Date
+    //save if there is no note written
     private var isNoteNull = false
 
     private var outDialog: AlertDialog.Builder? = null

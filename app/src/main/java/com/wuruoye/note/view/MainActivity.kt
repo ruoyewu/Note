@@ -39,11 +39,17 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
     private lateinit var noteGet: NoteGet
     private lateinit var noteCache: NoteCache
 
+    //year {from 2013 to currentYear}
     private var mYear = 0
+    //month {from 1 to 12}
     private var mMonth = 0
+    //show current state {true: close; false: expend}
     private var isClose = false
+    //show if in search panel
     private var isSearch = false
+    //save the search text
     private var search = ""
+    //show the animator direct, from up to down or from down to up
     private var isUpDirect = true
 
 

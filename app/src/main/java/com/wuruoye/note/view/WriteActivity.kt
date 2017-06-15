@@ -43,17 +43,28 @@ import java.io.File
  * this file is to do
  */
 class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout.OnChangeListener{
+    //the view show the background image
     private lateinit var ivBk: ImageView
 
+    //the current note being edit
     private lateinit var note: Note
+    //the paper color we choose  {from 0 to paper.size}
     private var paperColor = 0
+    //the date this note belong {year年month月day日}
     private lateinit var date: String
+    //judge if open the view to choose paper
     private var isShowPaper = false
+    //the gravity of the text in edit view {1,left; 2,center; 3,right}
     private var mDirect = 1
+    //the background image's name {note_yera-month-day}
     private var fileName = ""
+    //show if we changed the bk image
     private var isChangeImage = false
+    //show if the note has a bk image
     private var haveBk = false
+    //NoteCahce
     private lateinit var noteCache: NoteCache
+    //if we open the auto save, it can show if we change the text of note when we close this activity
     private var isSave = false
 
     private lateinit var imageGet: ImageGet
@@ -218,7 +229,7 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
     }
 
     private fun closeActivity(){
-        if (saveNote() || isSave)
+        if (saveNote(true) || isSave)
             setResult(Activity.RESULT_OK)
 
         if (Build.VERSION.SDK_INT > 21) {
@@ -356,7 +367,7 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
         return isOk
     }
 
-    private fun saveNote(): Boolean{
+    private fun saveNote(isClose: Boolean): Boolean{
         if (note.content != et_write.text.toString() ||
             note.style != paperColor ||
             note.direct != mDirect ||
@@ -376,10 +387,12 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
                 SQLiteUtil.deleteNote(this,note)
             }else{
                 SQLiteUtil.saveNote(this,note)
-                if (NoteCache(this).isAutoBackup){
-                    Thread({
-                        BackupUtil.upNote(applicationContext,note)
-                    }).start()
+                if (isClose) {
+                    if (NoteCache(this).isAutoBackup){
+                        Thread({
+                            BackupUtil.upNote(applicationContext,note)
+                        }).start()
+                    }
                 }
             }
             return true
@@ -398,7 +411,7 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                saveNote()
+                saveNote(false)
             }
 
         })
