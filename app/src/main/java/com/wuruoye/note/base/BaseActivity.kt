@@ -5,6 +5,7 @@ import android.os.Handler
 import android.view.Window
 import android.view.WindowManager
 import com.umeng.analytics.MobclickAgent
+import com.wuruoye.note.model.NoteCache
 
 /**
  * Created by wuruoye on 2017/5/27.
@@ -82,4 +83,5 @@ abstract class BaseActivity : android.support.v7.app.AppCompatActivity(){
             i.detachView()
         }
     }
+
 }

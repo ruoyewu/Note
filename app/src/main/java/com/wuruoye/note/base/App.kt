@@ -31,6 +31,11 @@ class App : Application(){
 
         //字体初始化
         val fontCache = FontCache(this)
+
+        val config = resources.configuration
+        config.fontScale = fontCache.fontSize / 15
+        resources.updateConfiguration(config, resources.displayMetrics)
+
         val font = fontCache.font
         if (font > 0){
             try {

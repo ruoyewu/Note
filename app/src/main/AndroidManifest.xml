@@ -35,6 +35,7 @@
         <activity android:name=".view.ShowBackupActivity" />
         <activity android:name=".view.ShowNoteActivity" />
         <activity android:name=".view.ShowStateActivity"/>
+        <activity android:name=".view.ShowFontSizeActivity"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
