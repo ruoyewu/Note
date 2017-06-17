@@ -1,6 +1,7 @@
 package com.wuruoye.note.view
 
 import android.os.Bundle
+import android.view.View
 import android.widget.RadioGroup
 
 import com.wuruoye.note.R
@@ -13,7 +14,7 @@ import kotlinx.android.synthetic.main.activity_state.*
  * this file is to do
  */
 
-class ShowStateActivity : BaseActivity() {
+class ShowStateActivity : BaseActivity(), View.OnClickListener{
     private lateinit var noteCache: NoteCache
 
     override val contentView: Int
@@ -26,6 +27,7 @@ class ShowStateActivity : BaseActivity() {
     override fun initView() {
         rg_state.check(btnArray[noteCache.autoState])
 
+        tv_state_back.setOnClickListener(this)
         rg_state.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId){
                 R.id.state_expend -> {
@@ -35,6 +37,12 @@ class ShowStateActivity : BaseActivity() {
                     noteCache.autoState = 1
                 }
             }
+        }
+    }
+
+    override fun onClick(v: View?) {
+        when (v!!.id){
+            R.id.tv_state_back -> onBackPressed()
         }
     }
 

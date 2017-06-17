@@ -297,7 +297,6 @@
         </LinearLayout>
     </com.wuruoye.note.widget.SpringScrollView>
 
-
     <TextView
         android:id="@+id/tv_item_set_back"
         android:background="@drawable/back"

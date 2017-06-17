@@ -32,7 +32,7 @@
         <activity android:name=".view.ShowFontActivity"/>
         <activity android:name=".view.FontDownloadActivity" />
         <activity android:name=".view.LoginActivity" />
-        <activity android:name=".view.BackupActivity" />
+        <activity android:name=".view.ShowBackupActivity" />
         <activity android:name=".view.ShowNoteActivity" />
         <activity android:name=".view.ShowStateActivity"/>
 

@@ -157,7 +157,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
                 startAc(Intent(this, LoginActivity::class.java), USER_MANAGER)
             }
             R.id.ll_setting_backup -> {
-                startAc(Intent(this, BackupActivity::class.java), BACKUP_MANAGER)
+                startAc(Intent(this, ShowBackupActivity::class.java), BACKUP_MANAGER)
             }
             R.id.ll_setting_state -> {
                 startAc(Intent(this, ShowStateActivity::class.java), CHANGE_STATE)

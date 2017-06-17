@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <com.wuruoye.note.widget.SpringScrollView
         android:layout_centerVertical="true"
@@ -21,12 +21,16 @@
                 <RadioButton
                     android:id="@+id/state_expend"
                     android:text="展开"
+                    android:textColor="@color/gray"
+                    android:textSize="15sp"
                     android:padding="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <RadioButton
                     android:id="@+id/state_close"
                     android:text="折叠"
+                    android:textColor="@color/gray"
+                    android:textSize="15sp"
                     android:padding="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />=
@@ -34,5 +38,18 @@
         </RelativeLayout>
     </com.wuruoye.note.widget.SpringScrollView>
 
+    <TextView
+        android:id="@+id/tv_state_back"
+        android:background="@drawable/back"
+        android:text="设"
+        android:transitionName="@string/translate_note_button"
+        android:gravity="center"
+        android:textColor="@color/romance"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        tools:ignore="UnusedAttribute" />
 
 </RelativeLayout>

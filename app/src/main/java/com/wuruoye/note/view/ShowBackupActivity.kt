@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.activity_backup.*
  * this file is to do
  */
 
-class BackupActivity : BaseActivity(), View.OnClickListener {
+class ShowBackupActivity : BaseActivity(), View.OnClickListener {
     private lateinit var noteCache: NoteCache
     private var isClick = true
     private var isChange = false

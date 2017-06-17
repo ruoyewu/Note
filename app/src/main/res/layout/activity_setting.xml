@@ -86,9 +86,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <ImageView
+                    android:src="@drawable/ic_show_state"
                     android:layout_marginRight="10dp"
                     android:layout_width="30dp"
-                    android:layout_height="20dp" />
+                    android:layout_height="19dp" />
                 <TextView
                     android:text="默认首页显示"
                     android:layout_width="0dp"
