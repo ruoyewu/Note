@@ -44,15 +44,15 @@
             android:layout_width="match_parent"
             android:layout_weight="1"
             android:layout_height="0dp">
-            <EditText
-                android:id="@+id/et_write"
-                android:textSize="15sp"
-                android:gravity="start"
-                android:background="@null"
-                android:padding="5dp"
-                android:minLines="40"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+           <EditText
+               android:id="@+id/et_write"
+               android:textSize="15sp"
+               android:gravity="start"
+               android:background="@null"
+               android:padding="5dp"
+               android:minLines="40"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"/>
         </com.wuruoye.note.widget.SpringScrollView>
 
         <LinearLayout

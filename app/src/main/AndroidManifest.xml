@@ -26,6 +26,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.WriteActivity"
+            android:hardwareAccelerated="false"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
         <activity android:name=".view.SettingActivity"/>
         <activity android:name=".view.ShowItemActivity"/>

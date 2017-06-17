@@ -74,7 +74,7 @@ class ShowBackupActivity : BaseActivity(), View.OnClickListener {
                         Thread({
                             BackupUtil.backupNote(applicationContext, backupListener)
                         }).start()
-                        toast("备份中，请稍后...")
+                        toast("备份中，请勿退出...")
                     }
                 }else {
                     toast("您还未登录，请先登录...")
@@ -90,9 +90,9 @@ class ShowBackupActivity : BaseActivity(), View.OnClickListener {
                             ActivityCompat.requestPermissions(this, arrayOf(i),1)
                         }
                     }
-                    if (isClick){
-                        isClick = false
-                        if (isOk) {
+                    if (isOk) {
+                        if (isClick){
+                            isClick = false
                             Thread({
                                 BackupUtil.downloadNote(applicationContext, backupListener)
                             }).start()

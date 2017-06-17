@@ -9,7 +9,7 @@ android {
         applicationId "com.wuruoye.note"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 7
+        versionCode 8
         /*
             2 -> 1.1.0
             1. 增加字体修改功能
@@ -31,8 +31,13 @@ android {
             6 -> 1.4.0
             1. 增加导出日记功能
             2. 增加日记页面图片背景功能
+
+            8 -> 1.5.0
+            1. 优化使用体验
+            2. 增加修改字体大小功能
+            3. 增加自动保存功能
          */
-        versionName "1.4.1"
+        versionName "1.5.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
