@@ -133,9 +133,10 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
+                    android:src="@drawable/ic_font_size"
                     android:layout_marginRight="10dp"
                     android:layout_width="30dp"
-                    android:layout_height="20dp" />
+                    android:layout_height="19dp" />
 
                 <TextView
                     android:text="更改字体大小"

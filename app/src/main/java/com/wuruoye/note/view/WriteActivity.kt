@@ -127,6 +127,9 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
         et_write.gravity = if (mDirect == 3) Gravity.END else if (mDirect == 2) Gravity.CENTER_HORIZONTAL else Gravity.START
         et_write.setText(note.content)
         et_write.setSelection(note.content.length)
+        ssv_write.post {
+            ssv_write.smoothScrollTo(0, 0)
+        }
 
         activity_write.setOnChangeListener(this)
         et_write.setOnClickListener(this)
