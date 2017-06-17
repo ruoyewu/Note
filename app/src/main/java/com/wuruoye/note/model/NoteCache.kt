@@ -37,6 +37,10 @@ class NoteCache(context: Context) : BaseCache(context) {
         get() = mSP!!.getBoolean(AUTO_SAVE, AUTO_SAVE_DEFAULT)
         set(value) = mSP!!.edit().putBoolean(AUTO_SAVE, value).apply()
 
+    var autoState: Int
+        get() = mSP!!.getInt(AUTO_STATE, AUTO_STATE_DEFAULT)
+        set(value) = mSP!!.edit().putInt(AUTO_STATE, value).apply()
+
     companion object{
         val ITEM_SHOW = "item_show"
         val BACKUP = "isAutoBackup"
@@ -45,10 +49,12 @@ class NoteCache(context: Context) : BaseCache(context) {
         val IS_LOGIN = "is_login"
         val USER_NAME = "user_name"
         val USER_PASS = "user_pass"
+        val AUTO_STATE = "auto_state"
 
         val ITEM_SHOW_DEFAULT = 1
         val BACKUP_DEFAULT = false
         val AUTO_SAVE_DEFAULT = false
+        val AUTO_STATE_DEFAULT = 0
         val LAST_BACKUP_DEFAULT = 0L
         val IS_LOGIN_DEFAULT = false
         val USER_NAME_DEFAULT = ""

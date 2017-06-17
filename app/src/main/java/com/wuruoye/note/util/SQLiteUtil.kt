@@ -8,6 +8,7 @@ import com.wuruoye.note.model.Date
 import com.wuruoye.note.model.Note
 import com.wuruoye.note.model.SQLiteHelper
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Created by wuruoye on 2017/5/27.
@@ -68,19 +69,7 @@ object SQLiteUtil{
             }while (cursor.moveToNext())
         }
         cursor.close()
-        Collections.sort(noteList, Comparator<Note> { o1, o2 ->
-            val x = o1!!.year - o2!!.year
-            val y = o1.month - o2.month
-            val z = o1.day - o2.day
-            if (x == 0){
-                if (y == 0){
-                    return@Comparator z
-                }
-                return@Comparator y
-            }
-            x
-        })
-        return noteList
+        return sortNoteList(noteList)
     }
 
     fun getAllNote(context: Context): ArrayList<Note>{
@@ -94,19 +83,7 @@ object SQLiteUtil{
             }while (cursor.moveToNext())
         }
         cursor.close()
-        Collections.sort(list, Comparator<Note> { o1, o2 ->
-            val x = o1!!.year - o2!!.year
-            val y = o1.month - o2.month
-            val z = o1.day - o2.day
-            if (x == 0){
-                if (y == 0){
-                    return@Comparator z
-                }
-                return@Comparator y
-            }
-            x
-        })
-        return list
+        return sortNoteList(list)
     }
 
     fun getNote(context: Context, from: Date, to: Date): ArrayList<Note>{
@@ -150,6 +127,22 @@ object SQLiteUtil{
             image = ""
         }
         return Note(id,style,direct,content, year, month, day, week, image)
+    }
+
+    private fun sortNoteList(list: ArrayList<Note>): ArrayList<Note>{
+        Collections.sort(list, Comparator<Note> { o1, o2 ->
+            val x = o1!!.year - o2!!.year
+            val y = o1.month - o2.month
+            val z = o1.day - o2.day
+            if (x == 0){
+                if (y == 0){
+                    return@Comparator z
+                }
+                return@Comparator y
+            }
+            x
+        })
+        return list
     }
 
     fun isContain(context: Context, year: Int, month: Int, day: Int): Note?{

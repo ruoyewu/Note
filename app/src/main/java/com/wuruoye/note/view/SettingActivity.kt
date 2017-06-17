@@ -86,6 +86,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
         ll_setting_user.setOnClickListener(this)
         ll_setting_backup.setOnClickListener(this)
         ll_setting_out.setOnClickListener(this)
+        ll_setting_state.setOnClickListener(this)
         switch_backup.setOnCheckedChangeListener(this)
         switch_auto_save.setOnCheckedChangeListener(this)
     }
@@ -157,6 +158,9 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
             }
             R.id.ll_setting_backup -> {
                 startAc(Intent(this, BackupActivity::class.java), BACKUP_MANAGER)
+            }
+            R.id.ll_setting_state -> {
+                startAc(Intent(this, ShowStateActivity::class.java), CHANGE_STATE)
             }
             R.id.ll_setting_out -> {
                 if (isNoteNull){
@@ -332,6 +336,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
         val USER_MANAGER = 3
         val BACKUP_MANAGER = 4
         val OPEN_NOTE = 5
+        val CHANGE_STATE = 6
 
         val CREATE_EMAIL = "2455929518@qq.com"
         val outItem = arrayOf(

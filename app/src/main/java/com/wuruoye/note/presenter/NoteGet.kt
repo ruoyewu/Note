@@ -24,40 +24,38 @@ class NoteGet(context: Context) : IAbsPresenter<IAbsView<ArrayList<Note>>>(conte
 
     fun requestNote(month: Int,year: Int,isClose: Boolean){
         if (isClose){
-            requestNote(month, year,Type.CLOSE,null)
+            requestNote(month, year,Type.CLOSE)
         }else{
-            requestNote(month, year,Type.EXPEND,null)
+            requestNote(month, year,Type.EXPEND)
         }
     }
 
-    fun requestNote(month: Int, year: Int, search: String){
-        requestNote(month, year, Type.CLOSE, search)
+    fun requestNote(search: String){
+        val noteList = SQLiteUtil.getAllNote(mContext)
+        val list = ArrayList<Note>()
+        if (search.trim() == ""){
+            onSuccess(list)
+        }else{
+            for (n in noteList){
+                val containDay = Config.numList[n.day].contains(search) || n.day.toString().contains(search)
+                val containWeek = Config.weekList[n.week].contains(search) || n.week.toString().contains(search)
+                val containContent = n.content.contains(search)
+                if (containDay || containWeek || containContent){
+                    list.add(n)
+                }
+            }
+            onSuccess(list)
+        }
     }
 
     fun requestAllNote(){
         onSuccess(SQLiteUtil.getAllNote(mContext))
     }
 
-    private fun requestNote(month: Int, year: Int, type: Type, search: String?){
-        val noteList = SQLiteUtil.getNote(mContext,year,month)
-        noteList.sortBy { it.day }
+    private fun requestNote(month: Int, year: Int, type: Type){
+        val noteList = SQLiteUtil.getNote(mContext, year, month)
 
-        if (search != null){
-            val list = ArrayList<Note>()
-            if (search.trim() == ""){
-                onSuccess(list)
-            }else{
-                for (n in noteList){
-                    val containDay = Config.numList[n.day].contains(search) || n.day.toString().contains(search)
-                    val containWeek = Config.weekList[n.week].contains(search) || n.week.toString().contains(search)
-                    val containContent = n.content.contains(search)
-                    if (containDay || containWeek || containContent){
-                        list.add(n)
-                    }
-                }
-                onSuccess(list)
-            }
-        }else if (type == Type.CLOSE){
+        if (type == Type.CLOSE){
             onSuccess(noteList)
         }else {
             val today =

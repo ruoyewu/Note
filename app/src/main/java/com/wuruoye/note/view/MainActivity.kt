@@ -43,14 +43,18 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
     private var mYear = 0
     //month {from 1 to 12}
     private var mMonth = 0
-    //show current state {true: close; false: expend}
-    private var isClose = false
-    //show if in search panel
-    private var isSearch = false
     //save the search text
     private var search = ""
     //show the animator direct, from up to down or from down to up
     private var isUpDirect = true
+    //show current state { EXPEND, CLOSE, SEARCH }
+    private lateinit var currentState: State
+
+    private enum class State{
+        CLOSE,
+        EXPEND,
+        SEARCH
+    }
 
 
     private val noteView = object : IAbsView<ArrayList<Note>>{
@@ -61,15 +65,18 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
         override fun setWorn(message: String) {
             toast(message)
         }
-
     }
     private val dragListener = object : SpringScrollView.OnDragListener{
         override fun onUpDrag() {
-            upMonth(true)
+            if (currentState == State.EXPEND) {
+                upMonth(true)
+            }
         }
 
         override fun onDownDrag() {
-            upMonth(false)
+            if (currentState == State.EXPEND) {
+                upMonth(false)
+            }
         }
 
     }
@@ -88,7 +95,13 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
         noteCache = NoteCache(this)
         mMonth = NoteUtil.getMonth()
         mYear = NoteUtil.getYear()
-
+        currentState =
+                when (noteCache.autoState){
+                    0 -> State.EXPEND
+                    1 -> State.CLOSE
+                    2 -> State.SEARCH
+                    else -> State.EXPEND
+                }
     }
 
     override fun initPresenter() {
@@ -106,7 +119,8 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
         tv_note_year.text = Config.yearList[mYear - FIRST_YEAR]
 
         sv_note.setOnCloseListener {
-            openSearch(false)
+            currentState = getState(noteCache.autoState)
+            changeState(currentState)
             true
         }
         sv_note.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
@@ -133,7 +147,6 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
         tv_note_search.setOnClickListener(this)
         tv_note_setting.setOnClickListener(this)
 
-
         checkBackup()
     }
 
@@ -156,9 +169,19 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
     override fun onClick(v: View?) {
         when(v!!.id){
             R.id.tv_note_close -> {
-                isClose = !isClose
-                openSearch(false)
-                tv_note_close.text = if (isClose) "展" else "折"
+                currentState =
+                when (currentState){
+                    State.EXPEND -> {
+                        State.CLOSE
+                    }
+                    State.CLOSE -> {
+                        State.EXPEND
+                    }
+                    else -> {
+                        getState(noteCache.autoState)
+                    }
+                }
+                changeState(currentState)
             }
             R.id.tv_note_write -> {
                 val year = NoteUtil.getYear()
@@ -178,11 +201,12 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
                 showPopMenu(tv_note_month)
             }
             R.id.tv_note_search -> {
-                if (isSearch){
-                    openSearch(false)
-                }else{
-                    openSearch(true)
+                if (currentState == State.SEARCH){
+                    currentState = getState(noteCache.autoState)
+                }else {
+                    currentState = State.SEARCH
                 }
+                changeState(currentState)
             }
             R.id.tv_note_setting -> {
                 val compat = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
@@ -222,8 +246,9 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
     }
 
     override fun onBackPressed() {
-        if (isSearch){
-            openSearch(false)
+        if (currentState == State.SEARCH){
+            currentState = getState(noteCache.autoState)
+            changeState(currentState)
         }else {
             super.onBackPressed()
         }
@@ -311,28 +336,36 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
         popWindow.showAsDropDown(v,0,-100)
     }
 
-    private fun openSearch(isOpen: Boolean){
-        when (isOpen) {
-            false -> {
-                isSearch = false
+    private fun changeState(state: State){
+        when (state){
+            State.EXPEND -> {
                 sv_note.visibility = View.GONE
-                getNote()
+                tv_note_close.text = "折"
             }
-            true -> {
-                isSearch = true
+            State.CLOSE -> {
+                sv_note.visibility = View.GONE
+                tv_note_close.text = "展"
+            }
+            State.SEARCH -> {
                 sv_note.visibility = View.VISIBLE
                 sv_note.isIconified = false
                 sv_note.queryHint = "可输入关键字，天数"
-                getNote()
             }
         }
+        getNote()
     }
 
     private fun getNote(){
-        if (isSearch){
-            noteGet.requestNote(mMonth,mYear,search)
-        }else{
-            noteGet.requestNote(mMonth,mYear,isClose)
+        when (currentState){
+            State.EXPEND -> {
+                noteGet.requestNote(mMonth, mYear, false)
+            }
+            State.CLOSE -> {
+                noteGet.requestNote(mMonth, mYear, true)
+            }
+            State.SEARCH -> {
+                noteGet.requestNote(search)
+            }
         }
     }
 
@@ -413,6 +446,14 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
         }
     }
 
+    private fun getState(state: Int): State{
+        return when (state){
+            0 -> State.EXPEND
+            1 -> State.CLOSE
+            2 -> State.SEARCH
+            else -> State.EXPEND
+        }
+    }
 
     private fun setView(note: Note, p0: NoteRVAdapter.ViewHolder){
         p0.wait.setTextColor(ActivityCompat.getColor(this,R.color.gray))
