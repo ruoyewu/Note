@@ -14,6 +14,19 @@ import java.io.File
  * this file is to do
  */
 
+/**
+ * 备份方案
+ * 1 全局备份
+ * 先获取所有的 云端日记 和 本地日记
+ * 先删除所有的跟本地日记同日期的云端日记，再将本地日记上传
+ * 2 全局同步
+ * 先获取所有 云端日记 和 本地日记
+ * 将所有的 没有和本地日记有日期冲突的 保存到本地
+ * 3 自动备份
+ * 每次写完日记的时候，先将云端的 此日期的日记 删除，再上传当前编辑日记
+ *
+ * worn 数据容易丢失，没办法
+ */
 object BackupUtil{
     private fun getUser(noteCache: NoteCache): DroiUser?{
         val user = DroiUser.getCurrentUser()
@@ -179,7 +192,6 @@ object BackupUtil{
                         i.delete()
                     }
                 }
-            }else{
             }
             val upNote = UpNote()
             upNote.user = name
