@@ -7,6 +7,10 @@ import com.wuruoye.note.model.Config
 import com.wuruoye.note.model.Note
 import com.wuruoye.note.model.NoteCache
 import com.wuruoye.note.model.UpNote
+import com.wuruoye.note.util.NoteUtil.getDate
+import com.wuruoye.note.util.NoteUtil.getTime
+import org.json.JSONArray
+import org.json.JSONObject
 import java.io.File
 
 /**
@@ -42,7 +46,7 @@ object BackupUtil{
         return null
     }
 
-    fun backupNoteCloud(context: Context, listener: OnBackupListener){
+    fun backupNoteRemote(context: Context, listener: OnBackupListener){
         val noteCache = NoteCache(context)
         val name: String
         val user = getUser(noteCache)
@@ -105,7 +109,7 @@ object BackupUtil{
         }
     }
 
-    fun downloadNoteCloud(context: Context, listener: OnBackupListener){
+    fun downloadNoteRemote(context: Context, listener: OnBackupListener){
         val noteCache = NoteCache(context)
         val name: String
         val user = getUser(noteCache)
@@ -167,11 +171,45 @@ object BackupUtil{
         }
     }
 
-    fun backupNoteLocal(context: Context, listener: OnBackupListener){
+    fun readBackupRemote(){
 
     }
 
-    fun downloadNoteLocal(context: Context, listener: OnBackupListener){
+    fun backupNoteLocal(context: Context, listener: OnBackupListener){
+        val list = SQLiteUtil.getAllNote(context)
+        val directoryName = Config.backupPath + getDate() + " : " + getTime() + "/"
+        val imageDirect = directoryName + "images/"
+        val file = File(imageDirect)
+        if (!file.exists()){
+            file.mkdirs()
+        }
+
+        val jsonArray = JSONArray()
+        for (i in list){
+            val jsonObject = JSONObject()
+            jsonObject.put("year", i.year)
+            jsonObject.put("month", i.month)
+            jsonObject.put("day", i.day)
+            jsonObject.put("week", i.week)
+            jsonObject.put("content", i.content)
+            jsonObject.put("style", i.style)
+            jsonObject.put("direct", i.direct)
+            jsonObject.put("bkImage", i.bkImage)
+            jsonArray.put(jsonObject)
+            if (i.bkImage != ""){
+                val pathFrom = Config.imagePath + i.bkImage
+                val pathTo = imageDirect + i.bkImage
+                FileUtil.transportFile(pathFrom, pathTo)
+            }
+        }
+        FileUtil.writeText(directoryName + "out.json", jsonArray.toString())
+    }
+
+    fun downloadNoteLocal(path: String, context: Context, listener: OnBackupListener){
+
+    }
+
+    fun readBackupLocal(){
 
     }
 

@@ -17,17 +17,7 @@ object ImageCompressUtil {
             directory.mkdirs()
         }
 
-        val option = 60
-        val file = File(Config.imagePath + name)
-        val outStream = FileOutputStream(file)
-        bmp.compress(Bitmap.CompressFormat.JPEG, option, outStream)
-//        while (file.length() / 1024 > 100 && option > 0){
-//            option -= 10
-//            outStream.flush()
-//            bmp.compress(Bitmap.CompressFormat.JPEG, option, outStream)
-//        }
-        outStream.flush()
-        outStream.close()
+        FileUtil.writeImage(Config.imagePath + name, bmp)
     }
 
     fun writeToFile(byte: ByteArray, path: String){

@@ -3,6 +3,7 @@ package com.wuruoye.note.util
 import android.annotation.SuppressLint
 import com.wuruoye.note.model.Config
 import com.wuruoye.note.model.Note
+import java.lang.StringBuilder
 import java.util.*
 
 /**
@@ -77,6 +78,20 @@ object NoteUtil {
         calender.set(Calendar.MINUTE, 0)
         calender.set(Calendar.SECOND, 0)
         return calender.timeInMillis
+    }
+
+    fun getDate(): String{
+        val calender = Calendar.getInstance()
+        calender.timeInMillis = System.currentTimeMillis()
+        val month = calender.get(Calendar.MONTH) + 1
+        val day = calender.get(Calendar.DAY_OF_MONTH)
+        val hour = calender.get(Calendar.HOUR_OF_DAY)
+        val minute = calender.get(Calendar.MINUTE)
+        val second = calender.get(Calendar.SECOND)
+
+        return StringBuilder().append(month).append("-").append(day)
+                .append(" ").append(hour).append(":").append(minute).append(":").append(second)
+                .toString()
     }
 
     private fun getCalender(): Calendar{

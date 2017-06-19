@@ -4,6 +4,7 @@ import android.content.Context
 import com.wuruoye.note.model.Config
 import com.wuruoye.note.model.Date
 import com.wuruoye.note.model.Note
+import com.wuruoye.note.util.NoteUtil.getDate
 import java.io.*
 import java.lang.StringBuilder
 import java.util.*
@@ -61,20 +62,6 @@ object TextOutUtil{
                     .append(i.content).append("\n\n")
         }
         return build.toString()
-    }
-
-    private fun getDate(): String{
-        val calender = Calendar.getInstance()
-        calender.timeInMillis = System.currentTimeMillis()
-        val month = calender.get(Calendar.MONTH) + 1
-        val day = calender.get(Calendar.DAY_OF_MONTH)
-        val hour = calender.get(Calendar.HOUR_OF_DAY)
-        val minute = calender.get(Calendar.MINUTE)
-        val second = calender.get(Calendar.SECOND)
-
-        return StringBuilder().append(month).append("-").append(day)
-                .append(" ").append(hour).append(":").append(minute).append(":").append(second)
-                .toString()
     }
 
     interface TextOutListener{

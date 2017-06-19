@@ -72,7 +72,7 @@ class ShowBackupActivity : BaseActivity(), View.OnClickListener {
                     if (isClick) {
                         isClick = false
                         Thread({
-                            BackupUtil.backupNoteCloud(applicationContext, backupListener)
+                            BackupUtil.backupNoteRemote(applicationContext, backupListener)
                         }).start()
                         toast("备份中，请勿退出...")
                     }
@@ -94,7 +94,7 @@ class ShowBackupActivity : BaseActivity(), View.OnClickListener {
                         if (isClick){
                             isClick = false
                             Thread({
-                                BackupUtil.downloadNoteCloud(applicationContext, backupListener)
+                                BackupUtil.downloadNoteRemote(applicationContext, backupListener)
                             }).start()
                             toast("同步中，请稍后...")
                             isChange = true
