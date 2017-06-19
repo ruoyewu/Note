@@ -18,6 +18,7 @@ import com.wuruoye.note.base.BaseActivity
 import com.wuruoye.note.model.Config
 import com.wuruoye.note.model.Date
 import com.wuruoye.note.util.Extensions.toast
+import com.wuruoye.note.util.FileUtil
 import com.wuruoye.note.util.TextOutUtil
 import kotlinx.android.synthetic.main.activity_show_note.*
 import java.io.File
@@ -119,6 +120,7 @@ class ShowNoteActivity : BaseActivity(), View.OnClickListener{
             saveDialog = AlertDialog.Builder(this)
                     .setTitle("导出完成,路径为\n根目录/noteOut/")
                     .setPositiveButton("确定", { _, _ ->
+                        FileUtil.readText(path)
 //                        val intent = Intent(Intent.ACTION_VIEW)
 //                        intent.addCategory(Intent.CATEGORY_DEFAULT)
 //                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK

@@ -3,10 +3,7 @@ package com.wuruoye.note.util
 import android.content.Context
 import com.droi.sdk.DroiError
 import com.droi.sdk.core.*
-import com.wuruoye.note.model.Config
-import com.wuruoye.note.model.Note
-import com.wuruoye.note.model.NoteCache
-import com.wuruoye.note.model.UpNote
+import com.wuruoye.note.model.*
 import com.wuruoye.note.util.NoteUtil.getDate
 import com.wuruoye.note.util.NoteUtil.getTime
 import org.json.JSONArray
@@ -171,11 +168,11 @@ object BackupUtil{
         }
     }
 
-    fun readBackupRemote(){
+    fun readBackupRemote(context: Context, listener: OnBackupListener){
 
     }
 
-    fun backupNoteLocal(context: Context, listener: OnBackupListener){
+    fun backupNoteLocal(context: Context){
         val list = SQLiteUtil.getAllNote(context)
         val directoryName = Config.backupPath + getDate() + " : " + getTime() + "/"
         val imageDirect = directoryName + "images/"
@@ -205,12 +202,38 @@ object BackupUtil{
         FileUtil.writeText(directoryName + "out.json", jsonArray.toString())
     }
 
-    fun downloadNoteLocal(path: String, context: Context, listener: OnBackupListener){
+    fun downloadNoteLocal(path: String, context: Context){
+        val directoryName = Config.backupPath + path
+        val file = File(directoryName)
+        for (i in file.listFiles()){
+            if (i.isFile){
+                val text = FileUtil.readText(i.absolutePath)
+            }else if (i.isDirectory){
 
+            }
+        }
     }
 
-    fun readBackupLocal(){
-
+    fun readBackupLocal(): ArrayList<Backup>{
+        val list = ArrayList<Backup>()
+        val directory = Config.backupPath
+        val file = File(directory)
+        for (i in file.listFiles()){
+            if (i.isDirectory){
+                val name = i.name
+                var size = 0
+                for (j in i.listFiles()){
+                    if (j.isFile){
+                        val text = FileUtil.readText(j.absolutePath)
+                        val jsonArray = JSONArray(text)
+                        size = jsonArray.length()
+                    }
+                }
+                val backup = Backup(name, size)
+                list.add(backup)
+            }
+        }
+        return list
     }
 
     //保存本地日记的同时保存到云端

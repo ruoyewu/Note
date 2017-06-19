@@ -12,23 +12,14 @@ import java.io.*
 object FileUtil{
 
     fun readText(path: String): String{
-        val file = File(path)
-        val read = InputStreamReader(FileInputStream(file), "gbk")
-        val input = BufferedReader(read)
         var text = ""
-        try {
-            text = input.readText()
-        } catch(e: Exception) {
-        } finally {
-            input.close()
-            read.close()
-        }
+        val input = InputStreamReader(FileInputStream(path), Charsets.UTF_8)
+        text = input.readText()
         return text
     }
 
     fun writeText(path: String, text: String): Boolean{
-        val file = File(path)
-        val write = OutputStreamWriter(FileOutputStream(file), "gbk")
+        val write = OutputStreamWriter(FileOutputStream(path), Charsets.UTF_8)
         val output = BufferedWriter(write)
         try {
             output.write(text)

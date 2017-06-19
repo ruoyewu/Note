@@ -19,17 +19,6 @@ object TextOutUtil{
         toText(text, listener)
     }
 
-    fun readText(path: String): String{
-        val read = InputStreamReader(FileInputStream(path), "gbk")
-        val inFile = BufferedReader(read)
-        try {
-            return inFile.readText()
-        }finally {
-            inFile.close()
-            read.close()
-        }
-    }
-
     fun getNoteString(context: Context, from: Date, to: Date): String{
         val list = SQLiteUtil.getNote(context, from, to)
         return noteToString(list)
@@ -42,17 +31,19 @@ object TextOutUtil{
             direct.mkdirs()
         }
         val outFile = Config.outDirect + "outNote_" + getDate() + ".txt"
-        val write = OutputStreamWriter(FileOutputStream(outFile),"gbk")
-        val out = BufferedWriter(write)
-        try {
-            out.write(text)
-            listener.onOutSuccess(outFile)
-        } catch(e: Exception) {
-            listener.onOutFail("导出文件错误")
-        } finally {
-            out.close()
-            write.close()
-        }
+        FileUtil.writeText(outFile, text)
+        listener.onOutSuccess(outFile)
+//        val write = OutputStreamWriter(FileOutputStream(outFile),"gbk")
+//        val out = BufferedWriter(write)
+//        try {
+//            out.write(text)
+//            listener.onOutSuccess(outFile)
+//        } catch(e: Exception) {
+//            listener.onOutFail("导出文件错误")
+//        } finally {
+//            out.close()
+//            write.close()
+//        }
     }
 
     private fun noteToString(noteList: ArrayList<Note>): String{
