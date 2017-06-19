@@ -42,7 +42,7 @@ object BackupUtil{
         return null
     }
 
-    fun backupNote(context: Context, listener: OnBackupListener){
+    fun backupNoteCloud(context: Context, listener: OnBackupListener){
         val noteCache = NoteCache(context)
         val name: String
         val user = getUser(noteCache)
@@ -105,7 +105,7 @@ object BackupUtil{
         }
     }
 
-    fun downloadNote(context: Context, listener: OnBackupListener){
+    fun downloadNoteCloud(context: Context, listener: OnBackupListener){
         val noteCache = NoteCache(context)
         val name: String
         val user = getUser(noteCache)
@@ -165,6 +165,14 @@ object BackupUtil{
                 listener.onBackupFail("同步出错")
             }
         }
+    }
+
+    fun backupNoteLocal(context: Context, listener: OnBackupListener){
+
+    }
+
+    fun downloadNoteLocal(context: Context, listener: OnBackupListener){
+
     }
 
     //保存本地日记的同时保存到云端
