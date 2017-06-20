@@ -20,12 +20,12 @@
 
         <LinearLayout
             android:orientation="vertical"
-            android:paddingTop="40dp"
+            android:padding="10dp"
             android:gravity="center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
-                android:id="@+id/ll_backup_upload"
+                android:id="@+id/ll_backup_remote"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="10dp"
@@ -37,12 +37,12 @@
                     android:layout_width="30dp"
                     android:layout_height="20dp" />
                 <TextView
-                    android:text="立刻备份"
+                    android:text="备份云端"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
             <LinearLayout
-                android:id="@+id/ll_backup_download"
+                android:id="@+id/ll_backup_remote_show"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="10dp"
@@ -54,7 +54,41 @@
                     android:layout_width="30dp"
                     android:layout_height="20dp" />
                 <TextView
-                    android:text="同步云端"
+                    android:text="查看云端"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_backup_local"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:src="@drawable/ic_cloud_down"
+                    android:layout_marginRight="10dp"
+                    android:layout_width="30dp"
+                    android:layout_height="20dp" />
+                <TextView
+                    android:text="备份本地"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_backup_local_show"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:src="@drawable/ic_cloud_down"
+                    android:layout_marginRight="10dp"
+                    android:layout_width="30dp"
+                    android:layout_height="20dp" />
+                <TextView
+                    android:text="查看本地"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>

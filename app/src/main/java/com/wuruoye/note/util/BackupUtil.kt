@@ -43,12 +43,12 @@ object BackupUtil{
         return null
     }
 
-    fun backupNoteRemote(context: Context, listener: OnBackupListener){
+    fun backupNoteRemote(context: Context): String {
         val noteCache = NoteCache(context)
         val name: String
         val user = getUser(noteCache)
         if (user == null){
-            listener.onBackupFail("登录失败，请重新登录")
+            return "备份失败，请重新登录"
         }else{
             name = user.userId
             val cond = DroiCondition.cond("user", DroiCondition.Type.EQ, name)
@@ -99,19 +99,19 @@ object BackupUtil{
             }
             val errorSave = DroiObject.saveAll(saveList)
             if (errorSave.isOk){
-                listener.onBackupSuccess()
+                return "备份成功"
             }else{
-                listener.onBackupFail(errorSave.toString())
+                return errorSave.toString()
             }
         }
     }
 
-    fun downloadNoteRemote(context: Context, listener: OnBackupListener){
+    fun downloadNoteRemote(context: Context): String{
         val noteCache = NoteCache(context)
         val name: String
         val user = getUser(noteCache)
         if (user == null){
-            listener.onBackupFail("登录失败")
+            return "同步失败，请重新登录"
         }else{
             try {
                 name = user.userId
@@ -161,20 +161,20 @@ object BackupUtil{
                         SQLiteUtil.saveNote(context,note)
                     }
                 }
-                listener.onBackupSuccess()
+                return "同步成功"
             } catch(e: Exception) {
-                listener.onBackupFail("同步出错")
+                return "同步出错"
             }
         }
     }
 
-    fun readBackupRemote(context: Context, listener: OnBackupListener){
+    fun readBackupRemote(context: Context){
 
     }
 
     fun backupNoteLocal(context: Context){
         val list = SQLiteUtil.getAllNote(context)
-        val directoryName = Config.backupPath + getDate() + " : " + getTime() + "/"
+        val directoryName = Config.backupPath + getDate() + "/"
         val imageDirect = directoryName + "images/"
         val file = File(imageDirect)
         if (!file.exists()){
@@ -202,16 +202,39 @@ object BackupUtil{
         FileUtil.writeText(directoryName + "out.json", jsonArray.toString())
     }
 
-    fun downloadNoteLocal(path: String, context: Context){
+    fun downloadNoteLocal(path: String): ArrayList<Note>{
+        val list = ArrayList<Note>()
         val directoryName = Config.backupPath + path
         val file = File(directoryName)
         for (i in file.listFiles()){
             if (i.isFile){
                 val text = FileUtil.readText(i.absolutePath)
+                val jsonArray = JSONArray(text)
+                for (j in 0..jsonArray.length() - 1){
+                    val jsonObject = jsonArray[j] as JSONObject
+                    val year = jsonObject.getInt("year")
+                    val month = jsonObject.getInt("month")
+                    val day = jsonObject.getInt("day")
+                    val week = jsonObject.getInt("week")
+                    val content = jsonObject.getString("content")
+                    val style = jsonObject.getInt("style")
+                    val direct = jsonObject.getInt("direct")
+                    val bkImage = jsonObject.getString("bkImage")
+                    if (bkImage != ""){
+                        val pathFrom = directoryName + "/image/" + bkImage
+                        val pathTo = Config.imagePath + bkImage
+                        FileUtil.transportFile(pathFrom, pathTo)
+                    }
+                    val note = Note(year, month, day, week, content, style, direct, bkImage)
+                    list.add(note)
+                }
             }else if (i.isDirectory){
-
+                for (j in i.listFiles()){
+                    FileUtil.transportFile(j.absolutePath, Config.imagePath + j.name)
+                }
             }
         }
+        return list
     }
 
     fun readBackupLocal(): ArrayList<Backup>{
@@ -275,10 +298,5 @@ object BackupUtil{
             }
             upNote.save()
         }
-    }
-
-    interface OnBackupListener{
-        fun onBackupSuccess()
-        fun onBackupFail(message: String)
     }
 }

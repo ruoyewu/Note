@@ -80,13 +80,6 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
         }
 
     }
-    private val backupListener = object : BackupUtil.OnBackupListener{
-        override fun onBackupSuccess() {
-        }
-
-        override fun onBackupFail(message: String) {
-        }
-    }
 
     override val contentView: Int
         get() = R.layout.activity_main
@@ -258,7 +251,7 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
         if (noteCache.isAutoBackup){
             if (System.currentTimeMillis() - noteCache.lastBackup > 1000 * 60 * 60 * 24){
                 Thread({
-                    BackupUtil.backupNoteRemote(applicationContext,backupListener)
+                    BackupUtil.backupNoteRemote(applicationContext)
                 }).start()
             }
         }

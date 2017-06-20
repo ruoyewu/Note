@@ -22,7 +22,7 @@ class BackupLocalRVAdapter(
         RecyclerView.Adapter<BackupLocalRVAdapter.ViewHolder>(), View.OnClickListener {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
-        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.item_backup, viewGroup)
+        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.item_backup, viewGroup, false)
         return ViewHolder(view)
     }
 

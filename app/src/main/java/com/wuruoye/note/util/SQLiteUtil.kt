@@ -33,7 +33,9 @@ object SQLiteUtil{
     }
 
     fun saveNote(context: Context, note: Note){
-        if (isContain(context,note.year,note.month,note.day) != null){
+        val n = isContain(context, note.year, note.month, note.day)
+        if (n != null){
+            note.id = n.id
             updateNote(context,note)
         }else{
             addNote(context,note)

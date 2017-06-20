@@ -1,6 +1,8 @@
 package com.wuruoye.note.view
 
 import android.app.Activity
+import android.app.ProgressDialog
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -25,21 +27,7 @@ class ShowBackupActivity : BaseActivity(), View.OnClickListener {
     private var isClick = true
     private var isChange = false
 
-    private val backupListener = object : BackupUtil.OnBackupListener{
-        override fun onBackupSuccess() {
-            runOnUiThread {
-                toast("备份成功")
-                isClick = true
-            }
-        }
-
-        override fun onBackupFail(message: String) {
-            runOnUiThread {
-                toast(message)
-                isClick = true
-            }
-        }
-    }
+    private lateinit var progressDialog: ProgressDialog
 
     override val contentView: Int
         get() = R.layout.activity_backup
@@ -49,6 +37,7 @@ class ShowBackupActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun initView() {
+        progressDialog = ProgressDialog(this)
         val tip =
                 if (noteCache.isAutoBackup)
                     "自动备份\t已开启"
@@ -58,8 +47,10 @@ class ShowBackupActivity : BaseActivity(), View.OnClickListener {
         tv_backup_tip.text = tip
 
         tv_backup_back.setOnClickListener(this)
-        ll_backup_download.setOnClickListener(this)
-        ll_backup_upload.setOnClickListener(this)
+        ll_backup_remote_show.setOnClickListener(this)
+        ll_backup_remote.setOnClickListener(this)
+        ll_backup_local.setOnClickListener(this)
+        ll_backup_local_show.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -67,42 +58,40 @@ class ShowBackupActivity : BaseActivity(), View.OnClickListener {
             R.id.tv_backup_back -> {
                 onBackPressed()
             }
-            R.id.ll_backup_upload -> {
+            R.id.ll_backup_remote -> {
                 if (noteCache.isLogin) {
                     if (isClick) {
                         isClick = false
+                        progressDialog.setTitle("正在备份中...")
+                        progressDialog.show()
                         Thread({
-                            BackupUtil.backupNoteRemote(applicationContext, backupListener)
+                            BackupUtil.backupNoteRemote(applicationContext)
+                            runOnUiThread {
+                                progressDialog.dismiss()
+                                toast("备份成功")
+                            }
                         }).start()
-                        toast("备份中，请勿退出...")
                     }
                 }else {
                     toast("您还未登录，请先登录...")
                 }
             }
-            R.id.ll_backup_download -> {
-                if (noteCache.isLogin) {
-                    var isOk = true
-                    for (i in Config.permission){
-                        if (ActivityCompat.checkSelfPermission(this,i) == PackageManager.PERMISSION_DENIED){
-                            isOk = false
-                            isClick = true
-                            ActivityCompat.requestPermissions(this, arrayOf(i),1)
-                        }
+            R.id.ll_backup_remote_show -> {
+
+            }
+            R.id.ll_backup_local -> {
+                progressDialog.setTitle("正在备份中...")
+                progressDialog.show()
+                Thread({
+                    BackupUtil.backupNoteLocal(applicationContext)
+                    runOnUiThread {
+                        progressDialog.dismiss()
+                        toast("备份成功")
                     }
-                    if (isOk) {
-                        if (isClick){
-                            isClick = false
-                            Thread({
-                                BackupUtil.downloadNoteRemote(applicationContext, backupListener)
-                            }).start()
-                            toast("同步中，请稍后...")
-                            isChange = true
-                        }
-                    }
-                }else{
-                    toast("您还未登录，请先登录...")
-                }
+                }).start()
+            }
+            R.id.ll_backup_local_show -> {
+                startActivity(Intent(this, ShowLocalActivity::class.java))
             }
         }
     }

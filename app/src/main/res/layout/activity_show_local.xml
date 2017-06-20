@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/tv_backup_local_tip"
         android:text="@string/example"
         android:gravity="center"
         android:padding="10dp"

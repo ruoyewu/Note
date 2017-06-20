@@ -33,17 +33,6 @@ object TextOutUtil{
         val outFile = Config.outDirect + "outNote_" + getDate() + ".txt"
         FileUtil.writeText(outFile, text)
         listener.onOutSuccess(outFile)
-//        val write = OutputStreamWriter(FileOutputStream(outFile),"gbk")
-//        val out = BufferedWriter(write)
-//        try {
-//            out.write(text)
-//            listener.onOutSuccess(outFile)
-//        } catch(e: Exception) {
-//            listener.onOutFail("导出文件错误")
-//        } finally {
-//            out.close()
-//            write.close()
-//        }
     }
 
     private fun noteToString(noteList: ArrayList<Note>): String{

@@ -19,7 +19,10 @@ class Note (
         var bkImage: String
 ) : Parcelable {
 
-    constructor(year: Int, month: Int, day: Int, week: Int): this(0, 0, 1, "", year, month, day, week, "")
+    constructor(year: Int, month: Int, day: Int, week: Int):
+            this(0, 0, 1, "", year, month, day, week, "")
+    constructor(year: Int, month: Int, day: Int, week: Int, content: String, style: Int, direct: Int, bkImage: String):
+            this(0, style, direct, content, year, month, day, week, bkImage)
 
     companion object {
         @JvmField val CREATOR: Parcelable.Creator<Note> = object : Parcelable.Creator<Note> {
