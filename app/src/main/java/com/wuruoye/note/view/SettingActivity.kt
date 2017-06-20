@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
@@ -230,7 +229,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
 
     private fun showTimeDialog(){
         val view = LayoutInflater.from(this)
-        .inflate(R.layout.item_time, null)
+        .inflate(R.layout.dialog_show_time, null)
         val dp1 = view.findViewById(R.id.dp_data_from) as DatePicker
         val dp2 = view.findViewById(R.id.dp_data_to) as DatePicker
         initDatePicker(dp1, dp2)

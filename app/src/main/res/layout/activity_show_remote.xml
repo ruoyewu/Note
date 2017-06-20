@@ -26,16 +26,30 @@
     </com.wuruoye.note.widget.SpringScrollView>
 
 
-    <TextView
-        android:id="@+id/tv_backup_remote_back"
-        android:background="@drawable/back"
-        android:text="退"
-        android:transitionName="@string/translate_note_button"
-        android:gravity="center"
-        android:textColor="@color/romance"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="10dp"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        tools:ignore="UnusedAttribute" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_backup_remote_back"
+            android:background="@drawable/back"
+            android:text="退"
+            android:transitionName="@string/translate_note_button"
+            android:gravity="center"
+            android:textColor="@color/romance"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            tools:ignore="UnusedAttribute" />
+        <TextView
+            android:id="@+id/tv_backup_remote_input"
+            android:text="导"
+            android:padding="10dp"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/carnation"
+            android:gravity="center_vertical"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
 </LinearLayout>

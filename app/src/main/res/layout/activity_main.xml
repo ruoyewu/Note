@@ -93,7 +93,6 @@
             <TextView
                 android:id="@+id/tv_note_close"
                 android:text="折"
-                android:textSize="15sp"
                 android:clickable="true"
                 android:padding="10dp"
                 android:textAlignment="center"
@@ -103,7 +102,6 @@
             <TextView
                 android:id="@+id/tv_note_search"
                 android:text="搜"
-                android:textSize="15sp"
                 android:clickable="true"
                 android:padding="10dp"
                 android:textAlignment="center"
@@ -114,7 +112,6 @@
                 android:id="@+id/tv_note_setting"
                 android:text="设"
                 android:clickable="true"
-                android:textSize="15sp"
                 android:textColor="@color/carnation"
                 android:padding="10dp"
                 android:textAlignment="center"

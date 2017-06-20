@@ -60,6 +60,7 @@ object BackupUtil{
             if (i.bkFile != null){
                 note.bkImage = "note_${i.year}-${i.month}-${i.day}"
             }
+            note.setUpNote(i)
             list.add(note)
         }
         return sortNoteList(list)
@@ -128,65 +129,29 @@ object BackupUtil{
         }
     }
 
-    fun downloadNoteRemote(context: Context): String{
-        val noteCache = NoteCache(context)
-        val name: String
-        val user = getUser(noteCache)
-        if (user == null){
-            return "同步失败，请重新登录"
-        }else{
-            try {
-                name = user.userId
-                val cond = DroiCondition.cond("user", DroiCondition.Type.EQ, name)
-                val query = DroiQuery.Builder.newBuilder()
-                        .query(UpNote::class.java)
-                        .where(cond)
-                        .build()
-                val cloudList = ArrayList<UpNote>()
-                val errorGet = DroiError()
-                val list = query.runQuery<UpNote>(errorGet)
-                if (errorGet.isOk){
-                    for (i in list){
-                        if (i.bkFile != null){
-                            val errorImage = DroiError()
-                            val byteArray = i.bkFile.get(errorImage)
-                            if (errorImage.isOk){
-                                ImageCompressUtil.writeToFile(byteArray, "note_${i.year}-${i.month}-${i.day}")
-                            }
-                        }
-                        cloudList.add(i)
-                    }
-                }
-                val localList = SQLiteUtil.getAllNote(context)
-                for (i in cloudList){
-                    val year = i.year
-                    val month = i.month
-                    val day = i.day
-                    var exist = false
-                    for (j in localList){
-                        if (j.year == year && j.month == month && j.day == day){
-                            exist = true
-                            break
-                        }
-                    }
-                    if (!exist){
-                        val week = NoteUtil.getWeek(year,month,day)
-                        val note = Note(year, month, day, week)
-                        note.style = i.color
-                        note.content = i.content
-                        if (i.direct != 0){
-                            note.direct = i.direct
-                        }
-                        if (i.bkFile != null){
-                            note.bkImage = "note_${i.year}-${i.month}-${i.day}"
-                        }
-                        SQLiteUtil.saveNote(context,note)
-                    }
-                }
-                return "同步成功"
-            } catch(e: Exception) {
-                return "同步出错"
+    fun saveCloudNote(upNoteList: ArrayList<UpNote>, context: Context){
+        for (i in upNoteList){
+            val year = i.year
+            val month = i.month
+            val day = i.day
+            val week = NoteUtil.getWeek(year,month,day)
+            val note = Note(year, month, day, week)
+            note.style = i.color
+            note.content = i.content
+            if (i.direct != 0){
+                note.direct = i.direct
             }
+            if (i.bkFile != null){
+                note.bkImage = "note_${i.year}-${i.month}-${i.day}"
+                if (i.bkFile != null){
+                    val errorImage = DroiError()
+                    val byteArray = i.bkFile.get(errorImage)
+                    if (errorImage.isOk){
+                        ImageCompressUtil.writeToFile(byteArray, "note_${i.year}-${i.month}-${i.day}")
+                    }
+                }
+            }
+            SQLiteUtil.saveNote(context,note)
         }
     }
 

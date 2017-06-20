@@ -1,7 +1,6 @@
 package com.wuruoye.note.view
 
 import android.app.Activity
-import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -39,7 +38,7 @@ class ShowBackupActivity : BaseActivity(), View.OnClickListener {
 
     override fun initView() {
         waitDialog = AlertDialog.Builder(this)
-                .setView(R.layout.item_wait_dialog)
+                .setView(R.layout.dialog_wait)
                 .create()
         waitDialog.setCanceledOnTouchOutside(false)
         val tip =

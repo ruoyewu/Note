@@ -18,6 +18,15 @@ class Note (
         var week: Int,
         var bkImage: String
 ) : Parcelable {
+    private var upNote: UpNote? = null
+
+    fun setUpNote(upNote: UpNote){
+        this.upNote = upNote
+    }
+
+    fun getUpNote(): UpNote?{
+        return upNote
+    }
 
     constructor(year: Int, month: Int, day: Int, week: Int):
             this(0, 0, 1, "", year, month, day, week, "")

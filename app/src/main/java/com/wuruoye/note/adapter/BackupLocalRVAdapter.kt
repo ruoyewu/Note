@@ -32,8 +32,8 @@ class BackupLocalRVAdapter(
         viewHolder.itemView.tag = backup.name
 
         with(viewHolder){
-            tvTime.text = backup.name
-            tvSize.text = backup.size.toString()
+            tvTime.text = "备份时间: " + backup.name
+            tvSize.text = "日记数目: " + backup.size.toString()
         }
     }
 
