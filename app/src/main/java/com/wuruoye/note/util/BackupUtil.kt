@@ -6,6 +6,7 @@ import com.droi.sdk.core.*
 import com.wuruoye.note.model.*
 import com.wuruoye.note.util.NoteUtil.getDate
 import com.wuruoye.note.util.NoteUtil.getTime
+import com.wuruoye.note.util.SQLiteUtil.sortNoteList
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
@@ -41,6 +42,27 @@ object BackupUtil{
             }
         }
         return null
+    }
+
+    private fun upNote2Note(cloudList: ArrayList<UpNote>): ArrayList<Note>{
+        val list = ArrayList<Note>()
+        for (i in cloudList){
+            val year = i.year
+            val month = i.month
+            val day = i.day
+            val week = NoteUtil.getWeek(year,month,day)
+            val note = Note(year, month, day, week)
+            note.style = i.color
+            note.content = i.content
+            if (i.direct != 0){
+                note.direct = i.direct
+            }
+            if (i.bkFile != null){
+                note.bkImage = "note_${i.year}-${i.month}-${i.day}"
+            }
+            list.add(note)
+        }
+        return sortNoteList(list)
     }
 
     fun backupNoteRemote(context: Context): String {
@@ -168,8 +190,24 @@ object BackupUtil{
         }
     }
 
-    fun readBackupRemote(context: Context){
-
+    fun readBackupRemote(context: Context): ArrayList<Note>{
+        val cloudList = ArrayList<UpNote>()
+        val noteCache = NoteCache(context)
+        val user = getUser(noteCache)
+        if (user != null){
+            val name = user.userId
+            val cond = DroiCondition.cond("user", DroiCondition.Type.EQ, name)
+            val query = DroiQuery.Builder.newBuilder()
+                    .query(UpNote::class.java)
+                    .where(cond)
+                    .build()
+            val errorGet = DroiError()
+            val list = query.runQuery<UpNote>(errorGet)
+            if (errorGet.isOk){
+                cloudList += list
+            }
+        }
+        return upNote2Note(cloudList)
     }
 
     fun backupNoteLocal(context: Context){
@@ -235,6 +273,19 @@ object BackupUtil{
             }
         }
         return list
+    }
+
+    fun deleteNoteLocal(path: String){
+        val file = File(Config.backupPath + path)
+        if (file.isFile){
+            file.delete()
+        }else if (file.isDirectory){
+            val list = file.listFiles()
+            for (i in list){
+                deleteNoteLocal(path + "/" + i.name)
+            }
+            file.delete()
+        }
     }
 
     fun readBackupLocal(): ArrayList<Backup>{

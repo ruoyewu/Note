@@ -6,31 +6,28 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/tv_backup_local_tip"
+        android:id="@+id/tv_backup_remote_tip"
+        android:gravity="center_horizontal"
         android:text="@string/example"
-        android:gravity="center"
         android:padding="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <com.wuruoye.note.widget.SpringScrollView
-        android:id="@+id/ssv_backup_local"
-        android:layout_weight="1"
+        android:id="@+id/ssv_backup_remote"
         android:layout_width="match_parent"
+        android:layout_weight="1"
         android:layout_height="0dp">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_backup_local"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_backup_remote"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </com.wuruoye.note.widget.SpringScrollView>
 
+
     <TextView
-        android:id="@+id/tv_item_set_back"
+        android:id="@+id/tv_backup_remote_back"
         android:background="@drawable/back"
         android:text="退"
         android:transitionName="@string/translate_note_button"

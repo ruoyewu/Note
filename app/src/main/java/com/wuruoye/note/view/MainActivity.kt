@@ -430,12 +430,7 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
         rv_note.layoutManager = layout
         rv_note.adapter = NoteRVAdapter(noteList,this)
         ssv_note.post {
-            val y = ssv_note.measuredHeight
-            ssv_note.scrollBy(0,y * 10)
-//            if (noteList.size > 2) {
-//                rv_note.scrollToPosition(noteList.size - if (isClose) 1 else 2)
-////                rv_note.smoothScrollToPosition(noteList.size - if (isClose) 1 else 2)
-//            }
+            ssv_note.scrollBy(0, ssv_note.measuredHeight * 2)
         }
     }
 

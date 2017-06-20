@@ -53,9 +53,13 @@ object Config {
             "fanzuan.ttf"
     )
 
-    val permission = arrayOf(
+    val permissionWrite = arrayOf(
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
+    )
+
+    val permissionDelete = arrayOf(
+            Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS
     )
 
     val paperStyle = arrayOf(

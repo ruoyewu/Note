@@ -14,7 +14,7 @@
         <item name="android:popupWindowStyle">@style/popMenu</item>
         <item name="android:alertDialogTheme">@style/dialogTheme</item>
         <item name="android:datePickerStyle">@style/datePickerTheme</item>
-    </style>w
+    </style>
 
     <style name="windowAnim" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/anim_enter</item>

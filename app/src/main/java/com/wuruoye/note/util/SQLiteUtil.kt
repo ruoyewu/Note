@@ -131,7 +131,7 @@ object SQLiteUtil{
         return Note(id,style,direct,content, year, month, day, week, image)
     }
 
-    private fun sortNoteList(list: ArrayList<Note>): ArrayList<Note>{
+    fun sortNoteList(list: ArrayList<Note>): ArrayList<Note>{
         Collections.sort(list, Comparator<Note> { o1, o2 ->
             val x = o1!!.year - o2!!.year
             val y = o1.month - o2.month

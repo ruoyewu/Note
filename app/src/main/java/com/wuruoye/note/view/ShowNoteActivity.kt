@@ -3,13 +3,9 @@ package com.wuruoye.note.view
 import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
-import android.support.v4.app.ShareCompat
-import android.support.v4.content.FileProvider
-import android.support.v4.view.ViewCompat
 import android.support.v7.app.AlertDialog
 import android.view.View
 
@@ -21,7 +17,6 @@ import com.wuruoye.note.util.Extensions.toast
 import com.wuruoye.note.util.FileUtil
 import com.wuruoye.note.util.TextOutUtil
 import kotlinx.android.synthetic.main.activity_show_note.*
-import java.io.File
 
 /**
  * Created by wuruoye on 2017/6/7.
@@ -81,7 +76,7 @@ class ShowNoteActivity : BaseActivity(), View.OnClickListener{
 
     private fun saveNote(){
         var isOk = true
-        for (i in Config.permission){
+        for (i in Config.permissionWrite){
             if (ActivityCompat.checkSelfPermission(this,i) == PackageManager.PERMISSION_DENIED){
                 isOk = false
                 ActivityCompat.requestPermissions(this, arrayOf(i),1)

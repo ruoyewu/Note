@@ -12,7 +12,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import android.widget.TextView
 import com.liulishuo.filedownloader.BaseDownloadTask
 import com.liulishuo.filedownloader.FileDownloadListener
@@ -114,7 +113,7 @@ class FontDownloadActivity : BaseActivity() ,View.OnClickListener{
 
     private fun downloadFont(item: Int){
         var isOk = true
-        for (i in Config.permission){
+        for (i in Config.permissionWrite){
             if (ActivityCompat.checkSelfPermission(this,i) == PackageManager.PERMISSION_DENIED){
                 isOk = false
                 ActivityCompat.requestPermissions(this, arrayOf(i),1)

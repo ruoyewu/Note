@@ -361,10 +361,10 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
 
     private fun requestPermission(): Boolean{
         var isOk = true
-        for (i in Config.permission){
+        for (i in Config.permissionWrite){
             if (ActivityCompat.checkSelfPermission(this,i) == PackageManager.PERMISSION_DENIED){
                 isOk = false
-                ActivityCompat.requestPermissions(this, arrayOf(i),1)
+                ActivityCompat.requestPermissions(this, Config.permissionWrite, 1)
             }
         }
         return isOk

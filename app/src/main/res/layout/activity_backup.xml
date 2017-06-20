@@ -24,74 +24,42 @@
             android:gravity="center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <LinearLayout
-                android:id="@+id/ll_backup_remote"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:src="@drawable/ic_cloud"
-                    android:layout_marginRight="10dp"
-                    android:layout_width="30dp"
-                    android:layout_height="20dp" />
-                <TextView
-                    android:text="备份云端"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/ll_backup_remote_show"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:src="@drawable/ic_cloud_down"
-                    android:layout_marginRight="10dp"
-                    android:layout_width="30dp"
-                    android:layout_height="20dp" />
-                <TextView
-                    android:text="查看云端"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/ll_backup_local"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:src="@drawable/ic_cloud_down"
-                    android:layout_marginRight="10dp"
-                    android:layout_width="30dp"
-                    android:layout_height="20dp" />
-                <TextView
-                    android:text="备份本地"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/ll_backup_local_show"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:src="@drawable/ic_cloud_down"
-                    android:layout_marginRight="10dp"
-                    android:layout_width="30dp"
-                    android:layout_height="20dp" />
-                <TextView
-                    android:text="查看本地"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+            <Button
+                android:id="@+id/btn_backup_remote"
+                android:text="云端备份"
+                android:background="@drawable/button_shape"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                android:layout_marginTop="20dp"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                tools:ignore="NewApi" />
+            <Button
+                android:id="@+id/btn_show_remote"
+                android:text="查看云端"
+                android:background="@drawable/button_shape"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                android:layout_marginTop="20dp"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                tools:ignore="NewApi" />
+            <Button
+                android:id="@+id/btn_backup_local"
+                android:text="本地备份"
+                android:background="@drawable/button_shape"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                android:layout_marginTop="20dp"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                tools:ignore="NewApi" />
+            <Button
+                android:id="@+id/btn_show_local"
+                android:text="查看本地"
+                android:background="@drawable/button_shape"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                android:layout_marginTop="20dp"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                tools:ignore="NewApi" />
         </LinearLayout>
     </com.wuruoye.note.widget.SpringScrollView>
 
