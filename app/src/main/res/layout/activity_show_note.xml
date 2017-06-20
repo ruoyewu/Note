@@ -37,13 +37,13 @@
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/tv_show_note_save"
-                android:text="存"
-                android:textColor="@color/carnation"
-                android:padding="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            <!--<TextView-->
+                <!--android:id="@+id/tv_show_note_save"-->
+                <!--android:text="存"-->
+                <!--android:textColor="@color/carnation"-->
+                <!--android:padding="10dp"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content" />-->
             <TextView
                 android:id="@+id/tv_show_note_share"
                 android:text="享"

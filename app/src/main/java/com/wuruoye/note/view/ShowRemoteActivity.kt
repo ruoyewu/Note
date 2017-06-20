@@ -3,6 +3,7 @@ package com.wuruoye.note.view
 import android.app.ProgressDialog
 import android.os.Build
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.wuruoye.note.R
@@ -18,7 +19,7 @@ import kotlinx.android.synthetic.main.activity_show_remote.*
  */
 
 class ShowRemoteActivity : BaseActivity() {
-    private lateinit var progressDialog: ProgressDialog
+    private lateinit var waitDialog: AlertDialog
 
     private val onItemClickListener = object : NoteRVAdapter.OnItemClickListener{
         override fun onLongItemClick(v: View) {
@@ -39,10 +40,10 @@ class ShowRemoteActivity : BaseActivity() {
     }
 
     override fun initView() {
-        progressDialog = ProgressDialog(this)
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER)
-        progressDialog.setCancelable(true)
-        progressDialog.setCanceledOnTouchOutside(false)
+        waitDialog = AlertDialog.Builder(this)
+                .setView(R.layout.item_wait_dialog)
+                .create()
+        waitDialog.setCanceledOnTouchOutside(false)
 
         tv_backup_remote_back.setOnClickListener { onBackPressed() }
 
@@ -58,13 +59,13 @@ class ShowRemoteActivity : BaseActivity() {
     }
 
     private fun getBackupRemote(){
-        progressDialog.setTitle("正在加载中...")
-        progressDialog.show()
+        waitDialog.setTitle("正在加载中...")
+        waitDialog.show()
         Thread({
             val list = BackupUtil.readBackupRemote(this)
             runOnUiThread {
                 setBackupRemote(list)
-                progressDialog.dismiss()
+                waitDialog.dismiss()
             }
         }).start()
     }

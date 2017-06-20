@@ -44,7 +44,7 @@ class ShowNoteActivity : BaseActivity(), View.OnClickListener{
         getNoteText()
 
         tv_show_note_back.setOnClickListener(this)
-        tv_show_note_save.setOnClickListener(this)
+//        tv_show_note_save.setOnClickListener(this)
         tv_show_note_share.setOnClickListener(this)
     }
 
@@ -53,9 +53,9 @@ class ShowNoteActivity : BaseActivity(), View.OnClickListener{
             R.id.tv_show_note_back -> {
                 onBackPressed()
             }
-            R.id.tv_show_note_save -> {
-                saveNote()
-            }
+//            R.id.tv_show_note_save -> {
+//                saveNote()
+//            }
             R.id.tv_show_note_share -> {
                 shareNote()
             }

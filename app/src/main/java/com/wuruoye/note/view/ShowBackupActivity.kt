@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
+import android.support.v7.app.AlertDialog
 import android.view.View
 import com.wuruoye.note.R
 import com.wuruoye.note.base.BaseActivity
@@ -27,7 +28,7 @@ class ShowBackupActivity : BaseActivity(), View.OnClickListener {
     private var isClick = true
     private var isChange = false
 
-    private lateinit var progressDialog: ProgressDialog
+    private lateinit var waitDialog: AlertDialog
 
     override val contentView: Int
         get() = R.layout.activity_backup
@@ -37,10 +38,10 @@ class ShowBackupActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun initView() {
-        progressDialog = ProgressDialog(this)
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER)
-        progressDialog.setCancelable(true)
-        progressDialog.setCanceledOnTouchOutside(false)
+        waitDialog = AlertDialog.Builder(this)
+                .setView(R.layout.item_wait_dialog)
+                .create()
+        waitDialog.setCanceledOnTouchOutside(false)
         val tip =
                 if (noteCache.isAutoBackup)
                     "自动备份\t已开启"
@@ -81,13 +82,14 @@ class ShowBackupActivity : BaseActivity(), View.OnClickListener {
                 if (noteCache.isLogin) {
                     if (isClick) {
                         isClick = false
-                        progressDialog.setTitle("正在备份中...")
-                        progressDialog.show()
+                        waitDialog.setTitle("正在备份中...")
+                        waitDialog.show()
                         Thread({
                             BackupUtil.backupNoteRemote(applicationContext)
                             runOnUiThread {
-                                progressDialog.dismiss()
+                                waitDialog.dismiss()
                                 toast("备份成功")
+                                isClick = true
                             }
                         }).start()
                     }
@@ -100,12 +102,12 @@ class ShowBackupActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.btn_backup_local -> {
                 if (requestPermission()) {
-                    progressDialog.setTitle("正在备份中...")
-                    progressDialog.show()
+                    waitDialog.setTitle("正在备份中...")
+                    waitDialog.show()
                     Thread({
                         BackupUtil.backupNoteLocal(applicationContext)
                         runOnUiThread {
-                            progressDialog.dismiss()
+                            waitDialog.dismiss()
                             toast("备份成功")
                         }
                     }).start()
