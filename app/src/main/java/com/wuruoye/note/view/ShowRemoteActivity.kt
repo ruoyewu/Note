@@ -1,11 +1,9 @@
 package com.wuruoye.note.view
 
-import android.app.Dialog
 import android.app.ProgressDialog
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
-
 import com.wuruoye.note.R
 import com.wuruoye.note.adapter.NoteRVAdapter
 import com.wuruoye.note.base.BaseActivity

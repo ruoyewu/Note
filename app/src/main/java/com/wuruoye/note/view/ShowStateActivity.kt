@@ -2,8 +2,6 @@ package com.wuruoye.note.view
 
 import android.os.Bundle
 import android.view.View
-import android.widget.RadioGroup
-
 import com.wuruoye.note.R
 import com.wuruoye.note.base.BaseActivity
 import com.wuruoye.note.model.NoteCache

@@ -2,8 +2,6 @@ package com.wuruoye.note.view
 
 import android.app.Activity
 import android.app.Dialog
-import android.app.ProgressDialog
-import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -11,7 +9,6 @@ import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
-
 import com.wuruoye.note.R
 import com.wuruoye.note.adapter.BackupLocalRVAdapter
 import com.wuruoye.note.base.BaseActivity
@@ -19,7 +16,6 @@ import com.wuruoye.note.model.Backup
 import com.wuruoye.note.model.Config
 import com.wuruoye.note.util.BackupUtil
 import com.wuruoye.note.util.Extensions.toast
-import com.wuruoye.note.util.FileUtil
 import com.wuruoye.note.util.SQLiteUtil
 import kotlinx.android.synthetic.main.activity_show_local.*
 

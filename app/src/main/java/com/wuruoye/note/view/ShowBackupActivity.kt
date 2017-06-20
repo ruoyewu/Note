@@ -1,7 +1,6 @@
 package com.wuruoye.note.view
 
 import android.app.Activity
-import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -10,7 +9,6 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
 import android.view.View
-
 import com.wuruoye.note.R
 import com.wuruoye.note.base.BaseActivity
 import com.wuruoye.note.model.Config
@@ -18,7 +16,6 @@ import com.wuruoye.note.model.NoteCache
 import com.wuruoye.note.util.BackupUtil
 import com.wuruoye.note.util.Extensions.toast
 import kotlinx.android.synthetic.main.activity_backup.*
-import kotlinx.android.synthetic.main.activity_setting.*
 
 /**
  * Created by wuruoye on 2017/6/4.

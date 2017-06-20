@@ -4,20 +4,16 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Build
 import android.os.Bundle
-import android.text.InputType
 import android.view.View
-import android.widget.EditText
-import android.widget.TextView
 import com.droi.sdk.DroiCallback
 import com.droi.sdk.DroiError
 import com.droi.sdk.core.DroiUser
 import com.transitionseverywhere.TransitionManager
 import com.wuruoye.note.R
-
 import com.wuruoye.note.base.BaseActivity
 import com.wuruoye.note.model.NoteCache
-import com.wuruoye.note.util.Extensions.toast
 import com.wuruoye.note.util.Extensions.isPhone
+import com.wuruoye.note.util.Extensions.toast
 import kotlinx.android.synthetic.main.activity_user.*
 
 /**
