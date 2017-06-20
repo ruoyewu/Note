@@ -158,7 +158,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
                 startAc(Intent(this,ShowFontActivity::class.java), CHANGE_FONT)
             }
             R.id.ll_setting_feedback -> {
-                startFeedback()
+                startAc(Intent(this, FeedbackActivity::class.java), FEEDBACK)
             }
             R.id.ll_setting_user -> {
                 startAc(Intent(this, LoginActivity::class.java), USER_MANAGER)
@@ -286,15 +286,6 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
         ActivityCompat.startActivityForResult(this,intent,requestCode,compat.toBundle())
     }
 
-    private fun startFeedback(){
-        val intent = Intent(Intent.ACTION_SENDTO)
-        val name = "设备名: " +  Build.MODEL
-        val sdk = "版本号: " + Build.VERSION.SDK_INT
-        intent.data = Uri.parse("mailto:" + CREATE_EMAIL)
-        intent.putExtra(Intent.EXTRA_TEXT,name + "\n" + sdk + "\n")
-        startActivity(intent)
-    }
-
     private fun closeActivity(){
         if (isChange){
             setResult(Activity.RESULT_OK)
@@ -348,6 +339,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
         val OPEN_NOTE = 5
         val CHANGE_STATE = 6
         val CHANGE_FONT_SIZE = 7
+        val FEEDBACK = 8
 
         val CREATE_EMAIL = "2455929518@qq.com"
         val outItem = arrayOf(

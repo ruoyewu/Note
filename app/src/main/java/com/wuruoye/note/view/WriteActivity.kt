@@ -246,8 +246,8 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
         TransitionManager.beginDelayedTransition(activity_write,Slide(Gravity.BOTTOM))
 
         val rect = Rect()
-        activity_write.rootView.getWindowVisibleDisplayFrame(rect)
-        val margin = activity_write.rootView.height - rect.bottom
+        activity_write.getWindowVisibleDisplayFrame(rect)
+        val margin = activity_write.height - rect.bottom
 
         if (!isShowPaper) {
             ll_write_edit.visibility = if (margin == 0) View.GONE else View.VISIBLE

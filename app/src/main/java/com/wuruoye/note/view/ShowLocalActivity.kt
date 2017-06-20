@@ -25,7 +25,6 @@ import kotlinx.android.synthetic.main.activity_show_local.*
  */
 
 class ShowLocalActivity : BaseActivity() {
-    private lateinit var progressDialog: Dialog
     private var isChange = false
 
     private val itemClickListener = object : BackupLocalRVAdapter.OnItemClickListener{
@@ -42,8 +41,10 @@ class ShowLocalActivity : BaseActivity() {
     }
 
     override fun initView() {
-        progressDialog = Dialog(this)
-        progressDialog.setTitle("正在加载本地备份")
+
+        tv_backup_local_back.setOnClickListener{
+            onBackPressed()
+        }
 
         getBackupLocal()
     }
@@ -61,11 +62,9 @@ class ShowLocalActivity : BaseActivity() {
 
     private fun getBackupLocal(){
         if (requestPermission(Config.permissionWrite)) {
-            progressDialog.show()
             Thread({
                 val list = BackupUtil.readBackupLocal()
                 runOnUiThread {
-                    progressDialog.dismiss()
                     setBackupLocal(list)
                 }
             }).start()
@@ -105,12 +104,10 @@ class ShowLocalActivity : BaseActivity() {
     }
 
     private fun deleteLocal(name: String){
-            progressDialog.setTitle("正在删除中...")
-            progressDialog.show()
+        toast("删除中")
             Thread({
                 BackupUtil.deleteNoteLocal(name)
                 runOnUiThread {
-                    progressDialog.dismiss()
                     toast("删除成功")
                     getBackupLocal()
                 }
@@ -120,14 +117,12 @@ class ShowLocalActivity : BaseActivity() {
     private fun loadFromLocal(name: String){
         if (requestPermission(Config.permissionWrite)) {
             isChange = true
-            progressDialog.show()
             Thread({
                 val list = BackupUtil.downloadNoteLocal(name)
                 for (i in list){
                     SQLiteUtil.saveNote(applicationContext, i)
                 }
                 runOnUiThread {
-                    progressDialog.dismiss()
                     toast("同步成功")
                 }
             }).start()

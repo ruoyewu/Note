@@ -1,6 +1,7 @@
 package com.wuruoye.note.view
 
 import android.app.ProgressDialog
+import android.os.Build
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
@@ -43,7 +44,17 @@ class ShowRemoteActivity : BaseActivity() {
         progressDialog.setCancelable(true)
         progressDialog.setCanceledOnTouchOutside(false)
 
+        tv_backup_remote_back.setOnClickListener { onBackPressed() }
+
         getBackupRemote()
+    }
+
+    override fun onBackPressed() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            finishAfterTransition()
+        }else{
+            finish()
+        }
     }
 
     private fun getBackupRemote(){

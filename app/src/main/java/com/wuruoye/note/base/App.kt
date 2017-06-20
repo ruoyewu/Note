@@ -7,6 +7,7 @@ import com.droi.sdk.core.DroiObject
 import com.droi.sdk.core.DroiUser
 import com.liulishuo.filedownloader.FileDownloader
 import com.wuruoye.note.model.Config
+import com.wuruoye.note.model.Feedback
 import com.wuruoye.note.model.FontCache
 import com.wuruoye.note.model.UpNote
 import com.wuruoye.note.util.Extensions.toast
@@ -28,6 +29,7 @@ class App : Application(){
         Core.initialize(this)
         DroiUser.setAutoAnonymousUser(false)
         DroiObject.registerCustomClass(UpNote::class.java)
+        DroiObject.registerCustomClass(Feedback::class.java)
 
         //字体初始化
         val fontCache = FontCache(this)

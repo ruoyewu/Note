@@ -45,6 +45,7 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/til_login_pass"
                 app:errorEnabled="true"
+                android:textAlignment="center"
                 android:textColorHint="@color/carnation"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content">
@@ -62,6 +63,7 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/til_login_phone"
                 app:errorEnabled="true"
+                android:textAlignment="center"
                 android:textColorHint="@color/carnation"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content">
@@ -78,6 +80,7 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/til_login_email"
                 app:errorEnabled="true"
+                android:textAlignment="center"
                 android:textColorHint="@color/carnation"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content">

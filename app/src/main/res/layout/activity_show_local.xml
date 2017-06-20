@@ -30,7 +30,7 @@
     </com.wuruoye.note.widget.SpringScrollView>
 
     <TextView
-        android:id="@+id/tv_item_set_back"
+        android:id="@+id/tv_backup_local_back"
         android:background="@drawable/back"
         android:text="退"
         android:transitionName="@string/translate_note_button"
