@@ -12,7 +12,6 @@ import java.util.*
  */
 @SuppressLint("WrongConstant")
 object NoteUtil {
-
     fun isToday(year: Int, month: Int, day: Int): Boolean{
         val calender = getCalender()
         return calender.get(Calendar.YEAR) == year &&
@@ -92,6 +91,35 @@ object NoteUtil {
         return StringBuilder().append(month).append("-").append(day)
                 .append(" ").append(hour).append(":").append(minute).append(":").append(second)
                 .toString()
+    }
+
+    fun getMonthUp(up: Boolean, year: Int, month: Int): Array<Int>{
+        val calender = Calendar.getInstance()
+        calender.set(Calendar.YEAR, year)
+        calender.set(Calendar.MONTH, month - 1)
+        if (up) {
+            calender.add(Calendar.MONTH, 1)
+        }else {
+            calender.add(Calendar.MONTH, -1)
+        }
+        return arrayOf(
+                calender.get(Calendar.YEAR), calender.get(Calendar.MONTH) + 1
+        )
+    }
+
+    fun getDayUp(up: Boolean, year: Int, month: Int, day: Int): Array<Int>{
+        val calender = Calendar.getInstance()
+        calender.set(Calendar.YEAR, year)
+        calender.set(Calendar.MONTH, month - 1)
+        calender.set(Calendar.DAY_OF_MONTH, day)
+        if (up){
+            calender.add(Calendar.DAY_OF_MONTH, 1)
+        }else {
+            calender.add(Calendar.DAY_OF_MONTH, -1)
+        }
+        return arrayOf(
+                calender.get(Calendar.YEAR), calender.get(Calendar.MONTH) + 1, calender.get(Calendar.DAY_OF_MONTH)
+        )
     }
 
     private fun getCalender(): Calendar{

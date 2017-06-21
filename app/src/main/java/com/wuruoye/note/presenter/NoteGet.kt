@@ -10,6 +10,7 @@ import com.wuruoye.note.model.Note
 import com.wuruoye.note.util.NoteUtil
 import com.wuruoye.note.util.SQLiteUtil
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Created by wuruoye on 2017/5/27.
@@ -45,6 +46,17 @@ class NoteGet(context: Context) : IAbsPresenter<IAbsView<ArrayList<Note>>>(conte
                 }
             }
             onSuccess(list)
+        }
+    }
+
+    fun requestNote(year: Int, month: Int, day: Int){
+        val note = SQLiteUtil.isContain(mContext, year, month, day)
+        if (note != null){
+            onSuccess(arrayListOf(note))
+        }else {
+            val week = NoteUtil.getWeek(year, month, day)
+            val n = Note(year, month, day, week)
+            onSuccess(arrayListOf(n))
         }
     }
 

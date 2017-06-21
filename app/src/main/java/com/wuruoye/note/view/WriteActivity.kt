@@ -31,10 +31,12 @@ import com.wuruoye.note.model.Config
 import com.wuruoye.note.model.Note
 import com.wuruoye.note.model.NoteCache
 import com.wuruoye.note.presenter.ImageGet
+import com.wuruoye.note.presenter.NoteGet
 import com.wuruoye.note.util.*
 import com.wuruoye.note.util.Extensions.toast
 import com.wuruoye.note.view.ShowNoteActivity.Companion.AUTHORITY
 import com.wuruoye.note.widget.CustomRelativeLayout
+import com.wuruoye.note.widget.SpringScrollView
 import kotlinx.android.synthetic.main.activity_write.*
 import java.io.File
 
@@ -67,6 +69,8 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
     //if we open the auto save, it can show if we change the text of note when we close this activity
     private var isSave = false
 
+    private lateinit var noteGet: NoteGet
+
     private lateinit var imageGet: ImageGet
     private val imageListener = object : IAbsView<Bitmap>{
         override fun setModel(model: Bitmap) {
@@ -84,6 +88,34 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
                 toast(message)
             }
         }
+    }
+    private val noteListener = object : IAbsView<ArrayList<Note>>{
+        override fun setModel(model: ArrayList<Note>) {
+            note = model[0]
+            initView()
+        }
+
+        override fun setWorn(message: String) {
+
+        }
+
+    }
+    private val onDragListener = object : SpringScrollView.OnDragListener{
+        override fun onUpDrag() {
+
+        }
+
+        override fun onDownDrag() {
+
+        }
+
+        override fun onLeftDrag() {
+            onLeft()
+        }
+
+        override fun onRightDrag() {
+            onRight()
+        }
 
     }
 
@@ -97,25 +129,29 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
             note = Note(NoteUtil.getYear(),NoteUtil.getMonth(),NoteUtil.getDay(),NoteUtil.getWeek())
         }
         noteCache = NoteCache(this)
-        paperColor = note.style
-        mDirect = note.direct
-        date = Config.yearList[note.year - FIRST_YEAR] + "年" +
-                Config.numList[note.month] + "月" +
-                Config.numList[note.day] + "日"
-        fileName = "note_${note.year}-${note.month}-${note.day}"
-        if (note.bkImage != ""){
-            haveBk = true
-        }
     }
 
     override fun initPresenter() {
         imageGet = ImageGet(this)
+        noteGet = NoteGet(this)
         presenterList.add(imageGet)
+        presenterList.add(noteGet)
         viewList.add(imageListener)
+        viewList.add(noteListener)
         super.initPresenter()
     }
 
     override fun initView() {
+        paperColor = note.style
+        mDirect = note.direct
+        if (note.bkImage != ""){
+            haveBk = true
+        }
+        date = Config.yearList[note.year - FIRST_YEAR] + "年" +
+                Config.numList[note.month] + "月" +
+                Config.numList[note.day] + "日"
+        fileName = "note_${note.year}-${note.month}-${note.day}"
+
         initPapers()
         tv_write_date.text = date
         iv_write.setColorFilter(ActivityCompat.getColor(this,Config.paperStyle[paperColor]),PorterDuff.Mode.MULTIPLY)
@@ -127,6 +163,7 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
         et_write.gravity = if (mDirect == 3) Gravity.END else if (mDirect == 2) Gravity.CENTER_HORIZONTAL else Gravity.START
         et_write.setText(note.content)
         et_write.setSelection(note.content.length)
+        ssv_write.setDragListener(onDragListener)
         ssv_write.post {
             ssv_write.smoothScrollTo(0, 0)
         }
@@ -229,6 +266,26 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
                 }
             }
         }
+    }
+
+    private fun onLeft(){
+        saveNote(true)
+        if (note.year == NoteUtil.getYear() && note.month == NoteUtil.getMonth() && note.day == NoteUtil.getDay()){
+
+        }else{
+            val date = NoteUtil.getDayUp(true, note.year, note.month, note.day)
+            clearBack()
+            isChangeImage = false
+            noteGet.requestNote(date[0], date[1], date[2])
+        }
+    }
+
+    private fun onRight(){
+        saveNote(true)
+        val date = NoteUtil.getDayUp(false, note.year, note.month, note.day)
+        clearBack()
+        isChangeImage = false
+        noteGet.requestNote(date[0], date[1], date[2])
     }
 
     private fun closeActivity(){

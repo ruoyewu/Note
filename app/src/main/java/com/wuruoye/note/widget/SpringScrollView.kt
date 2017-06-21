@@ -15,18 +15,28 @@ import android.view.MotionEvent
 class SpringScrollView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : NestedScrollView(context, attrs, defStyle) {
     private var onDragListener: OnDragListener? = null
     private var startDragY: Float = 0f
-    private val springAnim: SpringAnimation = SpringAnimation(this, SpringAnimation.TRANSLATION_Y, 0f)
+    private var startDragX: Float = 0f
+    private val springAnimH: SpringAnimation = SpringAnimation(this, SpringAnimation.TRANSLATION_Y, 0f)
+    private val springAnimW: SpringAnimation = SpringAnimation(this, SpringAnimation.TRANSLATION_X, 0f)
     private var dragHeight = 150
+    private var dragWidth = 100
+    private var xAy = 3
     private var lastTime: Long = 0
     init {
         //刚度 默认1200 值越大回弹的速度越快
-        springAnim.spring.stiffness = 800.0f
+        springAnimH.spring.stiffness = 800.0f
+        springAnimW.spring.stiffness = 800.0f
         //阻尼 默认0.5 值越小，回弹之后来回的次数越多
-        springAnim.spring.dampingRatio = 0.50f
+        springAnimH.spring.dampingRatio = 0.50f
+        springAnimW.spring.dampingRatio = 0.50f
     }
 
     override fun onTouchEvent(e: MotionEvent): Boolean {
         when (e.action) {
+            MotionEvent.ACTION_DOWN -> {
+                startDragX = e.rawX
+                startDragY = e.rawY
+            }
             MotionEvent.ACTION_MOVE -> {
                 if (scrollY <= 0) {
                     //顶部下拉
@@ -34,14 +44,13 @@ class SpringScrollView @JvmOverloads constructor(context: Context, attrs: Attrib
                         startDragY = e.rawY
                     }
                     if (e.rawY - startDragY >= 0) {
-                        translationY = (e.rawY - startDragY) / 3
+                        translationY = (e.rawY - startDragY) / xAy
                         if (translationY > dragHeight){
                             onDown()
                         }
-                        return true
                     } else {
                         startDragY = 0f
-                        springAnim.cancel()
+                        springAnimH.cancel()
                         translationY = 0f
                     }
                 } else if (scrollY + height >= getChildAt(0).measuredHeight) {
@@ -50,23 +59,44 @@ class SpringScrollView @JvmOverloads constructor(context: Context, attrs: Attrib
                         startDragY = e.rawY
                     }
                     if (e.rawY - startDragY <= 0) {
-                        translationY = (e.rawY - startDragY) / 3
+                        translationY = (e.rawY - startDragY) / xAy
                         if (translationY < -dragHeight){
                             onUp()
                         }
-                        return true
                     } else {
                         startDragY = 0f
-                        springAnim.cancel()
+                        springAnimH.cancel()
                         translationY = 0f
                     }
                 }
+
+                //width
+                if (startDragX == 0f){
+                    startDragX = e.rawX
+                }
+//                Log.e("ruoye", scrollX.toString() + "+" + e.rawX + "+" + startDragX)
+                if (e.rawX - startDragX >= 0){
+                    translationX = (e.rawX - startDragX) / xAy
+                    if (translationX > dragWidth){
+                        onRight()
+                    }
+                }else if (e.rawX - startDragX < 0){
+                    translationX = (e.rawX - startDragX) / xAy
+                    if (translationX < -dragWidth){
+                        onLeft()
+                    }
+                }
             }
-            MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+            MotionEvent.ACTION_UP,
+            MotionEvent.ACTION_CANCEL -> {
                 if (translationY != 0f) {
-                    springAnim.start()
+                    springAnimH.start()
+                }
+                if (translationX != 0f){
+                    springAnimW.start()
                 }
                 startDragY = 0f
+                startDragX = 0f
             }
         }
         return super.onTouchEvent(e)
@@ -94,9 +124,29 @@ class SpringScrollView @JvmOverloads constructor(context: Context, attrs: Attrib
         }
     }
 
+    private fun onLeft(){
+        if (onDragListener != null){
+            if (System.currentTimeMillis() - lastTime > 1000){
+                onDragListener!!.onLeftDrag()
+                lastTime = System.currentTimeMillis()
+            }
+        }
+    }
+
+    private fun onRight(){
+        if (onDragListener != null){
+            if (System.currentTimeMillis() - lastTime > 1000){
+                onDragListener!!.onRightDrag()
+                lastTime = System.currentTimeMillis()
+            }
+        }
+    }
+
 
     interface OnDragListener {
         fun onUpDrag()
         fun onDownDrag()
+        fun onLeftDrag()
+        fun onRightDrag()
     }
 }

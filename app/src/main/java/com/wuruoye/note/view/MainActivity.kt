@@ -79,6 +79,13 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
             }
         }
 
+        override fun onLeftDrag() {
+        }
+
+        override fun onRightDrag() {
+
+        }
+
     }
 
     override val contentView: Int
@@ -259,31 +266,12 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
 
     private fun upMonth(b: Boolean){
         isUpDirect = !b
-        if (b){
-            if (mMonth == NoteUtil.getMonth() && mYear == NoteUtil.getYear()){
-
-            }else{
-                if (mMonth == 12){
-                    if (mYear == NoteUtil.getYear()){
-
-                    }else{
-                        mMonth = 1
-                        mYear ++
-                    }
-                }else{
-                    mMonth ++
-                }
-                tv_note_year.text = Config.yearList[mYear - FIRST_YEAR]
-                tv_note_month.text = Config.numList[mMonth]
-                getNote()
-            }
+        val data = NoteUtil.getMonthUp(b, mYear, mMonth)
+        mYear = data[0]
+        mMonth = data[1]
+        if (mYear == NoteUtil.getYear() && mMonth > NoteUtil.getMonth()){
+            mMonth --
         }else{
-            if (mMonth == 1){
-                mMonth = 12
-                mYear --
-            }else{
-                mMonth --
-            }
             tv_note_year.text = Config.yearList[mYear - FIRST_YEAR]
             tv_note_month.text = Config.numList[mMonth]
             getNote()

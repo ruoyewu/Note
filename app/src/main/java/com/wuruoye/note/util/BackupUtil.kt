@@ -110,11 +110,10 @@ object BackupUtil{
                 for (j in saveList){
                     if (j.month == month && j.year == year && j.day == day){
                         deleteList.add(i)
-                        break
                     }
                 }
             }
-            for (i in deleteList){
+                for (i in deleteList){
                 if (i.bkFile != null){
                     i.bkFile.delete()
                 }
@@ -289,7 +288,7 @@ object BackupUtil{
                     .query(UpNote::class.java)
                     .where(cond1)
                     .build()
-            var error = DroiError()
+            val error = DroiError()
             val list = query.runQuery<UpNote>(error)
             if (error.isOk){
                 for (i in list){

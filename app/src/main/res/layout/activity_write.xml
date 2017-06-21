@@ -46,7 +46,7 @@
             android:layerType="software"
             android:layout_weight="1"
             android:layout_height="0dp">
-           <EditText
+           <com.wuruoye.note.widget.MyEditText
                android:id="@+id/et_write"
                android:textSize="15sp"
                android:gravity="start"
