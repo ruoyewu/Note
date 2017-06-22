@@ -49,7 +49,7 @@
     <TextView
         android:id="@+id/tv_lock_back"
         android:background="@drawable/back"
-        android:text="退"
+        android:text="设"
         android:transitionName="@string/translate_note_button"
         android:gravity="center"
         android:textColor="@color/romance"

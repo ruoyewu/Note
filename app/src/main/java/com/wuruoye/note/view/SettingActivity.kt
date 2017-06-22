@@ -133,6 +133,11 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
                     recreate()
                 }
             }
+            LOCK -> {
+                if (resultCode == Activity.RESULT_OK){
+                    switch_lock.isChecked = noteCache.isLock
+                }
+            }
         }
     }
 
