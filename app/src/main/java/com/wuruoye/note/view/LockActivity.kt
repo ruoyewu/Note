@@ -100,6 +100,8 @@ class LockActivity : BaseActivity() {
         tv_lock_tip.text = tip
         if (worn){
             tv_lock_tip.setTextColor(ActivityCompat.getColor(this, R.color.carnation))
+        }else {
+            tv_lock_tip.setTextColor(ActivityCompat.getColor(this, R.color.gray))
         }
     }
 

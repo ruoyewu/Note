@@ -6,9 +6,8 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/tv_show_lock_tip"
-        android:text="@string/example"
-        android:gravity="center"
+        android:text="反馈建议"
+        android:gravity="center_horizontal"
         android:padding="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -19,42 +18,40 @@
         android:layout_height="wrap_content">
         <LinearLayout
             android:orientation="vertical"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <Button
-                android:id="@+id/btn_lock_lock"
-                android:text="开启密码锁"
-                android:background="@drawable/button_shape"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp" />
-            <Button
-                android:id="@+id/btn_lock_pass"
-                android:text="修改密码"
-                android:background="@drawable/button_shape"
-                android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <EditText
+                android:id="@+id/et_feedback"
+                android:textColor="@color/gray"
+                android:hint="在这里写下你的想法，将其告知开发者吧！"
                 android:layout_width="match_parent"
-                android:layout_height="40dp" />
-            <Button
-                android:id="@+id/btn_lock_finger"
-                android:text="使用指纹"
                 android:background="@drawable/button_shape"
+                android:layout_margin="20dp"
+                android:padding="5dp"
+                android:minLines="10"
+                android:maxLines="10"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:id="@+id/iv_feedback"
+                android:src="@drawable/ic_send"
+                android:padding="5dp"
                 android:layout_marginTop="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="40dp" />
+                android:background="@drawable/button_shape"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="50dp"
+                android:layout_height="30dp" />
         </LinearLayout>
     </com.wuruoye.note.widget.SpringScrollView>
 
     <TextView
-        android:id="@+id/tv_lock_back"
+        android:id="@+id/tv_feedback_back"
         android:background="@drawable/back"
-        android:text="退"
+        android:text="设"
         android:transitionName="@string/translate_note_button"
         android:gravity="center"
-        android:textColor="@color/romance"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:textColor="@color/romance"
         android:layout_marginBottom="10dp"
         android:layout_width="30dp"
         android:layout_height="30dp"

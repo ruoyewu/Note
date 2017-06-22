@@ -81,6 +81,7 @@
                     android:layout_height="wrap_content" />
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/ll_setting_lock"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:padding="10dp"

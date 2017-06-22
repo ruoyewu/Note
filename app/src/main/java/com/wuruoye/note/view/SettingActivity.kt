@@ -95,6 +95,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
         ll_setting_out.setOnClickListener(this)
         ll_setting_state.setOnClickListener(this)
         ll_setting_font_size.setOnClickListener(this)
+        ll_setting_lock.setOnClickListener(this)
         switch_backup.setOnCheckedChangeListener(this)
         switch_auto_save.setOnCheckedChangeListener(this)
         switch_lock.setOnClickListener { changeLock() }
@@ -179,6 +180,9 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
             }
             R.id.ll_setting_font_size -> {
                 startAc(Intent(this, ShowFontSizeActivity::class.java), CHANGE_FONT_SIZE)
+            }
+            R.id.ll_setting_lock -> {
+                startAc(Intent(this, ShowLockActivity::class.java), LOCK)
             }
             R.id.ll_setting_out -> {
                 if (isNoteNull){
