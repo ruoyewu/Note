@@ -2,19 +2,21 @@ package com.wuruoye.note.view
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.app.AlertDialog
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.CompoundButton
-import android.widget.DatePicker
-import android.widget.LinearLayout
-import android.widget.NumberPicker
+import android.view.inputmethod.InputMethodManager
+import android.widget.*
 import com.droi.sdk.core.DroiUser
 import com.wuruoye.note.R
 import com.wuruoye.note.base.BaseActivity
@@ -43,7 +45,11 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
     //save if there is no note written
     private var isNoteNull = false
 
-    private var outDialog: AlertDialog.Builder? = null
+    private val passView = ArrayList<ImageButton>()
+    private lateinit var passEdit: EditText
+    private lateinit var passDialog: AlertDialog
+    private var isFirst = true
+    private var previous = ""
 
     private var noteView = object : IAbsView<ArrayList<Note>>{
         override fun setModel(model: ArrayList<Note>) {
@@ -73,10 +79,12 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
     }
 
     override fun initView() {
+        initDialog()
         noteGet.requestAllNote()
 
         switch_backup.isChecked = noteCache.isAutoBackup
         switch_auto_save.isChecked = noteCache.isAutoSave
+        switch_lock.isChecked = noteCache.isLock
 
         ll_setting_show.setOnClickListener(this)
         ll_setting_font.setOnClickListener(this)
@@ -89,6 +97,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
         ll_setting_font_size.setOnClickListener(this)
         switch_backup.setOnCheckedChangeListener(this)
         switch_auto_save.setOnCheckedChangeListener(this)
+        switch_lock.setOnClickListener { changeLock() }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -205,6 +214,101 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
         }
     }
 
+    private fun initDialog(){
+        val view = LayoutInflater.from(this)
+                .inflate(R.layout.dialog_change_pass, null)
+        with(passView) {
+            add(view.findViewById(R.id.ib_pass_1) as ImageButton)
+            add(view.findViewById(R.id.ib_pass_2) as ImageButton)
+            add(view.findViewById(R.id.ib_pass_3) as ImageButton)
+            add(view.findViewById(R.id.ib_pass_4) as ImageButton)
+        }
+        passEdit = view.findViewById(R.id.et_pass) as EditText
+        passEdit.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val input = passEdit.text.toString()
+                if (input.length > 4){
+                    passEdit.setText(input.subSequence(0, 4))
+                    passEdit.setSelection(passEdit.text.length)
+                }
+                inputPass(passEdit.text.toString())
+            }
+
+        })
+        passDialog = AlertDialog.Builder(this)
+                .setView(view)
+                .create()
+        passDialog.setOnDismissListener {
+            passEdit.setText("")
+            showSoftInput(false)
+            switch_lock.isChecked = noteCache.isLock
+        }
+    }
+
+    private fun inputPass(text: String){
+        if (text.length < 4){
+            setPass(text.length)
+        }else {
+            judgePass(text)
+        }
+    }
+
+    private fun judgePass(text: String){
+        passEdit.setText("")
+        if (noteCache.isLock){
+            if (text == noteCache.lockPassword){
+                passDialog.dismiss()
+                switch_lock.isChecked = false
+                noteCache.isLock = false
+            }else {
+                passDialog.setTitle("输入密码错误...")
+            }
+        }else{
+            if (isFirst){
+                previous = text
+                passDialog.setTitle("再次输入密码...")
+                isFirst = false
+            }else {
+                if (text == previous){
+                    passDialog.dismiss()
+                    switch_lock.isChecked = true
+                    noteCache.isLock = true
+                    noteCache.lockPassword = text
+                    isFirst = true
+                }else{
+                    passDialog.setTitle("密码不相同，请重新输入")
+                    isFirst = true
+                }
+            }
+        }
+    }
+
+    private fun setPass(size: Int){
+        for (i in 0..passView.size - 1){
+            if (i < size){
+                passView[i].setImageResource(R.drawable.circle_shape)
+            }else {
+                passView[i].setImageDrawable(BitmapDrawable())
+            }
+        }
+    }
+
+    private fun changeLock() {
+        passDialog.setTitle("输入密码")
+        passDialog.show()
+        passEdit.isActivated = true
+        passEdit.requestFocus()
+        showSoftInput(true)
+    }
+
     private fun goToLogin(){
         AlertDialog.Builder(this)
                 .setTitle("您还未登录账号，是否前往登录？")
@@ -214,17 +318,6 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
                 .setNegativeButton("否") { _, _ ->
                 }
                 .show()
-    }
-
-    private fun showOutDialog(from: Date, to: Date){
-        if (outDialog == null){
-            outDialog = AlertDialog.Builder(this)
-                    .setTitle("选择导出格式:")
-                    .setItems(outItem) { _, position ->
-                        outTo(position, from, to)
-                    }
-        }
-        outDialog!!.show()
     }
 
     private fun showTimeDialog(){
@@ -330,6 +423,16 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
         deleteDivider(dp2)
     }
 
+    private fun showSoftInput(boolean: Boolean){
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        if (boolean){
+            imm.showSoftInput(window.decorView,
+                    InputMethodManager.SHOW_FORCED)
+        }else {
+            imm.hideSoftInputFromWindow(window.peekDecorView().windowToken, 0)
+        }
+    }
+
     companion object{
         val CHANGE_ITEM = 1
         val CHANGE_FONT = 2
@@ -339,6 +442,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
         val CHANGE_STATE = 6
         val CHANGE_FONT_SIZE = 7
         val FEEDBACK = 8
+        val LOCK = 9
 
         val CREATE_EMAIL = "2455929518@qq.com"
         val outItem = arrayOf(

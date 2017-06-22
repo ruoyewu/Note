@@ -386,6 +386,7 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
     }
 
     private fun initPapers(){
+        ll_write_paper.removeAllViews()
         val param = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.MATCH_PARENT)
         param.width = 500
         ivBk = ImageView(this)

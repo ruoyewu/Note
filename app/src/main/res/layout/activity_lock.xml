@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.wuruoye.note.widget.SpringScrollView
+        android:layout_centerVertical="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/iv_lock_fingerprint"
+                android:src="@drawable/ic_fingerprint"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+            <TextView
+                android:id="@+id/tv_lock_tip"
+                android:text="识别指纹或输入密码..."
+                android:gravity="center"
+                android:textSize="10sp"
+                android:paddingTop="40dp"
+                android:paddingBottom="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <include
+                layout="@layout/dialog_change_pass"/>
+        </LinearLayout>
+    </com.wuruoye.note.widget.SpringScrollView>
+
+
+</RelativeLayout>

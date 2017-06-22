@@ -102,6 +102,15 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
                     2 -> State.SEARCH
                     else -> State.EXPEND
                 }
+        val isOpen = bundle?.getBoolean("isOpen")
+        if (isOpen != null && isOpen == true){
+
+        }else{
+            if (noteCache.isLock){
+                startActivity(Intent(this, LockActivity::class.java))
+                finish()
+            }
+        }
     }
 
     override fun initPresenter() {

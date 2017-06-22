@@ -57,9 +57,8 @@ object Config {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     )
-
-    val permissionDelete = arrayOf(
-            Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS
+    val permissionFinger = arrayOf(
+            Manifest.permission.USE_FINGERPRINT
     )
 
     val paperStyle = arrayOf(

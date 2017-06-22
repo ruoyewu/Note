@@ -41,6 +41,18 @@ class NoteCache(context: Context) : BaseCache(context) {
         get() = mSP!!.getInt(AUTO_STATE, AUTO_STATE_DEFAULT)
         set(value) = mSP!!.edit().putInt(AUTO_STATE, value).apply()
 
+    var isLock: Boolean
+        get() = mSP!!.getBoolean(IS_LOCK, IS_LOCK_DEFAULT)
+        set(value) = mSP!!.edit().putBoolean(IS_LOCK, value).apply()
+
+    var isFinger: Boolean
+        get() = mSP!!.getBoolean(IS_FINGER, IS_FINGER_DEFAULT)
+        set(value) = mSP!!.edit().putBoolean(IS_FINGER, value).apply()
+
+    var lockPassword: String
+        get() = mSP!!.getString(LOCK_PASSWORD, LOCK_PASSWORD_DEFAULT)
+        set(value) = mSP!!.edit().putString(LOCK_PASSWORD, value).apply()
+
     companion object{
         val ITEM_SHOW = "item_show"
         val BACKUP = "isAutoBackup"
@@ -50,6 +62,9 @@ class NoteCache(context: Context) : BaseCache(context) {
         val USER_NAME = "user_name"
         val USER_PASS = "user_pass"
         val AUTO_STATE = "auto_state"
+        val IS_LOCK = "is_lock"
+        val IS_FINGER = "is_finger"
+        val LOCK_PASSWORD = "lock_password"
 
         val ITEM_SHOW_DEFAULT = 1
         val BACKUP_DEFAULT = false
@@ -59,5 +74,8 @@ class NoteCache(context: Context) : BaseCache(context) {
         val IS_LOGIN_DEFAULT = false
         val USER_NAME_DEFAULT = ""
         val USER_PASS_DEFAULT = ""
+        val IS_LOCK_DEFAULT = false
+        val IS_FINGER_DEFAULT = false
+        val LOCK_PASSWORD_DEFAULT = "0358"
     }
 }

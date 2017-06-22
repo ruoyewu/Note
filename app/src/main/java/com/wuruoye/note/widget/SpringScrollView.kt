@@ -12,7 +12,9 @@ import android.view.MotionEvent
  * 下拉后有回弹动画的滚动控件
  */
 
-class SpringScrollView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : NestedScrollView(context, attrs, defStyle) {
+class SpringScrollView @JvmOverloads constructor(
+        context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
+    : NestedScrollView(context, attrs, defStyle) {
     private var onDragListener: OnDragListener? = null
     private var startDragY: Float = 0f
     private var startDragX: Float = 0f
@@ -33,10 +35,6 @@ class SpringScrollView @JvmOverloads constructor(context: Context, attrs: Attrib
 
     override fun onTouchEvent(e: MotionEvent): Boolean {
         when (e.action) {
-            MotionEvent.ACTION_DOWN -> {
-                startDragX = e.rawX
-                startDragY = e.rawY
-            }
             MotionEvent.ACTION_MOVE -> {
                 if (scrollY <= 0) {
                     //顶部下拉
@@ -74,7 +72,6 @@ class SpringScrollView @JvmOverloads constructor(context: Context, attrs: Attrib
                 if (startDragX == 0f){
                     startDragX = e.rawX
                 }
-//                Log.e("ruoye", scrollX.toString() + "+" + e.rawX + "+" + startDragX)
                 if (e.rawX - startDragX >= 0){
                     translationX = (e.rawX - startDragX) / xAy
                     if (translationX > dragWidth){
@@ -100,6 +97,10 @@ class SpringScrollView @JvmOverloads constructor(context: Context, attrs: Attrib
             }
         }
         return super.onTouchEvent(e)
+    }
+
+    override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
+        return super.onInterceptTouchEvent(ev)
     }
 
     fun setDragListener(listener: OnDragListener){
