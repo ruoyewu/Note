@@ -3,6 +3,7 @@ package com.wuruoye.note.util
 import android.graphics.Bitmap
 import com.wuruoye.note.model.Config
 import java.io.*
+import java.nio.charset.Charset
 
 /**
  * Created by wuruoye on 2017/6/19.
@@ -18,8 +19,22 @@ object FileUtil{
         return text
     }
 
-    fun writeText(path: String, text: String): Boolean{
+    fun writeTextUTF8(path: String, text: String): Boolean{
         val write = OutputStreamWriter(FileOutputStream(path), Charsets.UTF_8)
+        val output = BufferedWriter(write)
+        try {
+            output.write(text)
+            return true
+        } catch(e: Exception) {
+            return false
+        } finally {
+            output.close()
+            write.close()
+        }
+    }
+
+    fun writeTextGBK(path: String, text: String): Boolean{
+        val write = OutputStreamWriter(FileOutputStream(path), Charset.forName("GBK"))
         val output = BufferedWriter(write)
         try {
             output.write(text)

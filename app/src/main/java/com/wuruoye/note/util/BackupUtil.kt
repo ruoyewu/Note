@@ -5,7 +5,6 @@ import com.droi.sdk.DroiError
 import com.droi.sdk.core.*
 import com.wuruoye.note.model.*
 import com.wuruoye.note.util.NoteUtil.getDate
-import com.wuruoye.note.util.NoteUtil.getTime
 import com.wuruoye.note.util.SQLiteUtil.sortNoteList
 import org.json.JSONArray
 import org.json.JSONObject
@@ -203,7 +202,7 @@ object BackupUtil{
                 FileUtil.transportFile(pathFrom, pathTo)
             }
         }
-        FileUtil.writeText(directoryName + "out.json", jsonArray.toString())
+        FileUtil.writeTextUTF8(directoryName + "out.json", jsonArray.toString())
     }
 
     fun downloadNoteLocal(path: String): ArrayList<Note>{

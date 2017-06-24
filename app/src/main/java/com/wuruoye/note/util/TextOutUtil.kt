@@ -31,7 +31,7 @@ object TextOutUtil{
             direct.mkdirs()
         }
         val outFile = Config.outDirect + "outNote_" + getDate() + ".txt"
-        FileUtil.writeText(outFile, text)
+        FileUtil.writeTextUTF8(outFile, text)
         listener.onOutSuccess(outFile)
     }
 

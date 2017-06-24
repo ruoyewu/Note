@@ -65,7 +65,7 @@ class NoteRVAdapter(
         return true
     }
 
-    private fun setView(note: Note, p0: ViewHolder){
+     fun setView(note: Note, p0: ViewHolder){
         p0.wait.setTextColor(defaultColor)
         if (NoteUtil.isToday(note.year,note.month,note.day)){
             p0.wait.text = "待"

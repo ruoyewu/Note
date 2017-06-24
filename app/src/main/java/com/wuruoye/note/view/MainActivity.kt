@@ -49,6 +49,7 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
     private var isUpDirect = true
     //show current state { EXPEND, CLOSE, SEARCH }
     private lateinit var currentState: State
+    private lateinit var mNoteAdapter: NoteRVAdapter
 
     private enum class State{
         CLOSE,
@@ -248,7 +249,7 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
                     SQLiteUtil.deleteNote(applicationContext,note)
                     note.style = 0
                     note.content = ""
-                    setView(note,viewHolder)
+                    mNoteAdapter.setView(note, viewHolder)
                 }
                 .setNegativeButton("否") { _, _ -> }
                 .show()
@@ -428,7 +429,8 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
         }
         layout.isAutoMeasureEnabled = true
         rv_note.layoutManager = layout
-        rv_note.adapter = NoteRVAdapter(noteList,this)
+        mNoteAdapter = NoteRVAdapter(noteList, this)
+        rv_note.adapter = mNoteAdapter
         ssv_note.post {
             ssv_note.scrollBy(0, ssv_note.measuredHeight * 2)
         }
@@ -440,66 +442,6 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
             1 -> State.CLOSE
             2 -> State.SEARCH
             else -> State.EXPEND
-        }
-    }
-
-    private fun setView(note: Note, p0: NoteRVAdapter.ViewHolder){
-        p0.wait.setTextColor(ActivityCompat.getColor(this,R.color.gray))
-        if (NoteUtil.isToday(note.year,note.month,note.day)){
-            p0.wait.text = "待"
-        }else{
-            p0.wait.text = "逝"
-        }
-        if (note.week == -1){
-            p0.info.visibility = View.GONE
-            p0.wait.visibility = View.VISIBLE
-            p0.wait.text = "上个月"
-        }else if (note.week == -2){
-            p0.info.visibility = View.GONE
-            p0.wait.visibility = View.VISIBLE
-            if (note.month == NoteUtil.getMonth() && note.year == NoteUtil.getYear()){
-                p0.wait.text = "明日再续"
-            }else{
-                p0.wait.text = "下个月"
-            }
-        }else{
-            if (note.content != "" || note.style != 0) {
-                val item = noteCache.itemShow
-                var day = ""
-                var week = ""
-                if (item == 1){
-                    day = Config.numList[note.day]
-                    week = "周${Config.weekList[note.week]}"
-                }else if (item == 2){
-                    day = note.day.toString()
-                    week = "周${Config.weekList[note.week]}"
-                }else if (item == 3){
-                    day = Config.numList[note.month] + "月" + Config.numList[note.day] + "日"
-                    week = "星期${Config.weekList[note.week]}"
-                }else if (item == 4){
-                    day = Config.yearList[note.year - 2013] + "年" +
-                            Config.numList[note.month] + "月" +
-                            Config.numList[note.day] + "日"
-                    week = "星期${Config.weekList[note.week]}"
-                }else if (item == 5){
-                    day = note.month.toString() + "月" + note.day + "日"
-                    week = "星期" + Config.weekList[note.week]
-                }else if (item == 6){
-                    day = note.month.toString() + "月" + note.day + "日"
-                    week = ""
-                }
-                p0.wait.visibility = View.GONE
-                p0.info.visibility = View.VISIBLE
-                p0.day.text = day
-                p0.title.text = note.content
-                p0.week.text = week
-            } else {
-                p0.info.visibility = View.GONE
-                p0.wait.visibility = View.VISIBLE
-                if (note.week == 1 || note.week == 7) {
-                    p0.wait.setTextColor(ActivityCompat.getColor(this,R.color.carnation))
-                }
-            }
         }
     }
 

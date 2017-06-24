@@ -15,6 +15,7 @@ import com.wuruoye.note.model.Config
 import com.wuruoye.note.model.Date
 import com.wuruoye.note.util.Extensions.toast
 import com.wuruoye.note.util.FileUtil
+import com.wuruoye.note.util.NoteUtil
 import com.wuruoye.note.util.TextOutUtil
 import kotlinx.android.synthetic.main.activity_show_note.*
 
@@ -28,7 +29,6 @@ class ShowNoteActivity : BaseActivity(), View.OnClickListener{
     private lateinit var dateFrom: Date
     private lateinit var dateTo: Date
     private lateinit var progressBar: ProgressDialog
-    private var saveDialog: AlertDialog.Builder? = null
 
     override val contentView: Int
         get() = R.layout.activity_show_note
@@ -44,7 +44,7 @@ class ShowNoteActivity : BaseActivity(), View.OnClickListener{
         getNoteText()
 
         tv_show_note_back.setOnClickListener(this)
-//        tv_show_note_save.setOnClickListener(this)
+        tv_show_note_save.setOnClickListener(this)
         tv_show_note_share.setOnClickListener(this)
     }
 
@@ -53,9 +53,9 @@ class ShowNoteActivity : BaseActivity(), View.OnClickListener{
             R.id.tv_show_note_back -> {
                 onBackPressed()
             }
-//            R.id.tv_show_note_save -> {
-//                saveNote()
-//            }
+            R.id.tv_show_note_save -> {
+                saveNote()
+            }
             R.id.tv_show_note_share -> {
                 shareNote()
             }
@@ -75,24 +75,29 @@ class ShowNoteActivity : BaseActivity(), View.OnClickListener{
     }
 
     private fun saveNote(){
-        var isOk = true
-        for (i in Config.permissionWrite){
-            if (ActivityCompat.checkSelfPermission(this,i) == PackageManager.PERMISSION_DENIED){
-                isOk = false
-                ActivityCompat.requestPermissions(this, arrayOf(i),1)
-            }
-        }
-        if (isOk) {
-            val string = tv_show_note.text.toString()
-            TextOutUtil.outToText(string, object : TextOutUtil.TextOutListener{
-                override fun onOutSuccess(path: String) {
-                    showSaveDialog(path)
-                }
-
-                override fun onOutFail(message: String) {
-                    toast(message)
-                }
-            })
+        if (requestPermission()) {
+            AlertDialog.Builder(this)
+                    .setTitle("请选择编码方式")
+                    .setItems(itemSaveNote) { _, which ->
+                        var toast = "保存失败"
+                        val text = tv_show_note.text.toString()
+                        val name = NoteUtil.getDate() + ".txt"
+                        val path = Config.outDirect + name
+                        when (which){
+                            0 -> {
+                                if (FileUtil.writeTextUTF8(path, text)){
+                                    toast = "保存成功, 请到 noteOut/$path 查看"
+                                }
+                            }
+                            1 -> {
+                                if (FileUtil.writeTextGBK(path, text)){
+                                    toast = "保存成功, 请到 noteOut/$name 查看"
+                                }
+                            }
+                        }
+                        toast(toast)
+                    }
+                    .show()
         }
     }
 
@@ -105,26 +110,18 @@ class ShowNoteActivity : BaseActivity(), View.OnClickListener{
     }
 
     private fun showSaveDialog(path: String){
-//        if (saveDialog == null){
-//            saveDialog = AlertDialog.Builder(this)
-//                    .setTitle("导出完成,请到\n根目录/outNote/文件夹查看")
-//                    .setPositiveButton("确定", { _, _ -> })
-//                    .setNegativeButton("取消", { _, _ -> })
-//        }
-        if (saveDialog == null){
-            saveDialog = AlertDialog.Builder(this)
-                    .setTitle("导出完成,路径为\n根目录/noteOut/")
-                    .setPositiveButton("确定", { _, _ ->
-                        FileUtil.readText(path)
-//                        val intent = Intent(Intent.ACTION_VIEW)
-//                        intent.addCategory(Intent.CATEGORY_DEFAULT)
-//                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-//                        intent.setDataAndType(FileProvider.getUriForFile(this, AUTHORITY, File(path)), "text/*")
-//                        startActivity(intent)
-                    })
-//                    .setNegativeButton("取消", { _, _ -> })
+
+    }
+
+    private fun requestPermission(): Boolean{
+        var isOk = true
+        for (i in Config.permissionWrite){
+            if (ActivityCompat.checkSelfPermission(this,i) == PackageManager.PERMISSION_DENIED){
+                isOk = false
+                ActivityCompat.requestPermissions(this, arrayOf(i),1)
+            }
         }
-        saveDialog!!.show()
+        return isOk
     }
 
     override fun onBackPressed() {
@@ -138,5 +135,8 @@ class ShowNoteActivity : BaseActivity(), View.OnClickListener{
 
     companion object{
         val AUTHORITY = "com.wuruoye.note.fileprovider"
+        val itemSaveNote = arrayOf(
+                "UTF-8（推荐）", "GBK"
+        )
     }
 }
