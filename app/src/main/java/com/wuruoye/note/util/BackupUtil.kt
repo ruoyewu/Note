@@ -67,65 +67,67 @@ object BackupUtil{
     }
 
     fun backupNoteRemote(context: Context): String {
-        val noteCache = NoteCache(context)
-        val name: String
-        val user = getUser(noteCache)
-        if (user == null){
-            return "备份失败，请重新登录"
-        }else{
-            name = user.userId
-            val cond = DroiCondition.cond("user", DroiCondition.Type.EQ, name)
-            val query = DroiQuery.Builder.newBuilder()
-                    .query(UpNote::class.java)
-                    .where(cond)
-                    .build()
-            val errorGet = DroiError()
-            val list = query.runQuery<UpNote>(errorGet)
-            val cloudList = ArrayList<UpNote>()
-            if (errorGet.isOk){
-                cloudList += list
-            }
-            val localList = SQLiteUtil.getAllNote(context)
-            val deleteList = ArrayList<UpNote>()
-            val saveList = ArrayList<UpNote>()
-
-            for (i in localList){
-                val note = UpNote()
-                note.user = name
-                note.color = i.style
-                note.content = i.content
-                note.year = i.year
-                note.month = i.month
-                note.day = i.day
-                note.direct = i.direct
-                if (i.bkImage != ""){
-                    note.bkFile = DroiFile(File(Config.imagePath + i.bkImage))
+        synchronized(this, {
+            val noteCache = NoteCache(context)
+            val name: String
+            val user = getUser(noteCache)
+            if (user == null){
+                return "备份失败，请重新登录"
+            }else{
+                name = user.userId
+                val cond = DroiCondition.cond("user", DroiCondition.Type.EQ, name)
+                val query = DroiQuery.Builder.newBuilder()
+                        .query(UpNote::class.java)
+                        .where(cond)
+                        .build()
+                val errorGet = DroiError()
+                val list = query.runQuery<UpNote>(errorGet)
+                val cloudList = ArrayList<UpNote>()
+                if (errorGet.isOk){
+                    cloudList += list
                 }
-                saveList.add(note)
-            }
-            for (i in cloudList){
-                val year = i.year
-                val month = i.month
-                val day = i.day
-                for (j in saveList){
-                    if (j.month == month && j.year == year && j.day == day){
-                        deleteList.add(i)
+                val localList = SQLiteUtil.getAllNote(context)
+                val deleteList = ArrayList<UpNote>()
+                val saveList = ArrayList<UpNote>()
+
+                for (i in localList){
+                    val note = UpNote()
+                    note.user = name
+                    note.color = i.style
+                    note.content = i.content
+                    note.year = i.year
+                    note.month = i.month
+                    note.day = i.day
+                    note.direct = i.direct
+                    if (i.bkImage != ""){
+                        note.bkFile = DroiFile(File(Config.imagePath + i.bkImage))
+                    }
+                    saveList.add(note)
+                }
+                for (i in cloudList){
+                    val year = i.year
+                    val month = i.month
+                    val day = i.day
+                    for (j in saveList){
+                        if (j.month == month && j.year == year && j.day == day){
+                            deleteList.add(i)
+                        }
                     }
                 }
-            }
                 for (i in deleteList){
-                if (i.bkFile != null){
-                    i.bkFile.delete()
+                    if (i.bkFile != null){
+                        i.bkFile.delete()
+                    }
+                    i.delete()
                 }
-                i.delete()
+                val errorSave = DroiObject.saveAll(saveList)
+                if (errorSave.isOk){
+                    return "备份成功"
+                }else{
+                    return errorSave.toString()
+                }
             }
-            val errorSave = DroiObject.saveAll(saveList)
-            if (errorSave.isOk){
-                return "备份成功"
-            }else{
-                return errorSave.toString()
-            }
-        }
+        })
     }
 
     fun saveCloudNote(upNoteList: ArrayList<UpNote>, context: Context){
@@ -276,42 +278,44 @@ object BackupUtil{
 
     //保存本地日记的同时保存到云端
     fun upNote(context: Context, note: Note){
-        val noteCache = NoteCache(context)
-        val name: String
-        val user = getUser(noteCache)
-        if (user == null){
+        synchronized(this, {
+            val noteCache = NoteCache(context)
+            val name: String
+            val user = getUser(noteCache)
+            if (user == null){
 
-        }else{
-            name = user.userId
-            val cond1 = DroiCondition.cond("user",DroiCondition.Type.EQ,name)
-            val query = DroiQuery.Builder.newBuilder()
-                    .query(UpNote::class.java)
-                    .where(cond1)
-                    .build()
-            val error = DroiError()
-            val list = query.runQuery<UpNote>(error)
-            if (error.isOk){
-                for (i in list){
-                    if (i.year == note.year && i.month == note.month && i.day == note.day){
-                        if (i.bkFile != null){
-                            i.bkFile.delete()
+            }else{
+                name = user.userId
+                val cond1 = DroiCondition.cond("user",DroiCondition.Type.EQ,name)
+                val query = DroiQuery.Builder.newBuilder()
+                        .query(UpNote::class.java)
+                        .where(cond1)
+                        .build()
+                val error = DroiError()
+                val list = query.runQuery<UpNote>(error)
+                if (error.isOk){
+                    for (i in list){
+                        if (i.year == note.year && i.month == note.month && i.day == note.day){
+                            if (i.bkFile != null){
+                                i.bkFile.delete()
+                            }
+                            i.delete()
                         }
-                        i.delete()
                     }
                 }
+                val upNote = UpNote()
+                upNote.user = name
+                upNote.content = note.content
+                upNote.color = note.style
+                upNote.year = note.year
+                upNote.month = note.month
+                upNote.day = note.day
+                upNote.direct = note.direct
+                if (note.bkImage != ""){
+                    upNote.bkFile = DroiFile(File(Config.imagePath + note.bkImage))
+                }
+                upNote.save()
             }
-            val upNote = UpNote()
-            upNote.user = name
-            upNote.content = note.content
-            upNote.color = note.style
-            upNote.year = note.year
-            upNote.month = note.month
-            upNote.day = note.day
-            upNote.direct = note.direct
-            if (note.bkImage != ""){
-                upNote.bkFile = DroiFile(File(Config.imagePath + note.bkImage))
-            }
-            upNote.save()
-        }
+        })
     }
 }

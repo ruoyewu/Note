@@ -23,6 +23,7 @@ import com.wuruoye.note.base.BaseActivity
 import com.wuruoye.note.model.Config
 import com.wuruoye.note.model.NoteCache
 import com.wuruoye.note.util.Extensions.toast
+import com.wuruoye.note.util.FingerUtil
 import kotlinx.android.synthetic.main.activity_lock.*
 import kotlinx.android.synthetic.main.dialog_change_pass.*
 
@@ -133,15 +134,12 @@ class LockActivity : BaseActivity() {
 
     private fun getFinger(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val manager = getSystemService(Context.FINGERPRINT_SERVICE) as FingerprintManager
-            getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
             if (requestPermission()){
-                if (manager.isHardwareDetected){
-                    if (!manager.hasEnrolledFingerprints()){
-                        setTip("暂无可用指纹，请到系统设置录入指纹后再使用", false)
-                    }else{
-                        manager.authenticate(null, mCancelSignal, 0, mSelfCanceled, null)
-                    }
+                try {
+                    val manager = FingerUtil.isFingerAvailable(this)
+                    manager.authenticate(null, mCancelSignal, 0, mSelfCanceled, null)
+                }catch (e: Exception){
+                    setTip(e.message.toString(), true)
                 }
             }
         }else {

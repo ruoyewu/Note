@@ -23,6 +23,7 @@ import com.wuruoye.note.base.BaseActivity
 import com.wuruoye.note.model.Config
 import com.wuruoye.note.model.NoteCache
 import com.wuruoye.note.util.Extensions.toast
+import com.wuruoye.note.util.FingerUtil
 import kotlinx.android.synthetic.main.activity_setting.*
 import kotlinx.android.synthetic.main.activity_show_lock.*
 
@@ -54,27 +55,7 @@ class ShowLockActivity : BaseActivity(), View.OnClickListener {
 
     override fun initView() {
         initDialog()
-        lockTip =
-                if (noteCache.isLock){
-                    "密码锁：开启"
-                }else {
-                    "密码锁：关闭"
-                }
-        isLock =
-                if (noteCache.isLock){
-                    "关闭密码锁"
-                }else{
-                    "开启密码锁"
-                }
-        fingerTip =
-                if (noteCache.isFinger){
-                    "关闭指纹"
-                }else{
-                    "使用指纹"
-                }
-        tv_show_lock_tip.text = lockTip
-        btn_lock_lock.text = isLock
-        btn_lock_finger.text = fingerTip
+        initButton()
 
         tv_lock_back.setOnClickListener(this)
         btn_lock_lock.setOnClickListener(this)
@@ -162,8 +143,32 @@ class ShowLockActivity : BaseActivity(), View.OnClickListener {
         passDialog.setOnDismissListener {
             passEdit.setText("")
             showSoftInput(false)
-            initView()
+            initButton()
         }
+    }
+
+    private fun initButton(){
+        lockTip =
+                if (noteCache.isLock){
+                    "密码锁：开启"
+                }else {
+                    "密码锁：关闭"
+                }
+        isLock =
+                if (noteCache.isLock){
+                    "关闭密码锁"
+                }else{
+                    "开启密码锁"
+                }
+        fingerTip =
+                if (noteCache.isFinger){
+                    "关闭指纹"
+                }else{
+                    "使用指纹"
+                }
+        tv_show_lock_tip.text = lockTip
+        btn_lock_lock.text = isLock
+        btn_lock_finger.text = fingerTip
     }
 
     private fun inputPass(text: String){
@@ -208,6 +213,7 @@ class ShowLockActivity : BaseActivity(), View.OnClickListener {
         }else if (currentState == CHANGE_PASS) {
             if (isFirst){
                 if (noteCache.lockPassword == text){
+                    isFirst = false
                     passEdit.setText("")
                     passDialog.setTitle("输入新密码")
                 }else {
@@ -246,32 +252,16 @@ class ShowLockActivity : BaseActivity(), View.OnClickListener {
 
     private fun getFinger(): Boolean{
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val manager = getSystemService(Context.FINGERPRINT_SERVICE) as FingerprintManager
-            getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
-            if (requestPermission()){
-                if (manager.isHardwareDetected){
-                    if (!manager.hasEnrolledFingerprints()){
-                        toast("暂无可用指纹，请到系统设置录入指纹后再使用")
-                    }else{
-                        return true
-                    }
-                }
+            try {
+                FingerUtil.isFingerAvailable(this)
+                return true
+            } catch(e: Exception) {
+                toast(e.message.toString())
             }
         }else {
             toast("指纹识别只支持android6.0及以上，请输入密码")
         }
         return false
-    }
-
-    private fun requestPermission():  Boolean{
-        var isOk = true
-        for (i in Config.permissionFinger){
-            if (ActivityCompat.checkSelfPermission(this, i) == PackageManager.PERMISSION_DENIED){
-                isOk = false
-                ActivityCompat.requestPermissions(this, Config.permissionFinger, 1)
-            }
-        }
-        return isOk
     }
 
     private fun showSoftInput(boolean: Boolean){

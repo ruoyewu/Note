@@ -1,8 +1,10 @@
 package com.wuruoye.note.view
 
 import android.app.Activity
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -11,6 +13,7 @@ import android.widget.TextView
 import com.wuruoye.note.R
 import com.wuruoye.note.adapter.NoteRVAdapter
 import com.wuruoye.note.base.BaseActivity
+import com.wuruoye.note.model.Config
 import com.wuruoye.note.model.Note
 import com.wuruoye.note.model.UpNote
 import com.wuruoye.note.util.BackupUtil
@@ -137,15 +140,28 @@ class ShowRemoteActivity : BaseActivity() {
     }
 
     private fun inputNote(list: ArrayList<UpNote>){
-        isChange = true
-        waitDialog.setTitle("正在导入中...")
-        waitDialog.show()
-        Thread({
-            BackupUtil.saveCloudNote(list, this)
-            runOnUiThread {
-                waitDialog.dismiss()
-                toast("导入成功")
+        if (requestPermission()) {
+            isChange = true
+            waitDialog.setTitle("正在导入中...")
+            waitDialog.show()
+            Thread({
+                BackupUtil.saveCloudNote(list, this)
+                runOnUiThread {
+                    waitDialog.dismiss()
+                    toast("导入成功")
+                }
+            }).start()
+        }
+    }
+
+    private fun requestPermission():  Boolean{
+        var isOk = true
+        for (i in Config.permissionWrite){
+            if (ActivityCompat.checkSelfPermission(this, i) == PackageManager.PERMISSION_DENIED){
+                isOk = false
+                ActivityCompat.requestPermissions(this, Config.permissionWrite, 1)
             }
-        }).start()
+        }
+        return isOk
     }
 }

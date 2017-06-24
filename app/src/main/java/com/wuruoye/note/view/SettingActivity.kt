@@ -232,6 +232,11 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
             add(view.findViewById(R.id.ib_pass_3) as ImageButton)
             add(view.findViewById(R.id.ib_pass_4) as ImageButton)
         }
+        for (i in passView){
+            i.setOnClickListener({
+                showSoftInput(true)
+            })
+        }
         passEdit = view.findViewById(R.id.et_pass) as EditText
         passEdit.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(s: Editable?) {
@@ -313,8 +318,6 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
     private fun changeLock() {
         passDialog.setTitle("输入密码")
         passDialog.show()
-        passEdit.isActivated = true
-        passEdit.requestFocus()
         showSoftInput(true)
     }
 
@@ -435,6 +438,8 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
     private fun showSoftInput(boolean: Boolean){
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         if (boolean){
+            passEdit.isActivated = true
+            passEdit.requestFocus()
             imm.showSoftInput(window.decorView,
                     InputMethodManager.SHOW_FORCED)
         }else {

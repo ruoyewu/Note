@@ -265,9 +265,12 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
 
     private fun checkBackup(){
         if (noteCache.isAutoBackup){
-            if (System.currentTimeMillis() - noteCache.lastBackup > 1000 * 60 * 60 * 24){
+            if (System.currentTimeMillis() - noteCache.lastBackup > 1000 * 60 * 60 * 12){
                 Thread({
                     BackupUtil.backupNoteRemote(applicationContext)
+                    runOnUiThread {
+                        noteCache.lastBackup = System.currentTimeMillis()
+                    }
                 }).start()
             }
         }

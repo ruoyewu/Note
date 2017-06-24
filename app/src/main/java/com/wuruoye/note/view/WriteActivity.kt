@@ -289,10 +289,16 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
     }
 
     private fun closeActivity(){
-        if (saveNote(true) || isSave)
+        if (saveNote(true) || isSave) {
+            if (NoteCache(this).isAutoBackup){
+                    Thread({
+                        BackupUtil.upNote(applicationContext,note)
+                    }).start()
+                }
             setResult(Activity.RESULT_OK)
+        }
 
-        if (Build.VERSION.SDK_INT > 21) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             finishAfterTransition()
         }else{
             finish()
@@ -448,13 +454,6 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
                 SQLiteUtil.deleteNote(this,note)
             }else{
                 SQLiteUtil.saveNote(this,note)
-                if (isClose) {
-                    if (NoteCache(this).isAutoBackup){
-                        Thread({
-                            BackupUtil.upNote(applicationContext,note)
-                        }).start()
-                    }
-                }
             }
             return true
         }else
