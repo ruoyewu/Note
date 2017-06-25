@@ -1,7 +1,8 @@
 package com.wuruoye.note.util
 
 import android.graphics.Bitmap
-import com.wuruoye.note.model.Config
+import com.liulishuo.filedownloader.FileDownloadListener
+import com.liulishuo.filedownloader.FileDownloader
 import java.io.*
 import java.nio.charset.Charset
 
@@ -71,5 +72,17 @@ object FileUtil{
             return true
         }
         return false
+    }
+
+
+    fun downloadFile(fromPath: String, toPath: String, listener: FileDownloadListener){
+        Thread({
+            FileDownloader.getImpl().create(fromPath)
+                    .setPath(toPath)
+                    .setListener(listener)
+                    .setCallbackProgressMinInterval(20)
+                    .setForceReDownload(true)
+                    .start()
+        }).start()
     }
 }

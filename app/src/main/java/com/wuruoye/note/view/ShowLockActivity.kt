@@ -185,7 +185,7 @@ class ShowLockActivity : BaseActivity(), View.OnClickListener {
             if (noteCache.isLock){
                 if (text == noteCache.lockPassword){
                     passDialog.dismiss()
-                    initView()
+                    initButton()
                     isChange = true
                     noteCache.isLock = false
                 }else {
@@ -199,7 +199,7 @@ class ShowLockActivity : BaseActivity(), View.OnClickListener {
                 }else {
                     if (text == previous){
                         passDialog.dismiss()
-                        initView()
+                        initButton()
                         isChange = true
                         noteCache.isLock = true
                         noteCache.lockPassword = text
@@ -223,7 +223,7 @@ class ShowLockActivity : BaseActivity(), View.OnClickListener {
             }else {
                 noteCache.lockPassword = text
                 passDialog.dismiss()
-                initView()
+                initButton()
             }
         }
     }

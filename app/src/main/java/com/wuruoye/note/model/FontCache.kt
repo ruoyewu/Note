@@ -13,12 +13,12 @@ import org.json.JSONArray
 class FontCache(context: Context) : BaseCache(context){
 
     var font: Int
-        get() = mSP!!.getInt(FONT, IS_FONT_CHANGE_DEFAULT)
-        set(value) = mSP!!.edit().putInt(FONT,value).apply()
+        get() = getInt(FONT, IS_FONT_CHANGE_DEFAULT)
+        set(value) = putInt(FONT,value)
 
     var fontSize: Float
-        get() = mSP!!.getFloat(FONT_SIZE, FONT_SIZE_DEFAULT)
-        set(value) = mSP!!.edit().putFloat(FONT_SIZE, value).apply()
+        get() = getFloat(FONT_SIZE, FONT_SIZE_DEFAULT)
+        set(value) = putFloat(FONT_SIZE, value)
 
     fun getFontDownloadList(): ArrayList<Int>{
         return FONT_DOWNLOAD_LIST_DEFAULT

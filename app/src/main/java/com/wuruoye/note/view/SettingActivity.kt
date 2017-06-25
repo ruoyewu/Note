@@ -21,6 +21,7 @@ import com.droi.sdk.core.DroiUser
 import com.wuruoye.note.R
 import com.wuruoye.note.base.BaseActivity
 import com.wuruoye.note.base.IAbsView
+import com.wuruoye.note.model.AppCache
 import com.wuruoye.note.model.Date
 import com.wuruoye.note.model.Note
 import com.wuruoye.note.model.NoteCache
@@ -36,6 +37,7 @@ import kotlinx.android.synthetic.main.activity_setting.*
 class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnCheckedChangeListener{
     private lateinit var noteGet: NoteGet
     private lateinit var noteCache: NoteCache
+    private lateinit var appCache: AppCache
     //save the state if we should refresh main activity, if true, yes
     private var isChange = false
     //save the date of the first note we write
@@ -76,15 +78,19 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
 
     override fun initData(bundle: Bundle?) {
         noteCache = NoteCache(this)
+        appCache = AppCache(this)
     }
 
     override fun initView() {
         initDialog()
+        initVersion()
         noteGet.requestAllNote()
 
         switch_backup.isChecked = noteCache.isAutoBackup
         switch_auto_save.isChecked = noteCache.isAutoSave
         switch_lock.isChecked = noteCache.isLock
+
+        iv_setting_update.setColorFilter(ActivityCompat.getColor(this, R.color.sundown))
 
         ll_setting_show.setOnClickListener(this)
         ll_setting_font.setOnClickListener(this)
@@ -96,6 +102,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
         ll_setting_state.setOnClickListener(this)
         ll_setting_font_size.setOnClickListener(this)
         ll_setting_lock.setOnClickListener(this)
+        ll_setting_app.setOnClickListener(this)
         switch_backup.setOnCheckedChangeListener(this)
         switch_auto_save.setOnCheckedChangeListener(this)
         switch_lock.setOnClickListener { changeLock() }
@@ -196,6 +203,9 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
                     showTimeDialog()
                 }
             }
+            R.id.ll_setting_app -> {
+                startAc(Intent(this, AppLogActivity::class.java), APP_LOG)
+            }
         }
     }
 
@@ -264,6 +274,15 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
             passEdit.setText("")
             showSoftInput(false)
             switch_lock.isChecked = noteCache.isLock
+        }
+    }
+
+    private fun initVersion(){
+        val version = packageManager
+                .getPackageInfo(packageName, 0)
+                .versionCode
+        if (version < appCache.remoteVersionCode && !appCache.isSeen){
+            iv_setting_update.visibility = View.VISIBLE
         }
     }
 
@@ -457,6 +476,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
         val CHANGE_FONT_SIZE = 7
         val FEEDBACK = 8
         val LOCK = 9
+        val APP_LOG = 10
 
         val CREATE_EMAIL = "2455929518@qq.com"
         val outItem = arrayOf(

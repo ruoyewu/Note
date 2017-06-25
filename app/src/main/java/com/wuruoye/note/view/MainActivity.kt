@@ -32,6 +32,7 @@ import com.wuruoye.note.util.BackupUtil
 import com.wuruoye.note.util.Extensions.toast
 import com.wuruoye.note.util.NoteUtil
 import com.wuruoye.note.util.SQLiteUtil
+import com.wuruoye.note.util.UpdateUtil
 import com.wuruoye.note.widget.SpringScrollView
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -112,6 +113,7 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
                 finish()
             }
         }
+        UpdateUtil.requestUtil(applicationContext)
     }
 
     override fun initPresenter() {

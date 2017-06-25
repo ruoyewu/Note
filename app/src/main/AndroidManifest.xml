@@ -43,6 +43,7 @@
         <activity android:name=".view.LockActivity"
             android:windowSoftInputMode="adjustPan|stateVisible"/>
         <activity android:name=".view.ShowLockActivity" />
+        <activity android:name=".view.AppLogActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

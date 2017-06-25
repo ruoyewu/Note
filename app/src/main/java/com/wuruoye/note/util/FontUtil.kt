@@ -5,6 +5,7 @@ import android.graphics.Typeface
 import android.os.Environment
 import com.liulishuo.filedownloader.FileDownloadListener
 import com.liulishuo.filedownloader.FileDownloader
+import com.wuruoye.note.model.Config
 
 /**
  * Created by wuruoye on 2017/5/30.
@@ -12,7 +13,6 @@ import com.liulishuo.filedownloader.FileDownloader
  */
 object FontUtil {
     private val fontPath = "/com.wuruoye.note/"
-    private val downloadPath = "https://github.com/ruoyewu/repository/raw/master/"
 
     private fun getFontPath(fontName: String): String{
         val path = Environment.getExternalStorageDirectory().absolutePath + fontPath + fontName
@@ -34,13 +34,6 @@ object FontUtil {
 
     fun downloadFont(name: String, listener: FileDownloadListener){
         val path = getFontPath(name)
-        Thread({
-            FileDownloader.getImpl().create(downloadPath + name)
-                    .setPath(path)
-                    .setListener(listener)
-                    .setCallbackProgressMinInterval(20)
-                    .setForceReDownload(true)
-                    .start()
-        }).start()
+        FileUtil.downloadFile(Config.baseUrl + name,path, listener)
     }
 }

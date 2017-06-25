@@ -10,48 +10,48 @@ import com.wuruoye.note.base.BaseCache
 class NoteCache(context: Context) : BaseCache(context) {
 
     var itemShow: Int
-        get() = mSP!!.getInt(ITEM_SHOW, ITEM_SHOW_DEFAULT)
-        set(value) = mSP!!.edit().putInt(ITEM_SHOW,value).apply()
+        get() = getInt(ITEM_SHOW, ITEM_SHOW_DEFAULT)
+        set(value) = putInt(ITEM_SHOW,value)
 
     var isAutoBackup: Boolean
-        get() = mSP!!.getBoolean(BACKUP, BACKUP_DEFAULT)
-        set(value) = mSP!!.edit().putBoolean(BACKUP,value).apply()
+        get() = getBoolean(BACKUP, BACKUP_DEFAULT)
+        set(value) = putBoolean(BACKUP,value)
 
     var lastBackup: Long
-        get() = mSP!!.getLong(LAST_BACKUP, LAST_BACKUP_DEFAULT)
-        set(value) = mSP!!.edit().putLong(LAST_BACKUP,value).apply()
+        get() = getLong(LAST_BACKUP, LAST_BACKUP_DEFAULT)
+        set(value) = putLong(LAST_BACKUP,value)
 
     var isLogin: Boolean
-        get() = mSP!!.getBoolean(IS_LOGIN, IS_LOGIN_DEFAULT)
-        set(value) = mSP!!.edit().putBoolean(IS_LOGIN, value).apply()
+        get() = getBoolean(IS_LOGIN, IS_LOGIN_DEFAULT)
+        set(value) = putBoolean(IS_LOGIN, value)
 
     var userName: String
-        get() = mSP!!.getString(USER_NAME, USER_NAME_DEFAULT)
-        set(value) = mSP!!.edit().putString(USER_NAME, value).apply()
+        get() = getString(USER_NAME, USER_NAME_DEFAULT)
+        set(value) = putString(USER_NAME, value)
 
     var userPass: String
-        get() = mSP!!.getString(USER_PASS, USER_PASS_DEFAULT)
-        set(value) = mSP!!.edit().putString(USER_PASS, value).apply()
+        get() = getString(USER_PASS, USER_PASS_DEFAULT)
+        set(value) = putString(USER_PASS, value)
 
     var isAutoSave: Boolean
-        get() = mSP!!.getBoolean(AUTO_SAVE, AUTO_SAVE_DEFAULT)
-        set(value) = mSP!!.edit().putBoolean(AUTO_SAVE, value).apply()
+        get() = getBoolean(AUTO_SAVE, AUTO_SAVE_DEFAULT)
+        set(value) = putBoolean(AUTO_SAVE, value)
 
     var autoState: Int
-        get() = mSP!!.getInt(AUTO_STATE, AUTO_STATE_DEFAULT)
-        set(value) = mSP!!.edit().putInt(AUTO_STATE, value).apply()
+        get() = getInt(AUTO_STATE, AUTO_STATE_DEFAULT)
+        set(value) = putInt(AUTO_STATE, value)
 
     var isLock: Boolean
-        get() = mSP!!.getBoolean(IS_LOCK, IS_LOCK_DEFAULT)
-        set(value) = mSP!!.edit().putBoolean(IS_LOCK, value).apply()
+        get() = getBoolean(IS_LOCK, IS_LOCK_DEFAULT)
+        set(value) = putBoolean(IS_LOCK, value)
 
     var isFinger: Boolean
-        get() = mSP!!.getBoolean(IS_FINGER, IS_FINGER_DEFAULT)
-        set(value) = mSP!!.edit().putBoolean(IS_FINGER, value).apply()
+        get() = getBoolean(IS_FINGER, IS_FINGER_DEFAULT)
+        set(value) = putBoolean(IS_FINGER, value)
 
     var lockPassword: String
-        get() = mSP!!.getString(LOCK_PASSWORD, LOCK_PASSWORD_DEFAULT)
-        set(value) = mSP!!.edit().putString(LOCK_PASSWORD, value).apply()
+        get() = getString(LOCK_PASSWORD, LOCK_PASSWORD_DEFAULT)
+        set(value) = putString(LOCK_PASSWORD, value)
 
     companion object{
         val ITEM_SHOW = "item_show"

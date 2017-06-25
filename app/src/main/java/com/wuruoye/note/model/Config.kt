@@ -12,6 +12,8 @@ object Config {
     val outDirect = Environment.getExternalStorageDirectory().absolutePath + "/noteOut/"
     val imagePath = Environment.getExternalStorageDirectory().absolutePath + "/com.wuruoye.note/image/"
     val backupPath = Environment.getExternalStorageDirectory().absolutePath + "/noteOut/backup/"
+    val baseUrl = "https://github.com/ruoyewu/repository/raw/master/"
+    val AUTHORITY = "com.wuruoye.note.fileprovider"
 
     val fontList = arrayOf(
             R.drawable.chenjishi,

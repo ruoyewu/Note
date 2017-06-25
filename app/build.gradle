@@ -9,7 +9,7 @@ android {
         applicationId "com.wuruoye.note"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 9
+        versionCode 10
         /*
             2 -> 1.1.0
             1. 增加字体修改功能
@@ -41,8 +41,14 @@ android {
             1. 优化备份系统
             2. 优化反馈界面
             3. 修复已知bug
+
+            10 -> 1.7.0
+            1. 增加密码锁功能
+            2. 优化导出功能
+            3. 优化备份功能
+            4. 支持写日记页面切换天数
         */
-        versionName "1.6.0"
+        versionName "1.7.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -76,10 +82,12 @@ dependencies {
     //友盟统计
     compile 'com.umeng.analytics:analytics:6.1.0'
     //卓易云端
-    compile 'com.squareup.okhttp3:okhttp:3.8.0'
     compile 'com.droi.sdk:Core:+'
     //图片压缩
     compile 'id.zelory:compressor:1.0.4'
+    //网络请求
+    compile 'com.squareup.okhttp3:okhttp:3.8.0'
+    compile 'com.squareup.retrofit2:retrofit:2.2.0'
 }
 
 repositories {
