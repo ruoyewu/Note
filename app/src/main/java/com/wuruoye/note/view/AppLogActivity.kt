@@ -29,6 +29,7 @@ import java.io.File
 class AppLogActivity : BaseActivity(), View.OnClickListener {
     private lateinit var appCache: AppCache
     private var versionTip = ""
+    private var localVersion = 0
 
     private val downloadListener = object : FileDownloadListener() {
         override fun warn(p0: BaseDownloadTask?) {
@@ -63,7 +64,7 @@ class AppLogActivity : BaseActivity(), View.OnClickListener {
 
     override fun initData(bundle: Bundle?) {
         appCache = AppCache(this)
-
+        localVersion = packageManager.getPackageInfo(packageName, 0).versionCode
         versionTip = "当前版本: " + getLocalVersion()
     }
 
@@ -75,7 +76,12 @@ class AppLogActivity : BaseActivity(), View.OnClickListener {
         if (!appCache.isSeen){
             showUpdateDialog()
         }
+        if (appCache.remoteVersionCode > localVersion){
+            tv_app_log_update.visibility = View.VISIBLE
+        }
+
         tv_app_log_back.setOnClickListener(this)
+        tv_app_log_update.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -83,12 +89,15 @@ class AppLogActivity : BaseActivity(), View.OnClickListener {
             R.id.tv_app_log_back -> {
                 onBackPressed()
             }
+            R.id.tv_app_log_update -> {
+                showUpdateDialog()
+            }
         }
     }
 
     private fun showUpdateDialog(){
         AlertDialog.Builder(this)
-                .setTitle("应用有更新了!\n是否更新?")
+                .setTitle("有新版本${appCache.remoteVersion} \n 是否更新?")
                 .setPositiveButton("更新"){ _, _ -> update() }
                 .setNegativeButton("取消"){_, _ -> }
                 .show()

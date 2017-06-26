@@ -103,6 +103,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
         ll_setting_font_size.setOnClickListener(this)
         ll_setting_lock.setOnClickListener(this)
         ll_setting_app.setOnClickListener(this)
+        ll_setting_theme.setOnClickListener(this)
         switch_backup.setOnCheckedChangeListener(this)
         switch_auto_save.setOnCheckedChangeListener(this)
         switch_lock.setOnClickListener { changeLock() }
@@ -205,6 +206,9 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
             }
             R.id.ll_setting_app -> {
                 startAc(Intent(this, AppLogActivity::class.java), APP_LOG)
+            }
+            R.id.ll_setting_theme -> {
+                startAc(Intent(this, ThemeActivity::class.java), CHANGE_THEME)
             }
         }
     }
@@ -477,15 +481,6 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
         val FEEDBACK = 8
         val LOCK = 9
         val APP_LOG = 10
-
-        val CREATE_EMAIL = "2455929518@qq.com"
-        val outItem = arrayOf(
-                "导出到文本"
-        )
-        val shareItem = arrayOf(
-                "打开文件",
-                "分享文件",
-                "不操作"
-        )
+        val CHANGE_THEME = 11
     }
 }

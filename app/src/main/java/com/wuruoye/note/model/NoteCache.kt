@@ -53,6 +53,10 @@ class NoteCache(context: Context) : BaseCache(context) {
         get() = getString(LOCK_PASSWORD, LOCK_PASSWORD_DEFAULT)
         set(value) = putString(LOCK_PASSWORD, value)
 
+    var theme: Int
+        get() = getInt(THEME, THEME_DEFAULT)
+        set(value) = putInt(THEME, value)
+
     companion object{
         val ITEM_SHOW = "item_show"
         val BACKUP = "isAutoBackup"
@@ -65,6 +69,7 @@ class NoteCache(context: Context) : BaseCache(context) {
         val IS_LOCK = "is_lock"
         val IS_FINGER = "is_finger"
         val LOCK_PASSWORD = "lock_password"
+        val THEME = "theme"
 
         val ITEM_SHOW_DEFAULT = 1
         val BACKUP_DEFAULT = false
@@ -77,5 +82,6 @@ class NoteCache(context: Context) : BaseCache(context) {
         val IS_LOCK_DEFAULT = false
         val IS_FINGER_DEFAULT = false
         val LOCK_PASSWORD_DEFAULT = "0358"
+        val THEME_DEFAULT = 0
     }
 }

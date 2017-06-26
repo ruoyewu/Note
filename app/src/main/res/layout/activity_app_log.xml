@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/tv_app_log_tip"
-        android:text="@string/example_d"
+        android:text="@string/example"
         android:gravity="center_horizontal"
         android:padding="10dp"
         android:layout_width="match_parent"
@@ -24,16 +24,31 @@
             android:layout_height="match_parent" />
     </com.wuruoye.note.widget.SpringScrollView>
 
-    <TextView
-        android:id="@+id/tv_app_log_back"
-        android:background="@drawable/back"
-        android:text="设"
-        android:transitionName="@string/translate_note_button"
-        android:gravity="center"
-        android:textColor="@color/romance"
-        android:layout_gravity="center"
-        android:layout_marginBottom="10dp"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        tools:ignore="UnusedAttribute" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_app_log_back"
+            android:background="@drawable/back"
+            android:text="设"
+            android:transitionName="@string/translate_note_button"
+            android:gravity="center"
+            android:textColor="@color/romance"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="10dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            tools:ignore="UnusedAttribute" />
+        <TextView
+            android:id="@+id/tv_app_log_update"
+            android:visibility="gone"
+            android:text="升"
+            android:textColor="@color/carnation"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
 </LinearLayout>
