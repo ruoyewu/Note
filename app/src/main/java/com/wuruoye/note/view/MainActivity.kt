@@ -434,7 +434,7 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
         mNoteAdapter = NoteRVAdapter(noteList, this)
         rv_note.adapter = mNoteAdapter
         ssv_note.post {
-            ssv_note.scrollBy(0, ssv_note.measuredHeight * 2)
+            ssv_note.scrollBy(0, ssv_note.measuredHeight * 10)
         }
     }
 

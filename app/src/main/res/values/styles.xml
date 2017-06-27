@@ -7,12 +7,42 @@
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/gray</item>
         <item name="android:textColorPrimaryInverse">@color/gray</item>
+        <item name="android:editTextColor">@color/gray</item>
         <item name="colorPrimary">@color/romance</item>
         <item name="colorPrimaryDark">@color/romance</item>
         <item name="colorAccent">@color/gray</item>
         <item name="android:popupMenuStyle">@style/popMenu</item>
         <item name="android:popupWindowStyle">@style/popMenu</item>
-        <item name="android:alertDialogTheme">@style/dialogTheme</item>
+        <item name="android:datePickerStyle">@style/datePickerTheme</item>
+    </style>
+
+    <style name="theme1" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:typeface">serif</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/sundown</item>
+        <item name="android:textColorPrimaryInverse">@color/sundown</item>
+        <item name="android:editTextColor">@color/sundown</item>
+        <item name="colorPrimary">@color/romance</item>
+        <item name="colorPrimaryDark">@color/romance</item>
+        <item name="colorAccent">@color/sundown</item>
+        <item name="android:popupMenuStyle">@style/popMenu</item>
+        <item name="android:popupWindowStyle">@style/popMenu</item>
+        <item name="android:datePickerStyle">@style/datePickerTheme</item>
+    </style>
+
+    <style name="theme2" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:typeface">serif</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/romance</item>
+        <item name="android:textColorPrimaryInverse">@color/romance</item>
+        <item name="android:editTextColor">@color/romance</item>
+        <item name="colorPrimary">@color/gray</item>
+        <item name="colorPrimaryDark">@color/gray</item>
+        <item name="colorAccent">@color/romance</item>
+        <item name="android:popupMenuStyle">@style/popMenu</item>
+        <item name="android:popupWindowStyle">@style/popMenu</item>
         <item name="android:datePickerStyle">@style/datePickerTheme</item>
     </style>
 
@@ -26,11 +56,6 @@
         <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:backgroundDimEnabled">false</item>
-    </style>
-
-    <style name="dialogTheme" parent="AlertDialog.AppCompat.Light">
-        <item name="android:textColor">@color/gray</item>
-        <item name="android:textColorSecondary">@color/gray</item>
     </style>
 
     <style name="datePickerTheme" parent="@android:style/Widget.DeviceDefault.DatePicker">

@@ -257,19 +257,21 @@ object BackupUtil{
         val list = ArrayList<Backup>()
         val directory = Config.backupPath
         val file = File(directory)
-        for (i in file.listFiles()){
-            if (i.isDirectory){
-                val name = i.name
-                var size = 0
-                for (j in i.listFiles()){
-                    if (j.isFile){
-                        val text = FileUtil.readText(j.absolutePath)
-                        val jsonArray = JSONArray(text)
-                        size = jsonArray.length()
+        if (file.exists()) {
+            for (i in file.listFiles()){
+                if (i.isDirectory){
+                    val name = i.name
+                    var size = 0
+                    for (j in i.listFiles()){
+                        if (j.isFile){
+                            val text = FileUtil.readText(j.absolutePath)
+                            val jsonArray = JSONArray(text)
+                            size = jsonArray.length()
+                        }
                     }
+                    val backup = Backup(name, size)
+                    list.add(backup)
                 }
-                val backup = Backup(name, size)
-                list.add(backup)
             }
         }
         return list

@@ -103,7 +103,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
         ll_setting_font_size.setOnClickListener(this)
         ll_setting_lock.setOnClickListener(this)
         ll_setting_app.setOnClickListener(this)
-        ll_setting_theme.setOnClickListener(this)
+//        ll_setting_theme.setOnClickListener(this)
         switch_backup.setOnCheckedChangeListener(this)
         switch_auto_save.setOnCheckedChangeListener(this)
         switch_lock.setOnClickListener { changeLock() }
@@ -145,6 +145,10 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
                 if (resultCode == Activity.RESULT_OK){
                     switch_lock.isChecked = noteCache.isLock
                 }
+            }
+            CHANGE_THEME -> {
+                isChange = true
+                recreate()
             }
         }
     }
@@ -207,9 +211,9 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
             R.id.ll_setting_app -> {
                 startAc(Intent(this, AppLogActivity::class.java), APP_LOG)
             }
-            R.id.ll_setting_theme -> {
-                startAc(Intent(this, ThemeActivity::class.java), CHANGE_THEME)
-            }
+//            R.id.ll_setting_theme -> {
+//                startAc(Intent(this, ThemeActivity::class.java), CHANGE_THEME)
+//            }
         }
     }
 

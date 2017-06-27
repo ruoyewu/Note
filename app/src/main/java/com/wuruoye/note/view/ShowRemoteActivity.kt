@@ -98,7 +98,7 @@ class ShowRemoteActivity : BaseActivity() {
         rv_backup_remote.layoutManager = layoutManager
         rv_backup_remote.adapter = adapter
         ssv_backup_remote.post {
-            ssv_backup_remote.smoothScrollBy(0, ssv_backup_remote.measuredHeight * 2)
+            ssv_backup_remote.smoothScrollBy(0, ssv_backup_remote.measuredHeight * 10)
         }
     }
 

@@ -83,7 +83,7 @@ class ShowLocalActivity : BaseActivity() {
         rv_backup_local.layoutManager = layoutManager
         rv_backup_local.adapter = adapter
         ssv_backup_local.post {
-            ssv_backup_local.smoothScrollBy(0, ssv_backup_local.measuredHeight)
+            ssv_backup_local.smoothScrollBy(0, ssv_backup_local.measuredHeight * 10)
         }
     }
 
