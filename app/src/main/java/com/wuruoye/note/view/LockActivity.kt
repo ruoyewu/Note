@@ -36,29 +36,35 @@ class LockActivity : BaseActivity() {
     private lateinit var noteCache: NoteCache
     private val passView = ArrayList<ImageButton>()
     private val mCancelSignal = CancellationSignal()
-    private val mSelfCanceled = object : FingerprintManager.AuthenticationCallback(){
-        override fun onAuthenticationError(errorCode: Int, errString: CharSequence?) {
-            super.onAuthenticationError(errorCode, errString)
-            setTip("您已多次识别指纹失败，请输入密码", true)
-        }
-
-        override fun onAuthenticationSucceeded(result: FingerprintManager.AuthenticationResult?) {
-            super.onAuthenticationSucceeded(result)
-            setTip("指纹识别成功", false)
-            passTrue()
-        }
-
-        override fun onAuthenticationFailed() {
-            super.onAuthenticationFailed()
-            setTip("指纹错误，请重试", true)
-        }
-    }
+    private lateinit var mSelfCanceled: FingerprintManager.AuthenticationCallback
 
     override val contentView: Int
         get() = R.layout.activity_lock
 
     override fun initData(bundle: Bundle?) {
         noteCache = NoteCache(this)
+
+        if (noteCache.isFinger) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                mSelfCanceled = object : FingerprintManager.AuthenticationCallback(){
+                    override fun onAuthenticationError(errorCode: Int, errString: CharSequence?) {
+                        super.onAuthenticationError(errorCode, errString)
+                        setTip("您已多次识别指纹失败，请输入密码", true)
+                    }
+
+                    override fun onAuthenticationSucceeded(result: FingerprintManager.AuthenticationResult?) {
+                        super.onAuthenticationSucceeded(result)
+                        setTip("指纹识别成功", false)
+                        passTrue()
+                    }
+
+                    override fun onAuthenticationFailed() {
+                        super.onAuthenticationFailed()
+                        setTip("指纹错误，请重试", true)
+                    }
+                }
+            }
+        }
     }
 
     override fun initView() {
