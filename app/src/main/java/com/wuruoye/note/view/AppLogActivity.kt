@@ -4,10 +4,16 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
 import android.support.v4.content.FileProvider
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.ProgressBar
+import android.widget.RelativeLayout
 import com.liulishuo.filedownloader.BaseDownloadTask
 import com.liulishuo.filedownloader.FileDownloadListener
 import com.wuruoye.note.R
@@ -19,6 +25,8 @@ import com.wuruoye.note.model.AppLog
 import com.wuruoye.note.model.Config
 import com.wuruoye.note.util.Extensions.toast
 import com.wuruoye.note.util.FileUtil
+import com.wuruoye.note.widget.HeartbeatView
+import com.wuruoye.note.widget.ProcessView
 import kotlinx.android.synthetic.main.activity_app_log.*
 import org.json.JSONArray
 import java.io.File
@@ -32,6 +40,10 @@ class AppLogActivity : BaseActivity(), View.OnClickListener {
     private lateinit var appCache: AppCache
     private var versionTip = ""
     private var localVersion = 0
+    private var mView: RelativeLayout? = null
+    private var mHeartView: HeartbeatView? = null
+    private var mProgressBar: ProcessView? = null
+    private var mProgressView: AlertDialog? = null
 
     private val downloadListener = object : FileDownloadListener() {
         override fun warn(p0: BaseDownloadTask?) {
@@ -109,8 +121,21 @@ class AppLogActivity : BaseActivity(), View.OnClickListener {
     private fun update(){
         val fromPath = Config.baseUrl + "jianji.apk"
         val toPath = Config.outDirect + "jianji.apk"
-//        FileUtil.downloadFile(fromPath, toPath, downloadListener)
-        completeDownload(toPath)
+        FileUtil.downloadFile(fromPath, toPath, downloadListener)
+
+        val view = LayoutInflater.from(this)
+                .inflate(R.layout.dialog_progress, null)
+        mView = view.findViewById(R.id.rv_dialog_progress) as RelativeLayout?
+        mHeartView = view.findViewById(R.id.hv_dialog_progress) as HeartbeatView?
+        mProgressBar = view.findViewById(R.id.pb_dialog_progress) as ProcessView?
+        mProgressBar!!.setColor(ActivityCompat.getColor(this, R.color.gray))
+        mProgressView = AlertDialog.Builder(this)
+                .setTitle("正在下载中...")
+                .setView(view)
+                .create()
+        mProgressView!!.setCanceledOnTouchOutside(false)
+        mProgressView!!.show()
+//        completeDownload(toPath)
     }
 
     private fun setWorn(worn: String){
@@ -118,20 +143,23 @@ class AppLogActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun setDownloadProgress(progress: Float){
-
+        val half = mHeartView!!.measuredWidth / 2
+        var width = mProgressBar?.measuredWidth!! * progress / 100 - half
+        if (width - half < 0)
+            width = half.toFloat()
+        if (width + half * 2 > mProgressBar!!.measuredWidth)
+            width = mProgressBar!!.measuredWidth - half.toFloat() * 2
+        mHeartView!!.translationX = width
+        mProgressBar!!.setProcess(progress)
     }
 
     private fun completeDownload(path: String){
+        mProgressView?.dismiss()
         toast("下载完成，准备安装...")
         val file = File(path)
         if (!file.exists()){
             toast("安装文件失败")
         }else {
-//            val intent = Intent(Intent.ACTION_VIEW)
-//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//            intent.setDataAndType(FileProvider.getUriForFile(this, Config.AUTHORITY, file),
-//                    "application/vnd.android.package-archive")
-//            startActivity(intent)
             val intent = Intent(Intent.ACTION_VIEW)
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             val uri =
