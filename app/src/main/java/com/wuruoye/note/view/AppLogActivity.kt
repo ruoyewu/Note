@@ -1,6 +1,8 @@
 package com.wuruoye.note.view
 
 import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.content.FileProvider
 import android.support.v7.app.AlertDialog
@@ -76,7 +78,7 @@ class AppLogActivity : BaseActivity(), View.OnClickListener {
         if (!appCache.isSeen){
             showUpdateDialog()
         }
-        if (appCache.remoteVersionCode > localVersion){
+        if (appCache.remoteVersionCode >= localVersion){
             tv_app_log_update.visibility = View.VISIBLE
         }
 
@@ -107,7 +109,8 @@ class AppLogActivity : BaseActivity(), View.OnClickListener {
     private fun update(){
         val fromPath = Config.baseUrl + "jianji.apk"
         val toPath = Config.outDirect + "jianji.apk"
-        FileUtil.downloadFile(fromPath, toPath, downloadListener)
+//        FileUtil.downloadFile(fromPath, toPath, downloadListener)
+        completeDownload(toPath)
     }
 
     private fun setWorn(worn: String){
@@ -124,10 +127,21 @@ class AppLogActivity : BaseActivity(), View.OnClickListener {
         if (!file.exists()){
             toast("安装文件失败")
         }else {
+//            val intent = Intent(Intent.ACTION_VIEW)
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//            intent.setDataAndType(FileProvider.getUriForFile(this, Config.AUTHORITY, file),
+//                    "application/vnd.android.package-archive")
+//            startActivity(intent)
             val intent = Intent(Intent.ACTION_VIEW)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            intent.setDataAndType(FileProvider.getUriForFile(this, Config.AUTHORITY, file),
-                    "application/*")
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            val uri =
+                    if (Build.VERSION.SDK_INT >= 24){
+                        FileProvider.getUriForFile(this, Config.AUTHORITY, file)
+                    }else{
+                        Uri.fromFile(file)
+                    }
+            val type = "application/vnd.android.package-archive"
+            intent.setDataAndType(uri, type)
             startActivity(intent)
         }
     }

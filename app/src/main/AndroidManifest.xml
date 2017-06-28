@@ -64,6 +64,8 @@
         <!--Droi云服务-->
         <meta-data android:name="com.droi.sdk.application_id" android:value="2hivmbzh1Fzh9CxmsqcPMMgdMM96EILnlQA0ws8M"/>
         <meta-data android:name="com.droi.sdk.channel_name" android:value="KuAn"/>
+
+        <service android:name=".model.AppDownloadService" />
     </application>
 
 </manifest>
