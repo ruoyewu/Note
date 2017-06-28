@@ -10,15 +10,11 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import com.liulishuo.filedownloader.BaseDownloadTask
 import com.liulishuo.filedownloader.FileDownloadListener
 import com.wuruoye.note.R
 import com.wuruoye.note.adapter.AppLogRVAdapter
-
 import com.wuruoye.note.base.BaseActivity
 import com.wuruoye.note.model.AppCache
 import com.wuruoye.note.model.AppLog

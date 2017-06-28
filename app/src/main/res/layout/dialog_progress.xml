@@ -11,7 +11,7 @@
         android:id="@+id/pb_dialog_progress"
         android:layout_centerVertical="true"
         android:layout_width="match_parent"
-        android:layout_height="10dp" />
+        android:layout_height="8dp" />
 
     <com.wuruoye.note.widget.HeartbeatView
         android:id="@+id/hv_dialog_progress"
