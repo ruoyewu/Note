@@ -25,7 +25,6 @@ class CustomRelativeLayout : RelativeLayout {
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-        Log.e("ruoyenote", "sizeChange")
     }
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
@@ -33,7 +32,6 @@ class CustomRelativeLayout : RelativeLayout {
         if (listener != null){
             listener!!.onChange()
         }
-        Log.e("ruoyenote","onLayout")
     }
 
     interface OnChangeListener{
