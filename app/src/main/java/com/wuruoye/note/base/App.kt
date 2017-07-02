@@ -45,11 +45,7 @@ class App : Application(){
             } catch(e: Exception) {
                 toast("字体加载出错...请稍后重新下载")
                 fontCache.font = 0
-                val list = fontCache.getFontList()
-                if (list.contains(font)){
-                    list.remove(font)
-                }
-                fontCache.setFontList(list)
+                FontUtil.deleteFontFromStorage(Config.fontNameList[font - 1])
             }
         }
     }

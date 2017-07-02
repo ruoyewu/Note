@@ -131,11 +131,6 @@ class FontDownloadActivity : BaseActivity() ,View.OnClickListener{
     private fun downloadComplete(){
         TransitionManager.beginDelayedTransition(ll_font_download,Slide(Gravity.BOTTOM))
         val item = ivList[currentItem].tag as Int + 1
-        val list2 = fontCache.getFontList()
-        if (!list2.contains(item)) {
-            list2.add(item)
-        }
-        fontCache.setFontList(list2)
 
         tvList[currentItem].text = "已下载"
         ivList[currentItem].setColorFilter(backColor,PorterDuff.Mode.DARKEN)
@@ -153,7 +148,7 @@ class FontDownloadActivity : BaseActivity() ,View.OnClickListener{
         llList.clear()
         pvList.clear()
         val listToDownload = fontCache.getFontDownloadList()
-        val listDownloaded = fontCache.getFontList()
+        val listDownloaded = FontUtil.getFontFromStorage()
         for (i in 0..listToDownload.size - 1){
             @SuppressLint("InflateParams")
             val llView = LayoutInflater.from(this).inflate(R.layout.item_font_download,null) as LinearLayout
