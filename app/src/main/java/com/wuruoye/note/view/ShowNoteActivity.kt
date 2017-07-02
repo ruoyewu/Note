@@ -91,13 +91,13 @@ class ShowNoteActivity : BaseActivity(), View.OnClickListener{
                             0 -> {
                                 if (FileUtil.writeTextUTF8(path, text)){
 //                                    shareNote(path)
-                                    toast("保存成功, 请到 noteOut/$path 查看")
+                                    toast("保存成功, 请到 noteOut/$name 查看")
                                 }
                             }
                             1 -> {
                                 if (FileUtil.writeTextGBK(path, text)){
 //                                    shareNote(path)
-                                    toast("保存成功, 请到 noteOut/$path 查看")
+                                    toast("保存成功, 请到 noteOut/$name 查看")
                                 }
                             }
                         }

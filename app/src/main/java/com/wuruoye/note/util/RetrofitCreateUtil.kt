@@ -14,7 +14,7 @@ object RetrofitCreateUtil{
     fun getRetrofit(): Retrofit{
         val retrofit = Retrofit.Builder()
                 .client(OkHttpClient())
-                .baseUrl(Config.baseUrl)
+                .baseUrl(Config.Github_baseUrl)
                 .build()
         return retrofit
     }

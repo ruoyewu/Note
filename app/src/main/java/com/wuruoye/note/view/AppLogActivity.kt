@@ -115,7 +115,7 @@ class AppLogActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun update(){
-        val fromPath = Config.baseUrl + "jianji.apk"
+        val fromPath = Config.Github_baseUrl + "jianji.apk"
         val toPath = Config.outDirect + "jianji.apk"
         FileUtil.downloadFile(fromPath, toPath, downloadListener)
 

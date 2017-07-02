@@ -60,11 +60,6 @@ android {
 //            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-        debug{
-//            minifyEnabled true
-//            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
     }
 }
 
@@ -74,12 +69,12 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
-    compile 'com.android.support:support-v4:25.3.1'
+    compile "com.android.support:appcompat-v7:25.3.1"
+    compile "com.android.support:design:25.3.1"
+    compile "com.android.support:support-v4:25.3.1"
     //动画
     compile "com.andkulikov:transitionseverywhere:1.7.3"
-    compile 'com.android.support:support-dynamic-animation:25.3.1'
+    compile "com.android.support:support-dynamic-animation:25.3.1"
     //下载
     compile 'com.liulishuo.filedownloader:library:1.4.3'
     //友盟统计
@@ -98,5 +93,14 @@ repositories {
     // DroiCore SDK来源地址
     maven {
         url "https://github.com/DroiBaaS/DroiBaaS-SDK-Android/raw/master/"
+    }
+}
+buildscript {
+    ext.kotlin_version = '1.1.3'
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }

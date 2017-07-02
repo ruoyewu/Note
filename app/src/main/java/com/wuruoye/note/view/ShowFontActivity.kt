@@ -30,6 +30,7 @@ import kotlinx.android.synthetic.main.activity_show_font.*
 class ShowFontActivity : BaseActivity(), View.OnClickListener{
     private lateinit var fontCache: FontCache
     private var lastFont: Int = 0
+    private lateinit var fontList: ArrayList<Int>
 
     private val llItem = ArrayList<LinearLayout>()
     private val ivList = ArrayList<ImageView>()
@@ -40,13 +41,14 @@ class ShowFontActivity : BaseActivity(), View.OnClickListener{
     override fun initData(bundle: Bundle?) {
         fontCache = FontCache(this)
         lastFont = fontCache.font
+        fontList = FontUtil.getFontFromStorage()
     }
 
     override fun initView() {
         initFontShow()
 
         if (fontCache.font > 0){
-            val item = fontCache.getFontList().indexOf(fontCache.font)
+            val item = fontList.indexOf(fontCache.font)
             setIV(item)
         }
         tv_font_set_back.setOnClickListener(this)
@@ -100,13 +102,12 @@ class ShowFontActivity : BaseActivity(), View.OnClickListener{
 
     private fun initFontShow(){
         TransitionManager.beginDelayedTransition(ll_font_show,Slide(Gravity.BOTTOM))
-        val list = fontCache.getFontList()
-        for (i in 0..list.size - 1){
+        for (i in 0..fontList.size - 1){
             @SuppressLint("InflateParams")
             val llView = LayoutInflater.from(this).inflate(R.layout.item_font_show,null) as LinearLayout
             val iv = llView.findViewById(R.id.iv_font_show) as ImageView
             val ivv = llView.findViewById(R.id.iv_font_select) as ImageView
-            iv.setImageResource(Config.fontList[list[i] - 1])
+            iv.setImageResource(Config.fontList[fontList[i] - 1])
             ivList.add(ivv)
             iv.tag = i
             iv.setOnClickListener(this)
@@ -123,23 +124,20 @@ class ShowFontActivity : BaseActivity(), View.OnClickListener{
     }
 
     private fun setClick(item: Int){
-        val num = fontCache.getFontList()[item]
-        fontCache.font = num
+        val num = fontList[item]
+        val name = Config.fontNameList[num - 1]
         try {
-            val name = Config.fontNameList[num - 1]
             val map = HashMap<String,String>()
             map.put("font",name)
             MobclickAgent.onEvent(this,"font_click",map)
 
             FontUtil.setFont(this,false,name)
+            fontCache.font = num
         } catch(e: Exception) {
             toast("字体加载出错")
-            val list = fontCache.getFontList()
-            if (list.contains(num)){
-                list.remove(num)
-            }
-            fontCache.font = 0
-            fontCache.setFontList(list)
+            FontUtil.deleteFontFromStorage(name)
+            fontList = FontUtil.getFontFromStorage()
+            initFontShow()
         }
         recreate()
     }
