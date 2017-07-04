@@ -46,6 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <ImageView
+                    android:id="@+id/iv_setting_backup"
                     android:src="@drawable/ic_cloud"
                     android:layout_marginRight="10dp"
                     android:layout_width="30dp"
@@ -66,6 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <ImageView
+                    android:id="@+id/iv_setting_auto_save"
                     android:src="@drawable/ic_save"
                     android:layout_marginRight="10dp"
                     android:layout_width="30dp"
@@ -88,6 +90,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <ImageView
+                    android:id="@+id/iv_setting_lock"
                     android:src="@drawable/ic_lock"
                     android:layout_marginRight="10dp"
                     android:layout_width="30dp"
@@ -109,6 +112,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <ImageView
+                    android:id="@+id/iv_setting_state"
                     android:src="@drawable/ic_show_state"
                     android:layout_marginRight="10dp"
                     android:layout_width="30dp"
@@ -156,6 +160,7 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
+                    android:id="@+id/iv_setting_font_size"
                     android:src="@drawable/ic_font_size"
                     android:layout_marginRight="10dp"
                     android:layout_width="30dp"
@@ -180,6 +185,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <ImageView
+                    android:id="@+id/iv_setting_font"
                     android:src="@drawable/ic_font"
                     android:layout_marginRight="10dp"
                     android:layout_width="30dp"
@@ -194,28 +200,6 @@
                     android:layout_width="25dp"
                     android:layout_height="25dp" />
             </LinearLayout>
-            <!--<LinearLayout-->
-                <!--android:id="@+id/ll_setting_theme"-->
-                <!--android:orientation="horizontal"-->
-                <!--android:padding="10dp"-->
-                <!--android:gravity="center_vertical"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content">-->
-                <!--<ImageView-->
-                    <!--android:src="@drawable/ic_theme"-->
-                    <!--android:layout_marginRight="10dp"-->
-                    <!--android:layout_width="30dp"-->
-                    <!--android:layout_height="20dp" />-->
-                <!--<TextView-->
-                    <!--android:text="主题"-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:layout_height="wrap_content" />-->
-                <!--<ImageView-->
-                    <!--android:src="@drawable/ic_right"-->
-                    <!--android:layout_width="25dp"-->
-                    <!--android:layout_height="25dp" />-->
-            <!--</LinearLayout>-->
             <LinearLayout
                 android:id="@+id/ll_setting_user"
                 android:padding="10dp"
@@ -224,6 +208,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <ImageView
+                    android:id="@+id/iv_setting_user"
                     android:src="@drawable/ic_user"
                     android:layout_marginRight="10dp"
                     android:layout_width="30dp"
@@ -247,6 +232,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <ImageView
+                    android:id="@+id/iv_setting_out"
                     android:src="@drawable/ic_out"
                     android:layout_marginRight="10dp"
                     android:layout_width="30dp"
@@ -270,6 +256,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <ImageView
+                    android:id="@+id/iv_setting_feedback"
                     android:src="@drawable/ic_email"
                     android:layout_marginRight="10dp"
                     android:layout_width="30dp"
@@ -292,6 +279,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <ImageView
+                    android:id="@+id/iv_setting_app"
                     android:src="@drawable/ic_app"
                     android:layout_marginRight="10dp"
                     android:layout_width="30dp"

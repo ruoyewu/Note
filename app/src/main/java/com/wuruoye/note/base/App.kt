@@ -6,10 +6,7 @@ import com.droi.sdk.core.DroiCloud
 import com.droi.sdk.core.DroiObject
 import com.droi.sdk.core.DroiUser
 import com.liulishuo.filedownloader.FileDownloader
-import com.wuruoye.note.model.Config
-import com.wuruoye.note.model.Feedback
-import com.wuruoye.note.model.FontCache
-import com.wuruoye.note.model.UpNote
+import com.wuruoye.note.model.*
 import com.wuruoye.note.util.Extensions.toast
 import com.wuruoye.note.util.FontUtil
 
@@ -33,11 +30,9 @@ class App : Application(){
 
         //字体初始化
         val fontCache = FontCache(this)
-
         val config = resources.configuration
         config.fontScale = fontCache.fontSize / 15
         resources.updateConfiguration(config, resources.displayMetrics)
-
         val font = fontCache.font
         if (font > 0){
             try {

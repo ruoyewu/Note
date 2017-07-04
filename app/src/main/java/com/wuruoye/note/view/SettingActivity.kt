@@ -4,12 +4,14 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.PorterDuff
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
+import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v7.app.AlertDialog
 import android.text.Editable
 import android.text.TextWatcher
@@ -21,10 +23,7 @@ import com.droi.sdk.core.DroiUser
 import com.wuruoye.note.R
 import com.wuruoye.note.base.BaseActivity
 import com.wuruoye.note.base.IAbsView
-import com.wuruoye.note.model.AppCache
-import com.wuruoye.note.model.Date
-import com.wuruoye.note.model.Note
-import com.wuruoye.note.model.NoteCache
+import com.wuruoye.note.model.*
 import com.wuruoye.note.presenter.NoteGet
 import com.wuruoye.note.util.Extensions.toast
 import com.wuruoye.note.util.NoteUtil
@@ -103,7 +102,6 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
         ll_setting_font_size.setOnClickListener(this)
         ll_setting_lock.setOnClickListener(this)
         ll_setting_app.setOnClickListener(this)
-//        ll_setting_theme.setOnClickListener(this)
         switch_backup.setOnCheckedChangeListener(this)
         switch_auto_save.setOnCheckedChangeListener(this)
         switch_lock.setOnClickListener { changeLock() }
@@ -211,9 +209,6 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
             R.id.ll_setting_app -> {
                 startAc(Intent(this, AppLogActivity::class.java), APP_LOG)
             }
-//            R.id.ll_setting_theme -> {
-//                startAc(Intent(this, ThemeActivity::class.java), CHANGE_THEME)
-//            }
         }
     }
 

@@ -16,6 +16,16 @@ object Config {
     val Github_baseUrl = "https://github.com/ruoyewu/repository/raw/master/"
     val AUTHORITY = "com.wuruoye.note.fileprovider"
 
+    val themeColor = arrayOf(
+            R.color.gray,
+            R.color.sundown
+    )
+
+    val theme = arrayOf(
+            R.style.AppTheme,
+            R.style.theme1
+    )
+
     val fontList = arrayOf(
             R.drawable.chenjishi,
             R.drawable.guojinfang,

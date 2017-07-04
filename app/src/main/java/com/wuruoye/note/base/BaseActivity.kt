@@ -5,6 +5,8 @@ import android.os.Handler
 import android.view.Window
 import android.view.WindowManager
 import com.umeng.analytics.MobclickAgent
+import com.wuruoye.note.model.AppCache
+import com.wuruoye.note.model.Config
 import com.wuruoye.note.model.NoteCache
 
 /**

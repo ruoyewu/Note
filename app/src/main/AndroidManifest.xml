@@ -45,7 +45,6 @@
             android:windowSoftInputMode="adjustPan|stateVisible"/>
         <activity android:name=".view.ShowLockActivity" />
         <activity android:name=".view.AppLogActivity" />
-        <activity android:name=".view.ThemeActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
