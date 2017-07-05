@@ -36,11 +36,12 @@
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-            <TextView
+            <android.support.v7.widget.AppCompatSpinner
                 android:id="@+id/tv_note_year"
-                android:text="二零一七"
                 android:textSize="15sp"
                 android:clickable="true"
+                android:spinnerMode="dropdown"
+                android:background="@null"
                 android:paddingLeft="10dp"
                 android:textAlignment="center"
                 android:textColor="@color/carnation"
@@ -48,14 +49,12 @@
                 android:layout_height="wrap_content" />
             <TextView
                 android:text="年"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-            <TextView
+            <android.support.v7.widget.AppCompatSpinner
                 android:id="@+id/tv_note_month"
-                android:text="五"
                 android:textSize="15sp"
+                android:background="@null"
                 android:textAlignment="center"
                 android:clickable="true"
                 android:textColor="@color/carnation"
@@ -63,7 +62,6 @@
                 android:layout_height="wrap_content" />
             <TextView
                 android:text="月"
-                android:layout_marginLeft="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>

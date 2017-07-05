@@ -14,7 +14,10 @@ import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.PopupWindow
+import android.widget.TextView
 import com.transitionseverywhere.Fade
 import com.transitionseverywhere.Slide
 import com.transitionseverywhere.TransitionManager
@@ -36,7 +39,9 @@ import com.wuruoye.note.util.UpdateUtil
 import com.wuruoye.note.widget.SpringScrollView
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnClickListener{
+class MainActivity : BaseActivity(),
+        NoteRVAdapter.OnItemClickListener,
+        View.OnClickListener{
     private lateinit var noteGet: NoteGet
     private lateinit var noteCache: NoteCache
 
@@ -57,7 +62,6 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
         EXPEND,
         SEARCH
     }
-
 
     private val noteView = object : IAbsView<ArrayList<Note>>{
         override fun setModel(model: ArrayList<Note>) {
@@ -126,9 +130,9 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
 
     override fun initView() {
         getNote()
-
-        tv_note_month.text = Config.numList[mMonth]
-        tv_note_year.text = Config.yearList[mYear - FIRST_YEAR]
+        initYearAndMonth()
+//        tv_note_month.text = Config.numList[mMonth]
+//        tv_note_year.text = Config.yearList[mYear - FIRST_YEAR]
 
         sv_note.setOnCloseListener {
             currentState = getState(noteCache.autoState)
@@ -152,8 +156,43 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
         })
 
         ssv_note.setDragListener(dragListener)
-        tv_note_year.setOnClickListener(this)
-        tv_note_month.setOnClickListener(this)
+//        tv_note_year.setOnClickListener(this)
+//        tv_note_month.setOnClickListener(this)
+        tv_note_year.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val year = Config.yearList.indexOf(getItemList(1)[position]) + FIRST_YEAR
+                if (mYear != year){
+                    mYear = year
+                    if (year == NoteUtil.getYear()){
+                        if (mMonth > NoteUtil.getMonth()){
+                            mMonth = NoteUtil.getMonth()
+                        }
+                    }
+                    initYearAndMonth()
+                    getNote()
+                }
+            }
+
+        }
+        tv_note_month.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val month = Config.numList.indexOf(getItemList(2)[position])
+                if (mMonth != month){
+                    mMonth = month
+                    initYearAndMonth()
+                    getNote()
+                }
+            }
+
+        }
+
         tv_note_write.setOnClickListener(this)
         tv_note_close.setOnClickListener(this)
         tv_note_search.setOnClickListener(this)
@@ -266,6 +305,13 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
         }
     }
 
+    private fun initYearAndMonth(){
+        tv_note_year.adapter = ArrayAdapter(this, R.layout.item_pop_spinner, getItemList(1))
+        tv_note_month.adapter = ArrayAdapter(this, R.layout.item_pop_spinner, getItemList(2))
+        tv_note_year.setSelection(mYear - FIRST_YEAR)
+        tv_note_month.setSelection(mMonth - 1)
+    }
+
     private fun checkBackup(){
         if (noteCache.isAutoBackup){
             if (System.currentTimeMillis() - noteCache.lastBackup > 1000 * 60 * 60 * 12){
@@ -287,8 +333,7 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
         if (mYear == NoteUtil.getYear() && mMonth > NoteUtil.getMonth()){
             mMonth --
         }else{
-            tv_note_year.text = Config.yearList[mYear - FIRST_YEAR]
-            tv_note_month.text = Config.numList[mMonth]
+            initYearAndMonth()
             getNote()
         }
     }
@@ -303,12 +348,12 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
                     }
                 }
 
-                tv_note_year.text = Config.yearList[num - FIRST_YEAR]
-                tv_note_month.text = Config.numList[mMonth]
+//                tv_note_year.text = Config.yearList[num - FIRST_YEAR]
+//                tv_note_month.text = Config.numList[mMonth]
             }
             R.id.tv_note_month -> {
                 mMonth = num
-                tv_note_month.text = Config.numList[num]
+//                tv_note_month.text = Config.numList[num]
             }
         }
         getNote()
@@ -387,6 +432,30 @@ class MainActivity : BaseActivity() ,NoteRVAdapter.OnItemClickListener,View.OnCl
                     list.add(start)
                     start ++
                 }
+            }
+        }
+        return list
+    }
+
+    private fun getItemList(flag: Int): ArrayList<String>{
+        val list = ArrayList<String>()
+        if (flag == 1){
+            var start = FIRST_YEAR
+            while (start <= NoteUtil.getYear()){
+                list.add(Config.yearList[start - 2013])
+                start ++
+            }
+        }else if (flag == 2){
+            var start = 1
+            val maxMonth =
+                    if (mYear == NoteUtil.getYear()){
+                        NoteUtil.getMonth()
+                    }else{
+                        12
+                    }
+            while (start <= maxMonth){
+                list.add(Config.numList[start])
+                start ++
             }
         }
         return list
