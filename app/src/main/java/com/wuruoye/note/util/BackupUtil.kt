@@ -99,7 +99,10 @@ object BackupUtil{
                     note.day = i.day
                     note.direct = i.direct
                     if (i.bkImage != ""){
-                        note.bkFile = DroiFile(File(Config.imagePath + i.bkImage))
+                        val file = File(Config.imagePath + i.bkImage)
+                        if (file.exists()){
+                            note.bkFile = DroiFile(File(Config.imagePath + i.bkImage))
+                        }
                     }
                     saveList.add(note)
                 }
