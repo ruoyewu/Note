@@ -5,9 +5,9 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.PorterDuff
-import android.graphics.Rect
+import android.graphics.*
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -21,6 +21,7 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import com.transitionseverywhere.Slide
 import com.transitionseverywhere.TransitionManager
 import com.umeng.analytics.MobclickAgent
@@ -68,6 +69,7 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
     private lateinit var noteCache: NoteCache
     //if we open the auto save, it can show if we change the text of note when we close this activity
     private var isSave = false
+    private lateinit var shareDialog : AlertDialog
 
     private lateinit var noteGet: NoteGet
 
@@ -153,6 +155,7 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
         fileName = "note_${note.year}-${note.month}-${note.day}"
 
         initPapers()
+        initShareDialog()
         tv_write_date.text = date
         iv_write.setColorFilter(ActivityCompat.getColor(this,Config.paperStyle[paperColor]),PorterDuff.Mode.MULTIPLY)
         if (note.bkImage != ""){
@@ -175,6 +178,7 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
         tv_write_paper.setOnClickListener(this)
         tv_write_submit.setOnClickListener(this)
         tv_write_time.setOnClickListener(this)
+        tv_write_share.setOnClickListener(this)
 
         if (noteCache.isAutoSave){
             autoSave()
@@ -220,6 +224,9 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
             R.id.tv_write_submit -> {
                 closeInputMethod()
                 closeActivity()
+            }
+            R.id.tv_write_share -> {
+                shareDialog.show()
             }
             R.id.et_write -> {
                 hsv_paper.visibility = View.GONE
@@ -415,6 +422,83 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
         }
     }
 
+    private fun initShareDialog(){
+        shareDialog = AlertDialog.Builder(this)
+                .setItems(shareItems, { _, which ->
+                    onShareItemClick(which)
+                })
+                .create()
+    }
+
+    private fun onShareItemClick(which: Int){
+        when (which){
+            0 -> {
+                val text = tv_write_date.text.toString() + "\n" + et_write.text.toString()
+                shareText(text)
+            }
+            1 -> {
+                val bitmap = getViewBitmap(et_write)
+                shareBitmap(bitmap)
+            }
+        }
+    }
+
+    private fun shareText(text: String){
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "text/*"
+        intent.putExtra(Intent.EXTRA_TEXT, text)
+        startActivity(intent)
+    }
+
+    private fun shareBitmap(bitmap: Bitmap){
+        val uri = bitmap2Uri(bitmap)
+        if (uri == null){
+            toast("请检查权限问题")
+        }else{
+            val intent = Intent(Intent.ACTION_SEND)
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+            grantUriPermission(packageName, uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            intent.setDataAndType(uri, "image/*")
+            startActivity(Intent.createChooser(intent, "choose"))
+        }
+    }
+
+    private fun getViewBitmap(v: View): Bitmap{
+        et_write.background = iv_write.drawable
+        et_write.isFocusable = false
+        val b = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.RGB_565)
+        val c = Canvas(b)
+        v.layout(v.getLeft(), v.getTop(), v.getRight(), v.getBottom())
+        // Draw background
+        val bgDrawable = v.getBackground()
+        if (bgDrawable != null)
+            bgDrawable.draw(c)
+        else
+            c.drawColor(Color.WHITE)
+        // Draw view to canvas
+        v.draw(c)
+        et_write.background = BitmapDrawable()
+        et_write.isFocusable = true
+        et_write.requestFocus()
+        return b
+    }
+
+    private fun bitmap2Uri(bitmap: Bitmap): Uri?{
+        return if (PermissionRequestUtil(this).requestPermission(Config.permissionWrite)){
+            val fileName = "share.jpg_" + System.currentTimeMillis()
+            val filePath = Config.imagePath + fileName
+            ImageCompressUtil.writeToFile(bitmap, fileName)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                FileProvider.getUriForFile(this, Config.AUTHORITY, File(filePath))
+            }else{
+                Uri.fromFile(File(filePath))
+            }
+        }else{
+            null
+        }
+    }
+
     private fun closeInputMethod(){
         val view = window.peekDecorView()
         if (view != null){
@@ -489,6 +573,11 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
                 "打开相册",
                 "打开相机",
                 "清除背景"
+        )
+
+        val shareItems = arrayOf(
+                "分享文本",
+                "分享图片"
         )
         val permission = arrayOf(
                 Manifest.permission.CAMERA,

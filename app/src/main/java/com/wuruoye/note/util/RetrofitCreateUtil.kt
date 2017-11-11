@@ -12,10 +12,9 @@ import retrofit2.Retrofit
 object RetrofitCreateUtil{
 
     fun getRetrofit(): Retrofit{
-        val retrofit = Retrofit.Builder()
+        return Retrofit.Builder()
                 .client(OkHttpClient())
                 .baseUrl(Config.Github_baseUrl)
                 .build()
-        return retrofit
     }
 }

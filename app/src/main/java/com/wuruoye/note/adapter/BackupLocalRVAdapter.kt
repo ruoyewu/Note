@@ -50,8 +50,8 @@ class BackupLocalRVAdapter(
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var tvTime: TextView = itemView.findViewById(R.id.tv_item_backup_time) as TextView
-        var tvSize: TextView = itemView.findViewById(R.id.tv_item_backup_size) as TextView
+        var tvTime: TextView = itemView.findViewById<TextView>(R.id.tv_item_backup_time)
+        var tvSize: TextView = itemView.findViewById<TextView>(R.id.tv_item_backup_size)
 
     }
 }

@@ -90,9 +90,7 @@ class ShowRemoteActivity : BaseActivity() {
         noteList = list
         val adapter = NoteRVAdapter(list, onItemClickListener)
         val layoutManager = object : LinearLayoutManager(this) {
-            override fun canScrollVertically(): Boolean {
-                return false
-            }
+            override fun canScrollVertically(): Boolean = false
         }
         layoutManager.isAutoMeasureEnabled = true
         rv_backup_remote.layoutManager = layoutManager
@@ -105,7 +103,7 @@ class ShowRemoteActivity : BaseActivity() {
     private fun showNoteDialog(note: Note){
         val view = LayoutInflater.from(this)
                 .inflate(R.layout.dialog_show_note, null)
-        val tvNote = view.findViewById(R.id.tv_dialog_show_note) as TextView
+        val tvNote = view.findViewById<TextView>(R.id.tv_dialog_show_note) as TextView
         tvNote.text = note.content
         noteDialog = AlertDialog.Builder(this)
                 .setView(view)

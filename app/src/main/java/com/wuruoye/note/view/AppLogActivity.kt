@@ -121,9 +121,9 @@ class AppLogActivity : BaseActivity(), View.OnClickListener {
 
         val view = LayoutInflater.from(this)
                 .inflate(R.layout.dialog_progress, null)
-        mView = view.findViewById(R.id.rv_dialog_progress) as RelativeLayout?
-        mHeartView = view.findViewById(R.id.hv_dialog_progress) as HeartbeatView?
-        mProgressBar = view.findViewById(R.id.pb_dialog_progress) as ProcessView?
+        mView = view.findViewById<RelativeLayout>(R.id.rv_dialog_progress) as RelativeLayout?
+        mHeartView = view.findViewById<HeartbeatView>(R.id.hv_dialog_progress) as HeartbeatView?
+        mProgressBar = view.findViewById<ProcessView>(R.id.pb_dialog_progress) as ProcessView?
         mProgressBar!!.setColor(ActivityCompat.getColor(this, R.color.gray))
         mProgressView = AlertDialog.Builder(this)
                 .setTitle("正在下载中...")

@@ -37,7 +37,7 @@ class AppLogRVAdapter (
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var tvVersion: TextView = itemView.findViewById(R.id.tv_app_log_version) as TextView
-        var tvInfo: TextView = itemView.findViewById(R.id.tv_app_log_info) as TextView
+        var tvVersion: TextView = itemView.findViewById<TextView>(R.id.tv_app_log_version)
+        var tvInfo: TextView = itemView.findViewById<TextView>(R.id.tv_app_log_info) as TextView
     }
 }

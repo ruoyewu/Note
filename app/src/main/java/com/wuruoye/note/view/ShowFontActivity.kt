@@ -105,8 +105,8 @@ class ShowFontActivity : BaseActivity(), View.OnClickListener{
         for (i in 0..fontList.size - 1){
             @SuppressLint("InflateParams")
             val llView = LayoutInflater.from(this).inflate(R.layout.item_font_show,null) as LinearLayout
-            val iv = llView.findViewById(R.id.iv_font_show) as ImageView
-            val ivv = llView.findViewById(R.id.iv_font_select) as ImageView
+            val iv = llView.findViewById<ImageView>(R.id.iv_font_show) as ImageView
+            val ivv = llView.findViewById<ImageView>(R.id.iv_font_select) as ImageView
             iv.setImageResource(Config.fontList[fontList[i] - 1])
             ivList.add(ivv)
             iv.tag = i

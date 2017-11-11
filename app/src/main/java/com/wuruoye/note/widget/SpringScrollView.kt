@@ -69,20 +69,20 @@ class SpringScrollView @JvmOverloads constructor(
                 }
 
                 //width
-                if (startDragX == 0f){
-                    startDragX = e.rawX
-                }
-                if (e.rawX - startDragX >= 0){
-                    translationX = (e.rawX - startDragX) / xAy
-                    if (translationX > dragWidth){
-                        onRight()
-                    }
-                }else if (e.rawX - startDragX < 0){
-                    translationX = (e.rawX - startDragX) / xAy
-                    if (translationX < -dragWidth){
-                        onLeft()
-                    }
-                }
+//                if (startDragX == 0f){
+//                    startDragX = e.rawX
+//                }
+//                if (e.rawX - startDragX >= 0){
+//                    translationX = (e.rawX - startDragX) / xAy
+//                    if (translationX > dragWidth){
+//                        onRight()
+//                    }
+//                }else if (e.rawX - startDragX < 0){
+//                    translationX = (e.rawX - startDragX) / xAy
+//                    if (translationX < -dragWidth){
+//                        onLeft()
+//                    }
+//                }
             }
             MotionEvent.ACTION_UP,
             MotionEvent.ACTION_CANCEL -> {

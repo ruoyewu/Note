@@ -8,6 +8,7 @@ import com.wuruoye.note.util.NoteUtil.getDate
 import java.io.*
 import java.lang.StringBuilder
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Created by wuruoye on 2017/6/7.
@@ -22,6 +23,13 @@ object TextOutUtil{
     fun getNoteString(context: Context, from: Date, to: Date): String{
         val list = SQLiteUtil.getNote(context, from, to)
         return noteToString(list)
+    }
+
+    fun getNoteStringList(context: Context, from: Date, to: Date): ArrayList<String>{
+        val list = SQLiteUtil.getNote(context, from, to)
+        val array = ArrayList<String>()
+        list.mapTo(array) { it.year.toString() + "年" + it.month + "月" + it.day + "日" + "\n" + it.content }
+        return array
     }
 
     private fun toText(text: String, listener: TextOutListener){

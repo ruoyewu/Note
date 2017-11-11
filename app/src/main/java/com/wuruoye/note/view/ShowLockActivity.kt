@@ -113,12 +113,12 @@ class ShowLockActivity : BaseActivity(), View.OnClickListener {
         val view = LayoutInflater.from(this)
                 .inflate(R.layout.dialog_change_pass, null)
         with(passView) {
-            add(view.findViewById(com.wuruoye.note.R.id.ib_pass_1) as ImageButton)
-            add(view.findViewById(com.wuruoye.note.R.id.ib_pass_2) as ImageButton)
-            add(view.findViewById(com.wuruoye.note.R.id.ib_pass_3) as ImageButton)
-            add(view.findViewById(com.wuruoye.note.R.id.ib_pass_4) as ImageButton)
+            add(view.findViewById<ImageButton>(com.wuruoye.note.R.id.ib_pass_1) as ImageButton)
+            add(view.findViewById<ImageButton>(com.wuruoye.note.R.id.ib_pass_2) as ImageButton)
+            add(view.findViewById<ImageButton>(com.wuruoye.note.R.id.ib_pass_3) as ImageButton)
+            add(view.findViewById<ImageButton>(com.wuruoye.note.R.id.ib_pass_4) as ImageButton)
         }
-        passEdit = view.findViewById(R.id.et_pass) as EditText
+        passEdit = view.findViewById<EditText>(R.id.et_pass) as EditText
         passEdit.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
 

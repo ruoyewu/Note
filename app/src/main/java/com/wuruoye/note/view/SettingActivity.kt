@@ -91,6 +91,8 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
 
         iv_setting_update.setColorFilter(ActivityCompat.getColor(this, R.color.sundown))
 
+        ll_setting_app.visibility = View.GONE
+
         ll_setting_show.setOnClickListener(this)
         ll_setting_font.setOnClickListener(this)
         ll_setting_feedback.setOnClickListener(this)
@@ -240,17 +242,17 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
         val view = LayoutInflater.from(this)
                 .inflate(R.layout.dialog_change_pass, null)
         with(passView) {
-            add(view.findViewById(R.id.ib_pass_1) as ImageButton)
-            add(view.findViewById(R.id.ib_pass_2) as ImageButton)
-            add(view.findViewById(R.id.ib_pass_3) as ImageButton)
-            add(view.findViewById(R.id.ib_pass_4) as ImageButton)
+            add(view.findViewById<ImageButton>(R.id.ib_pass_1) as ImageButton)
+            add(view.findViewById<ImageButton>(R.id.ib_pass_2) as ImageButton)
+            add(view.findViewById<ImageButton>(R.id.ib_pass_3) as ImageButton)
+            add(view.findViewById<ImageButton>(R.id.ib_pass_4) as ImageButton)
         }
         for (i in passView){
             i.setOnClickListener({
                 showSoftInput(true)
             })
         }
-        passEdit = view.findViewById(R.id.et_pass) as EditText
+        passEdit = view.findViewById<EditText>(R.id.et_pass) as EditText
         passEdit.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(s: Editable?) {
 
@@ -357,8 +359,8 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
     private fun showTimeDialog(){
         val view = LayoutInflater.from(this)
         .inflate(R.layout.dialog_show_time, null)
-        val dp1 = view.findViewById(R.id.dp_data_from) as DatePicker
-        val dp2 = view.findViewById(R.id.dp_data_to) as DatePicker
+        val dp1 = view.findViewById<DatePicker>(R.id.dp_data_from) as DatePicker
+        val dp2 = view.findViewById<DatePicker>(R.id.dp_data_to) as DatePicker
         initDatePicker(dp1, dp2)
         AlertDialog.Builder(this)
                 .setView(view)

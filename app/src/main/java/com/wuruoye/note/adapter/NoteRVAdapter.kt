@@ -132,10 +132,10 @@ class NoteRVAdapter(
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val day = itemView.findViewById(R.id.item_note_day) as TextView
-        val week = itemView.findViewById(R.id.item_note_week) as TextView
-        val title = itemView.findViewById(R.id.item_note_title) as TextView
-        val wait = itemView.findViewById(R.id.item_note_null) as TextView
-        val info = itemView.findViewById(R.id.item_note_info) as LinearLayout
+        val day = itemView.findViewById<TextView>(R.id.item_note_day) as TextView
+        val week = itemView.findViewById<TextView>(R.id.item_note_week) as TextView
+        val title = itemView.findViewById<TextView>(R.id.item_note_title) as TextView
+        val wait = itemView.findViewById<TextView>(R.id.item_note_null) as TextView
+        val info = itemView.findViewById<LinearLayout>(R.id.item_note_info) as LinearLayout
     }
 }

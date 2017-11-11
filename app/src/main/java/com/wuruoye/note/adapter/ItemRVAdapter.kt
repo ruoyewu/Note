@@ -46,7 +46,7 @@ class ItemRVAdapter(
     }
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        val tv = itemView.findViewById(R.id.tv_item_item) as TextView
+        val tv = itemView.findViewById<TextView>(R.id.tv_item_item) as TextView
     }
 
     interface OnItemClickListener{

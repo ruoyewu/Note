@@ -94,14 +94,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp" />
             </android.support.design.widget.TextInputLayout>
+
             <Button
                 android:id="@+id/btn_login_login"
-                android:text="登录"
-                android:background="@drawable/button_shape"
-                android:foreground="?android:attr/selectableItemBackgroundBorderless"
-                android:layout_marginTop="20dp"
                 android:layout_width="100dp"
                 android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/button_shape"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                android:text="登录"
                 tools:ignore="NewApi" />
 
             <Button

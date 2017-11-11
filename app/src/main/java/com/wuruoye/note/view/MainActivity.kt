@@ -363,7 +363,7 @@ class MainActivity : BaseActivity(),
     private fun showPopMenu(v: View){
         val popWindow = PopupWindow(this)
         val view = LayoutInflater.from(this).inflate(R.layout.item_popup_window,null)
-        val rv =  view.findViewById(R.id.rv_show_item) as RecyclerView
+        val rv =  view.findViewById<RecyclerView>(R.id.rv_show_item) as RecyclerView
         val adapter = ItemRVAdapter(getItemList(v),object : ItemRVAdapter.OnItemClickListener{
             override fun onItemClick(item: Int) {
                    onYorMClick(v,item)

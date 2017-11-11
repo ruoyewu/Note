@@ -152,9 +152,9 @@ class FontDownloadActivity : BaseActivity() ,View.OnClickListener{
         for (i in 0..listToDownload.size - 1){
             @SuppressLint("InflateParams")
             val llView = LayoutInflater.from(this).inflate(R.layout.item_font_download,null) as LinearLayout
-            val iv = llView.findViewById(R.id.iv_font_download) as ImageView
-            val tv = llView.findViewById(R.id.tv_font_download) as TextView
-            val pv = llView.findViewById(R.id.pv_font_download) as ProcessView
+            val iv = llView.findViewById<ImageView>(R.id.iv_font_download) as ImageView
+            val tv = llView.findViewById<TextView>(R.id.tv_font_download) as TextView
+            val pv = llView.findViewById<ProcessView>(R.id.pv_font_download) as ProcessView
             iv.tag = i
             iv.setImageResource(Config.fontList[listToDownload[i] - 1])
             pv.setColor(backColor)
