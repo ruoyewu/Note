@@ -17,7 +17,7 @@ import com.wuruoye.note.model.Config
 import com.wuruoye.note.model.Note
 import com.wuruoye.note.model.UpNote
 import com.wuruoye.note.util.BackupUtil
-import com.wuruoye.note.util.Extensions.toast
+import com.wuruoye.note.util.toast
 import kotlinx.android.synthetic.main.activity_show_remote.*
 
 /**

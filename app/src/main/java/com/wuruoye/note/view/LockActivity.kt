@@ -22,7 +22,6 @@ import com.wuruoye.note.R
 import com.wuruoye.note.base.BaseActivity
 import com.wuruoye.note.model.Config
 import com.wuruoye.note.model.NoteCache
-import com.wuruoye.note.util.Extensions.toast
 import com.wuruoye.note.util.FingerUtil
 import kotlinx.android.synthetic.main.activity_lock.*
 import kotlinx.android.synthetic.main.dialog_change_pass.*

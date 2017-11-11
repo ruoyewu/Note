@@ -7,8 +7,8 @@ import com.droi.sdk.core.DroiObject
 import com.droi.sdk.core.DroiUser
 import com.liulishuo.filedownloader.FileDownloader
 import com.wuruoye.note.model.*
-import com.wuruoye.note.util.Extensions.toast
 import com.wuruoye.note.util.FontUtil
+import com.wuruoye.note.util.toast
 
 /**
  * Created by wuruoye on 2017/5/26.

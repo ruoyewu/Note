@@ -17,7 +17,6 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.PopupWindow
-import android.widget.TextView
 import com.transitionseverywhere.Fade
 import com.transitionseverywhere.Slide
 import com.transitionseverywhere.TransitionManager
@@ -31,11 +30,7 @@ import com.wuruoye.note.model.Config
 import com.wuruoye.note.model.Note
 import com.wuruoye.note.model.NoteCache
 import com.wuruoye.note.presenter.NoteGet
-import com.wuruoye.note.util.BackupUtil
-import com.wuruoye.note.util.Extensions.toast
-import com.wuruoye.note.util.NoteUtil
-import com.wuruoye.note.util.SQLiteUtil
-import com.wuruoye.note.util.UpdateUtil
+import com.wuruoye.note.util.*
 import com.wuruoye.note.widget.SpringScrollView
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -72,7 +67,7 @@ class MainActivity : BaseActivity(),
             toast(message)
         }
     }
-    private val dragListener = object : SpringScrollView.OnDragListener{
+    private val mDragListener = object : SpringScrollView.OnDragListener{
         override fun onUpDrag() {
             if (currentState == State.EXPEND) {
                 upMonth(true)
@@ -155,7 +150,7 @@ class MainActivity : BaseActivity(),
 
         })
 
-        ssv_note.setDragListener(dragListener)
+        ssv_note.setDragListener(mDragListener)
 //        tv_note_year.setOnClickListener(this)
 //        tv_note_month.setOnClickListener(this)
         tv_note_year.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{

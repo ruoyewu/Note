@@ -16,13 +16,8 @@ class SpringScrollView @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyle: Int = 0)
     : NestedScrollView(context, attrs, defStyle) {
     private var onDragListener: OnDragListener? = null
-    private var startDragY: Float = 0f
-    private var startDragX: Float = 0f
     private val springAnimH: SpringAnimation = SpringAnimation(this, SpringAnimation.TRANSLATION_Y, 0f)
     private val springAnimW: SpringAnimation = SpringAnimation(this, SpringAnimation.TRANSLATION_X, 0f)
-    private var dragHeight = 150
-    private var dragWidth = 100
-    private var xAy = 3
     private var lastTime: Long = 0
     init {
         //刚度 默认1200 值越大回弹的速度越快
@@ -33,56 +28,66 @@ class SpringScrollView @JvmOverloads constructor(
         springAnimW.spring.dampingRatio = 0.50f
     }
 
-    override fun onTouchEvent(e: MotionEvent): Boolean {
-        when (e.action) {
+    private var startX = 0F
+    private var startY = 0F
+    private var mDirect = Direct.NONE
+    private val mLastedMove = 10F
+    private val mListenerMove = 200F
+    enum class Direct{
+        NONE,
+        HORIZONTAL,
+        VERTICAL
+    }
+
+    override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
+        when (ev!!.action){
+            MotionEvent.ACTION_DOWN -> {
+                startX = ev.x
+                startY = ev.y
+            }
             MotionEvent.ACTION_MOVE -> {
-                if (scrollY <= 0) {
-                    //顶部下拉
-                    if (startDragY == 0f) {
-                        startDragY = e.rawY
+                val moveX = ev.x - startX
+                val moveY = ev.y - startY
+                if (Math.abs(moveX) > mLastedMove && Math.abs(moveX) > Math.abs(moveY)){
+                    mDirect = Direct.HORIZONTAL
+                }
+                if (Math.abs(moveY) > mLastedMove && Math.abs(moveY) > Math.abs(moveX)){
+                    if (scrollY == 0 && moveY > 0){
+                        mDirect = Direct.VERTICAL
+                    }else if ((scrollY == getChildAt(0).height - height || getChildAt(0).height <= height)
+                            && moveY < 0){
+                        mDirect = Direct.VERTICAL
                     }
-                    if (e.rawY - startDragY >= 0) {
-                        translationY = (e.rawY - startDragY) / xAy
-                        if (translationY > dragHeight){
-                            onDown()
-                        }
-                    } else {
-                        startDragY = 0f
-                        springAnimH.cancel()
-                        translationY = 0f
+                }
+                if (mDirect != Direct.NONE){
+                    return true
+                }
+            }
+        }
+        return super.onInterceptTouchEvent(ev)
+    }
+
+    override fun onTouchEvent(e: MotionEvent?): Boolean {
+        when (e!!.action) {
+            MotionEvent.ACTION_MOVE -> {
+                val moveX = e.x - startX - mLastedMove;
+                val moveY = e.y - startY - mLastedMove;
+                if (mDirect == Direct.HORIZONTAL){
+                    translationX = moveX / 3;
+                    if (moveX > mListenerMove){
+                        onRight()
+                    }else if (moveX < -mListenerMove){
+                        onLeft()
                     }
-                } else if (scrollY + height >= getChildAt(0).measuredHeight) {
-                    //底部上拉
-                    if (startDragY == 0f) {
-                        startDragY = e.rawY
-                    }
-                    if (e.rawY - startDragY <= 0) {
-                        translationY = (e.rawY - startDragY) / xAy
-                        if (translationY < -dragHeight){
-                            onUp()
-                        }
-                    } else {
-                        startDragY = 0f
-                        springAnimH.cancel()
-                        translationY = 0f
+                }else if (mDirect == Direct.VERTICAL){
+                    translationY = moveY / 3;
+                    if (moveY > mListenerMove){
+                        onDown()
+                    }else if (moveY < -mListenerMove){
+                        onUp()
                     }
                 }
 
-                //width
-//                if (startDragX == 0f){
-//                    startDragX = e.rawX
-//                }
-//                if (e.rawX - startDragX >= 0){
-//                    translationX = (e.rawX - startDragX) / xAy
-//                    if (translationX > dragWidth){
-//                        onRight()
-//                    }
-//                }else if (e.rawX - startDragX < 0){
-//                    translationX = (e.rawX - startDragX) / xAy
-//                    if (translationX < -dragWidth){
-//                        onLeft()
-//                    }
-//                }
             }
             MotionEvent.ACTION_UP,
             MotionEvent.ACTION_CANCEL -> {
@@ -92,15 +97,12 @@ class SpringScrollView @JvmOverloads constructor(
                 if (translationX != 0f){
                     springAnimW.start()
                 }
-                startDragY = 0f
-                startDragX = 0f
+                mDirect = Direct.NONE
+                startX = 0F
+                startY = 0F
             }
         }
         return super.onTouchEvent(e)
-    }
-
-    override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
-        return super.onInterceptTouchEvent(ev)
     }
 
     fun setDragListener(listener: OnDragListener){

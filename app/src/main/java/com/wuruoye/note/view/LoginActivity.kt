@@ -12,8 +12,8 @@ import com.transitionseverywhere.TransitionManager
 import com.wuruoye.note.R
 import com.wuruoye.note.base.BaseActivity
 import com.wuruoye.note.model.NoteCache
-import com.wuruoye.note.util.Extensions.isPhone
-import com.wuruoye.note.util.Extensions.toast
+import com.wuruoye.note.util.isPhone
+import com.wuruoye.note.util.toast
 import kotlinx.android.synthetic.main.activity_user.*
 
 /**
@@ -97,35 +97,31 @@ class LoginActivity : BaseActivity(), View.OnClickListener{
 
     private fun login(name: String, pass: String){
         clearError()
-        if (name == ""){
-            til_login_name.error = "用户不能为空"
-        }else if (pass == ""){
-            til_login_pass.error = "密码不能为空"
-        }else {
-            DroiUser.loginInBackground(name,pass,object : DroiCallback<DroiUser>{
-                override fun result(p0: DroiUser?, p1: DroiError?) {
-                    if (p1!!.isOk && p0 != null && p0.isAuthorized){
-                        currentView = DEFAULT_VIEW
+        when {
+            name == "" -> til_login_name.error = "用户不能为空"
+            pass == "" -> til_login_pass.error = "密码不能为空"
+            else -> DroiUser.loginInBackground(name,pass) { p0, p1 ->
+                if (p1!!.isOk && p0 != null && p0.isAuthorized){
+                    currentView = DEFAULT_VIEW
+                    defaultView()
+                    toast("登录成功")
+                    noteCache.isLogin = true
+                    noteCache.userName = name
+                    noteCache.userPass = pass
+                }else{
+                    val error =
+                            when (p1.code){
+                                DroiError.USER_NOT_EXISTS -> "用户不存在"
+                                DroiError.USER_PASSWORD_INCORRECT -> "密码错误"
+                                DroiError.USER_ALREADY_LOGIN -> "用户已登录"
+                                else -> "其他错误"
+                            }
+                    til_login_name.error = error
+                    if (error == "用户已登录"){
                         defaultView()
-                        toast("登录成功")
-                        noteCache.isLogin = true
-                        noteCache.userName = name
-                        noteCache.userPass = pass
-                    }else{
-                        val error =
-                                when (p1.code){
-                                    DroiError.USER_NOT_EXISTS -> "用户不存在"
-                                    DroiError.USER_PASSWORD_INCORRECT -> "密码错误"
-                                    DroiError.USER_ALREADY_LOGIN -> "用户已登录"
-                                    else -> "其他错误"
-                                }
-                        til_login_name.error = error
-                        if (error == "用户已登录"){
-                            defaultView()
-                        }
                     }
                 }
-            })
+            }
         }
     }
 
@@ -156,9 +152,10 @@ class LoginActivity : BaseActivity(), View.OnClickListener{
                         val error =
                         when (p1.code){
                             DroiError.USER_ALREADY_EXISTS -> "用户已存在"
-                            DroiError.USER_ALREADY_LOGIN -> ""
+                            DroiError.USER_ALREADY_LOGIN -> "用户已登录"
                             else -> "其他错误"
                         }
+                        til_login_name.error = error
                         noteCache.isLogin = DroiUser.getCurrentUser().isLoggedIn
                     }
                 }

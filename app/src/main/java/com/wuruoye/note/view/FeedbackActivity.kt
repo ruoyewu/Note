@@ -6,8 +6,8 @@ import android.view.View
 
 import com.wuruoye.note.R
 import com.wuruoye.note.base.BaseActivity
-import com.wuruoye.note.util.Extensions.toast
 import com.wuruoye.note.util.FeedbackUtil
+import com.wuruoye.note.util.toast
 import kotlinx.android.synthetic.main.activity_feedback.*
 
 /**

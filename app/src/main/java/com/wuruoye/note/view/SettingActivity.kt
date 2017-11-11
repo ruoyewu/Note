@@ -25,8 +25,8 @@ import com.wuruoye.note.base.BaseActivity
 import com.wuruoye.note.base.IAbsView
 import com.wuruoye.note.model.*
 import com.wuruoye.note.presenter.NoteGet
-import com.wuruoye.note.util.Extensions.toast
 import com.wuruoye.note.util.NoteUtil
+import com.wuruoye.note.util.toast
 import kotlinx.android.synthetic.main.activity_setting.*
 
 /**

@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.pm.ResolveInfo
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -34,7 +35,6 @@ import com.wuruoye.note.model.NoteCache
 import com.wuruoye.note.presenter.ImageGet
 import com.wuruoye.note.presenter.NoteGet
 import com.wuruoye.note.util.*
-import com.wuruoye.note.util.Extensions.toast
 import com.wuruoye.note.view.ShowNoteActivity.Companion.AUTHORITY
 import com.wuruoye.note.widget.CustomRelativeLayout
 import com.wuruoye.note.widget.SpringScrollView
@@ -144,6 +144,7 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
     }
 
     override fun initView() {
+        et_write.clearFocus()
         paperColor = note.style
         mDirect = note.direct
         if (note.bkImage != ""){
@@ -438,6 +439,7 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
             }
             1 -> {
                 val bitmap = getViewBitmap(et_write)
+
                 shareBitmap(bitmap)
             }
         }
@@ -451,52 +453,25 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
     }
 
     private fun shareBitmap(bitmap: Bitmap){
-        val uri = bitmap2Uri(bitmap)
-        if (uri == null){
-            toast("请检查权限问题")
-        }else{
-            val intent = Intent(Intent.ACTION_SEND)
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-            grantUriPermission(packageName, uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            intent.setDataAndType(uri, "image/*")
-            startActivity(Intent.createChooser(intent, "choose"))
-        }
+        val path = MediaStore.Images.Media.insertImage(contentResolver, bitmap, "分享", null)
+        val uri = Uri.parse(path)
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "image/*"
+        intent.putExtra(Intent.EXTRA_STREAM, uri)
+        startActivity(intent)
     }
 
     private fun getViewBitmap(v: View): Bitmap{
-        et_write.background = iv_write.drawable
-        et_write.isFocusable = false
-        val b = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.RGB_565)
+        val b = Bitmap.createBitmap(v.width, v.height, Bitmap.Config.ARGB_8888)
         val c = Canvas(b)
-        v.layout(v.getLeft(), v.getTop(), v.getRight(), v.getBottom())
-        // Draw background
-        val bgDrawable = v.getBackground()
-        if (bgDrawable != null)
+        val bgDrawable = iv_write.drawable
+        if (bgDrawable != null){
             bgDrawable.draw(c)
-        else
+        }else {
             c.drawColor(Color.WHITE)
-        // Draw view to canvas
-        v.draw(c)
-        et_write.background = BitmapDrawable()
-        et_write.isFocusable = true
-        et_write.requestFocus()
-        return b
-    }
-
-    private fun bitmap2Uri(bitmap: Bitmap): Uri?{
-        return if (PermissionRequestUtil(this).requestPermission(Config.permissionWrite)){
-            val fileName = "share.jpg_" + System.currentTimeMillis()
-            val filePath = Config.imagePath + fileName
-            ImageCompressUtil.writeToFile(bitmap, fileName)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                FileProvider.getUriForFile(this, Config.AUTHORITY, File(filePath))
-            }else{
-                Uri.fromFile(File(filePath))
-            }
-        }else{
-            null
         }
+        v.draw(c)
+        return b
     }
 
     private fun closeInputMethod(){

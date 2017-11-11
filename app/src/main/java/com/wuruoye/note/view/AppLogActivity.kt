@@ -19,8 +19,8 @@ import com.wuruoye.note.base.BaseActivity
 import com.wuruoye.note.model.AppCache
 import com.wuruoye.note.model.AppLog
 import com.wuruoye.note.model.Config
-import com.wuruoye.note.util.Extensions.toast
 import com.wuruoye.note.util.FileUtil
+import com.wuruoye.note.util.toast
 import com.wuruoye.note.widget.HeartbeatView
 import com.wuruoye.note.widget.ProcessView
 import kotlinx.android.synthetic.main.activity_app_log.*
