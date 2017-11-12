@@ -146,7 +146,7 @@ class WriteActivity : BaseActivity(), View.OnClickListener ,CustomRelativeLayout
 
     override fun initView() {
         if (App.mTypeFace != null){
-
+            et_write.typeface = App.mTypeFace
         }
 
         et_write.clearFocus()

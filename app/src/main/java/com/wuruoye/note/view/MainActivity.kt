@@ -112,7 +112,6 @@ class MainActivity : BaseActivity(),
                 finish()
             }
         }
-        UpdateUtil.requestUtil(applicationContext)
     }
 
     override fun initPresenter() {

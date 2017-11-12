@@ -26,6 +26,7 @@ import com.wuruoye.note.base.IAbsView
 import com.wuruoye.note.model.*
 import com.wuruoye.note.presenter.NoteGet
 import com.wuruoye.note.util.NoteUtil
+import com.wuruoye.note.util.PermissionRequestUtil
 import com.wuruoye.note.util.toast
 import kotlinx.android.synthetic.main.activity_setting.*
 
@@ -82,16 +83,11 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
 
     override fun initView() {
         initDialog()
-        initVersion()
         noteGet.requestAllNote()
 
         switch_backup.isChecked = noteCache.isAutoBackup
         switch_auto_save.isChecked = noteCache.isAutoSave
         switch_lock.isChecked = noteCache.isLock
-
-        iv_setting_update.setColorFilter(ActivityCompat.getColor(this, R.color.sundown))
-
-        ll_setting_app.visibility = View.GONE
 
         ll_setting_show.setOnClickListener(this)
         ll_setting_font.setOnClickListener(this)
@@ -103,7 +99,6 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
         ll_setting_state.setOnClickListener(this)
         ll_setting_font_size.setOnClickListener(this)
         ll_setting_lock.setOnClickListener(this)
-        ll_setting_app.setOnClickListener(this)
         switch_backup.setOnCheckedChangeListener(this)
         switch_auto_save.setOnCheckedChangeListener(this)
         switch_lock.setOnClickListener { changeLock() }
@@ -181,7 +176,9 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
                 startAc(Intent(this,ShowItemActivity::class.java), CHANGE_ITEM)
             }
             R.id.ll_setting_font -> {
-                startAc(Intent(this,ShowFontActivity::class.java), CHANGE_FONT)
+                if (PermissionRequestUtil(this).requestPermission(Config.permissionWrite)){
+                    startAc(Intent(this,ShowFontActivity::class.java), CHANGE_FONT)
+                }
             }
             R.id.ll_setting_feedback -> {
                 startAc(Intent(this, FeedbackActivity::class.java), FEEDBACK)
@@ -208,9 +205,9 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
                     showTimeDialog()
                 }
             }
-            R.id.ll_setting_app -> {
-                startAc(Intent(this, AppLogActivity::class.java), APP_LOG)
-            }
+//            R.id.ll_setting_app -> {
+//                startAc(Intent(this, AppLogActivity::class.java), APP_LOG)
+//            }
         }
     }
 
@@ -282,14 +279,6 @@ class SettingActivity : BaseActivity(), View.OnClickListener, CompoundButton.OnC
         }
     }
 
-    private fun initVersion(){
-        val version = packageManager
-                .getPackageInfo(packageName, 0)
-                .versionCode
-        if (version < appCache.remoteVersionCode && !appCache.isSeen){
-            iv_setting_update.visibility = View.VISIBLE
-        }
-    }
 
     private fun inputPass(text: String){
         if (text.length < 4){

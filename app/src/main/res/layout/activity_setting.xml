@@ -144,7 +144,7 @@
                     android:gravity="center_vertical"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:layout_height="match_parent" />
+                    android:layout_height="wrap_content" />
                 <ImageView
                     android:id="@+id/iv_setting_show__"
                     android:src="@drawable/ic_right"
@@ -266,36 +266,6 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content" />
-                <ImageView
-                    android:src="@drawable/ic_right"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp" />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/ll_setting_app"
-                android:orientation="horizontal"
-                android:padding="10dp"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:id="@+id/iv_setting_app"
-                    android:src="@drawable/ic_app"
-                    android:layout_marginRight="10dp"
-                    android:layout_width="30dp"
-                    android:layout_height="20dp" />
-                <com.wuruoye.note.widget.FontTextView
-                    android:text="简记app"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content" />
-                <ImageView
-                    android:id="@+id/iv_setting_update"
-                    android:visibility="gone"
-                    android:src="@drawable/back"
-                    android:layout_marginRight="5dp"
-                    android:layout_width="8dp"
-                    android:layout_height="8dp" />
                 <ImageView
                     android:src="@drawable/ic_right"
                     android:layout_width="25dp"

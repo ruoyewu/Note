@@ -16,6 +16,7 @@ import com.transitionseverywhere.Slide
 import com.transitionseverywhere.TransitionManager
 import com.umeng.analytics.MobclickAgent
 import com.wuruoye.note.R
+import com.wuruoye.note.base.App
 import com.wuruoye.note.base.BaseActivity
 import com.wuruoye.note.model.Config
 import com.wuruoye.note.model.FontCache
@@ -131,7 +132,7 @@ class ShowFontActivity : BaseActivity(), View.OnClickListener{
             map.put("font",name)
             MobclickAgent.onEvent(this,"font_click",map)
 
-            FontUtil.setFont(this,false,name)
+            App.mTypeFace = FontUtil.setFont(this,false,name)
             fontCache.font = num
         } catch(e: Exception) {
             toast("字体加载出错")
