@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 
 import com.wuruoye.note.R
+import com.wuruoye.note.base.App
 import com.wuruoye.note.base.BaseActivity
 import com.wuruoye.note.util.FeedbackUtil
 import com.wuruoye.note.util.toast
@@ -24,7 +25,9 @@ class FeedbackActivity : BaseActivity(), View.OnClickListener{
     }
 
     override fun initView() {
-
+        if (App.mTypeFace != null){
+            et_feedback.setTypeface(App.mTypeFace)
+        }
         iv_feedback.setOnClickListener(this)
         tv_feedback_back.setOnClickListener(this)
     }

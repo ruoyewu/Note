@@ -23,7 +23,7 @@
             android:layout_height="match_parent" />
     </RelativeLayout>
 
-    <TextView
+    <com.wuruoye.note.widget.FontTextView
         android:id="@+id/tv_font_download"
         android:text=""
         android:gravity="center"

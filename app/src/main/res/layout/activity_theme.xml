@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <com.wuruoye.note.widget.FontTextView
         android:id="@+id/tv_theme_tip"
         android:text="@string/example"
         android:gravity="center"
@@ -24,7 +24,7 @@
             android:layout_height="match_parent" />
     </com.wuruoye.note.widget.SpringScrollView>
 
-    <TextView
+    <com.wuruoye.note.widget.FontTextView
         android:id="@+id/tv_theme_back"
         android:background="@drawable/back"
         android:text="设"

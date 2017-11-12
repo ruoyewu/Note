@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
+        <com.wuruoye.note.widget.FontTextView
             android:id="@+id/tv_share_title"
             android:layout_gravity="center_horizontal"
             android:textSize="18sp"
@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <TextView
+        <com.wuruoye.note.widget.FontTextView
             android:id="@+id/tv_share_content"
             android:padding="10dp"
             android:textColor="@color/gray"

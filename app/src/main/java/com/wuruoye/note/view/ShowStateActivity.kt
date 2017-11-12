@@ -3,6 +3,7 @@ package com.wuruoye.note.view
 import android.os.Bundle
 import android.view.View
 import com.wuruoye.note.R
+import com.wuruoye.note.base.App
 import com.wuruoye.note.base.BaseActivity
 import com.wuruoye.note.model.NoteCache
 import kotlinx.android.synthetic.main.activity_state.*
@@ -24,6 +25,11 @@ class ShowStateActivity : BaseActivity(), View.OnClickListener{
 
     override fun initView() {
         rg_state.check(btnArray[noteCache.autoState])
+
+        if (App.mTypeFace != null){
+            state_expend.typeface = App.mTypeFace
+            state_close.typeface = App.mTypeFace
+        }
 
         tv_state_back.setOnClickListener(this)
         rg_state.setOnCheckedChangeListener { _, checkedId ->

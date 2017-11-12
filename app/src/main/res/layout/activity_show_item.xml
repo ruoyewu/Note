@@ -32,7 +32,7 @@
                         android:gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
-                        <TextView
+                        <com.wuruoye.note.widget.FontTextView
                             android:text="二十七"
                             android:textSize="15sp"
                             android:layout_margin="8dp"
@@ -43,7 +43,7 @@
                             android:background="@color/mercury"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"/>
-                        <TextView
+                        <com.wuruoye.note.widget.FontTextView
                             android:text="周六"
                             android:textSize="15sp"
                             android:layout_width="wrap_content"
@@ -54,7 +54,7 @@
                         android:background="@color/mercury"
                         android:layout_width="1dp"
                         android:layout_height="match_parent"/>
-                    <TextView
+                    <com.wuruoye.note.widget.FontTextView
                         android:text="@string/example"
                         android:textSize="15sp"
                         android:lines="1"
@@ -87,7 +87,7 @@
                         android:gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
-                        <TextView
+                        <com.wuruoye.note.widget.FontTextView
                             android:text="27"
                             android:textSize="15sp"
                             android:layout_margin="8dp"
@@ -98,7 +98,7 @@
                             android:background="@color/mercury"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"/>
-                        <TextView
+                        <com.wuruoye.note.widget.FontTextView
                             android:text="周六"
                             android:textSize="15sp"
                             android:layout_width="wrap_content"
@@ -109,7 +109,7 @@
                         android:background="@color/mercury"
                         android:layout_width="1dp"
                         android:layout_height="match_parent"/>
-                    <TextView
+                    <com.wuruoye.note.widget.FontTextView
                         android:text="@string/example"
                         android:textSize="15sp"
                         android:lines="1"
@@ -143,18 +143,18 @@
                         android:padding="8dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-                        <TextView
+                        <com.wuruoye.note.widget.FontTextView
                             android:text="五月二十七日"
                             android:layout_marginRight="8dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
-                        <TextView
+                        <com.wuruoye.note.widget.FontTextView
                             android:text="星期六"
                             android:layout_marginRight="8dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
                     </LinearLayout>
-                    <TextView
+                    <com.wuruoye.note.widget.FontTextView
                         android:text="@string/example"
                         android:padding="8dp"
                         android:layout_width="match_parent"
@@ -185,18 +185,18 @@
                         android:padding="8dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-                        <TextView
+                        <com.wuruoye.note.widget.FontTextView
                             android:text="5月27日"
                             android:layout_marginRight="8dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
-                        <TextView
+                        <com.wuruoye.note.widget.FontTextView
                             android:text="星期六"
                             android:layout_marginRight="8dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
                     </LinearLayout>
-                    <TextView
+                    <com.wuruoye.note.widget.FontTextView
                         android:text="@string/example"
                         android:padding="8dp"
                         android:layout_width="match_parent"
@@ -227,18 +227,18 @@
                         android:padding="8dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-                        <TextView
+                        <com.wuruoye.note.widget.FontTextView
                             android:text="5月27日"
                             android:layout_marginRight="8dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
-                        <TextView
+                        <com.wuruoye.note.widget.FontTextView
                             android:text=""
                             android:layout_marginRight="8dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
                     </LinearLayout>
-                    <TextView
+                    <com.wuruoye.note.widget.FontTextView
                         android:text="@string/example"
                         android:padding="8dp"
                         android:layout_width="match_parent"
@@ -269,18 +269,18 @@
                         android:padding="8dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-                        <TextView
+                        <com.wuruoye.note.widget.FontTextView
                             android:text="二零一七年五月二十七日"
                             android:layout_marginRight="8dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
-                        <TextView
+                        <com.wuruoye.note.widget.FontTextView
                             android:text="星期六"
                             android:layout_marginRight="8dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
                     </LinearLayout>
-                    <TextView
+                    <com.wuruoye.note.widget.FontTextView
                         android:text="@string/example"
                         android:padding="8dp"
                         android:layout_width="match_parent"
@@ -297,7 +297,7 @@
         </LinearLayout>
     </com.wuruoye.note.widget.SpringScrollView>
 
-    <TextView
+    <com.wuruoye.note.widget.FontTextView
         android:id="@+id/tv_item_set_back"
         android:background="@drawable/back"
         android:text="设"

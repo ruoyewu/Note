@@ -12,14 +12,14 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="40dp">
-        <TextView
+        <com.wuruoye.note.widget.FontTextView
             android:id="@+id/tv_setting_size"
             android:text="累计日记:"
             android:gravity="center_horizontal"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content" />
-        <TextView
+        <com.wuruoye.note.widget.FontTextView
             android:id="@+id/tv_setting_count"
             android:text="累计字数:"
             android:gravity="center_horizontal"
@@ -51,7 +51,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_width="30dp"
                     android:layout_height="22dp" />
-                <TextView
+                <com.wuruoye.note.widget.FontTextView
                     android:text="自动备份"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -72,7 +72,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_width="30dp"
                     android:layout_height="20dp" />
-                <TextView
+                <com.wuruoye.note.widget.FontTextView
                     android:text="自动保存"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -95,7 +95,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_width="30dp"
                     android:layout_height="22dp" />
-                <TextView
+                <com.wuruoye.note.widget.FontTextView
                     android:text="密码锁"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -117,7 +117,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_width="30dp"
                     android:layout_height="19dp" />
-                <TextView
+                <com.wuruoye.note.widget.FontTextView
                     android:text="默认首页显示"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -139,7 +139,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_width="30dp"
                     android:layout_height="18dp" />
-                <TextView
+                <com.wuruoye.note.widget.FontTextView
                     android:text="日记显示样式"
                     android:gravity="center_vertical"
                     android:layout_width="0dp"
@@ -166,7 +166,7 @@
                     android:layout_width="30dp"
                     android:layout_height="19dp" />
 
-                <TextView
+                <com.wuruoye.note.widget.FontTextView
                     android:text="更改字体大小"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -190,7 +190,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_width="30dp"
                     android:layout_height="22dp" />
-                <TextView
+                <com.wuruoye.note.widget.FontTextView
                     android:text="字体"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -213,7 +213,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_width="30dp"
                     android:layout_height="20dp" />
-                <TextView
+                <com.wuruoye.note.widget.FontTextView
                     android:text="用户"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -237,7 +237,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_width="30dp"
                     android:layout_height="18dp" />
-                <TextView
+                <com.wuruoye.note.widget.FontTextView
                     android:text="导出日记"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -261,7 +261,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_width="30dp"
                     android:layout_height="20dp" />
-                <TextView
+                <com.wuruoye.note.widget.FontTextView
                     android:text="反馈建议"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -284,7 +284,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_width="30dp"
                     android:layout_height="20dp" />
-                <TextView
+                <com.wuruoye.note.widget.FontTextView
                     android:text="简记app"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -304,7 +304,7 @@
         </LinearLayout>
     </com.wuruoye.note.widget.SpringScrollView>
 
-    <TextView
+    <com.wuruoye.note.widget.FontTextView
         android:id="@+id/tv_setting_back"
         android:background="@drawable/back"
         android:text="退"

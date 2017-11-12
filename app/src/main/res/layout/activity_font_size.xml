@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
+            <com.wuruoye.note.widget.FontTextView
                 android:id="@+id/tv_font_size"
                 android:text="@string/example"
                 android:padding="20dp"
@@ -31,7 +31,7 @@
         </LinearLayout>
     </com.wuruoye.note.widget.SpringScrollView>
 
-    <TextView
+    <com.wuruoye.note.widget.FontTextView
         android:id="@+id/tv_font_size_back"
         android:background="@drawable/back"
         android:text="设"

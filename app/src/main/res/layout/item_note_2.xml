@@ -18,20 +18,20 @@
             android:padding="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <TextView
+            <com.wuruoye.note.widget.FontTextView
                 android:id="@id/item_note_day"
                 android:text="早"
                 android:layout_marginRight="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-            <TextView
+            <com.wuruoye.note.widget.FontTextView
                 android:id="@id/item_note_week"
                 android:text="早"
                 android:layout_marginRight="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
-        <TextView
+        <com.wuruoye.note.widget.FontTextView
             android:id="@id/item_note_title"
             android:text="早"
             android:padding="8dp"
@@ -40,9 +40,10 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
-    <TextView
+    <com.wuruoye.note.widget.FontTextView
         android:id="@id/item_note_null"
         android:textSize="20sp"
+        android:typeface="serif"
         android:gravity="center_vertical"
         android:layout_centerInParent="true"
         android:layout_width="wrap_content"

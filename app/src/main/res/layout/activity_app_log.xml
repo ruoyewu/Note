@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <com.wuruoye.note.widget.FontTextView
         android:id="@+id/tv_app_log_tip"
         android:text="@string/example"
         android:gravity="center_horizontal"
@@ -27,7 +27,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <TextView
+        <com.wuruoye.note.widget.FontTextView
             android:id="@+id/tv_app_log_back"
             android:background="@drawable/back"
             android:text="设"
@@ -39,7 +39,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             tools:ignore="UnusedAttribute" />
-        <TextView
+        <com.wuruoye.note.widget.FontTextView
             android:id="@+id/tv_app_log_update"
             android:visibility="gone"
             android:text="升"

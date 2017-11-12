@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <com.wuruoye.note.widget.FontTextView
         android:text="导出日记"
         android:textAlignment="center"
         android:padding="10dp"
@@ -25,7 +25,7 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <TextView
+            <com.wuruoye.note.widget.FontTextView
                 android:id="@+id/tv_show_note"
                 android:textIsSelectable="true"
                 android:layout_width="match_parent"
@@ -41,14 +41,14 @@
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-            <TextView
+            <com.wuruoye.note.widget.FontTextView
                 android:id="@+id/tv_show_note_save"
                 android:text="存"
                 android:textColor="@color/carnation"
                 android:padding="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-            <TextView
+            <com.wuruoye.note.widget.FontTextView
                 android:id="@+id/tv_show_note_share"
                 android:text="享"
                 android:textColor="@color/carnation"
@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <TextView
+        <com.wuruoye.note.widget.FontTextView
             android:id="@+id/tv_show_note_back"
             android:background="@drawable/back"
             android:text="设"

@@ -18,7 +18,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_width="50dp"
                 android:layout_height="50dp" />
-            <TextView
+            <com.wuruoye.note.widget.FontTextView
                 android:id="@+id/tv_lock_tip"
                 android:text="识别指纹或输入密码..."
                 android:gravity="center"

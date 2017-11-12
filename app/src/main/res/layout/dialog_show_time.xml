@@ -12,7 +12,7 @@
         android:gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <TextView
+        <com.wuruoye.note.widget.FontTextView
             android:text="选择开始日期:"
             android:textAlignment="center"
             android:layout_width="wrap_content"
@@ -25,7 +25,7 @@
             android:layout_height="150dp"
             tools:ignore="UnusedAttribute" />
 
-        <TextView
+        <com.wuruoye.note.widget.FontTextView
             android:text="选择结束日期"
             android:layout_marginTop="20dp"
             android:layout_width="wrap_content"

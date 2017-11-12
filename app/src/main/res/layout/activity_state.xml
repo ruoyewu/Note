@@ -38,7 +38,7 @@
         </RelativeLayout>
     </com.wuruoye.note.widget.SpringScrollView>
 
-    <TextView
+    <com.wuruoye.note.widget.FontTextView
         android:id="@+id/tv_state_back"
         android:background="@drawable/back"
         android:text="设"

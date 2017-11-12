@@ -8,7 +8,7 @@
     <com.wuruoye.note.widget.SpringScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <TextView
+        <com.wuruoye.note.widget.FontTextView
             android:id="@+id/tv_dialog_show_note"
             android:text="@string/example"
             android:padding="10dp"

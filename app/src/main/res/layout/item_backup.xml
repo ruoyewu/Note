@@ -6,14 +6,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
+    <com.wuruoye.note.widget.FontTextView
         android:id="@+id/tv_item_backup_time"
         android:text="备份时间："
         android:padding="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <TextView
+    <com.wuruoye.note.widget.FontTextView
         android:id="@+id/tv_item_backup_size"
         android:text="含有日记："
         android:padding="10dp"

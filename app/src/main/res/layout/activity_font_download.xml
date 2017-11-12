@@ -19,7 +19,7 @@
     </com.wuruoye.note.widget.SpringScrollView>
 
 
-    <TextView
+    <com.wuruoye.note.widget.FontTextView
         android:id="@+id/tv_font_download_back"
         android:text="字"
         android:background="@drawable/back"

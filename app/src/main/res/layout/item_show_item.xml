@@ -7,8 +7,9 @@
     android:layout_width="match_parent"
     android:layout_height="40dp">
 
-    <TextView
+    <com.wuruoye.note.widget.FontTextView
         android:id="@+id/tv_item_item"
+        android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

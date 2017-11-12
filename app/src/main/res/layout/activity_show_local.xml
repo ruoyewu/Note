@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <com.wuruoye.note.widget.FontTextView
         android:id="@+id/tv_backup_local_tip"
         android:text="@string/example"
         android:gravity="center"
@@ -29,7 +29,7 @@
         </LinearLayout>
     </com.wuruoye.note.widget.SpringScrollView>
 
-    <TextView
+    <com.wuruoye.note.widget.FontTextView
         android:id="@+id/tv_backup_local_back"
         android:background="@drawable/back"
         android:text="退"

@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
+            <com.wuruoye.note.widget.FontTextView
                 android:id="@+id/tv_login_tip"
                 android:text="@string/example"
                 android:padding="10dp"
@@ -77,25 +77,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp" />
             </android.support.design.widget.TextInputLayout>
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/til_login_email"
-                app:errorEnabled="true"
-                android:textAlignment="center"
-                android:textColorHint="@color/carnation"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content">
-                <EditText
-                    android:id="@+id/et_login_email"
-                    android:hint="邮箱"
-                    android:background="@null"
-                    android:textColorHint="@color/carnation"
-                    android:gravity="center"
-                    android:inputType="textEmailAddress"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp" />
-            </android.support.design.widget.TextInputLayout>
 
-            <Button
+            <com.wuruoye.note.widget.FontButton
                 android:id="@+id/btn_login_login"
                 android:layout_width="100dp"
                 android:layout_height="40dp"
@@ -105,7 +88,7 @@
                 android:text="登录"
                 tools:ignore="NewApi" />
 
-            <Button
+            <com.wuruoye.note.widget.FontButton
                 android:id="@+id/btn_login_sign"
                 android:text="注册"
                 android:background="@drawable/button_shape"
@@ -115,7 +98,7 @@
                 android:layout_height="40dp"
                 tools:ignore="NewApi" />
 
-            <Button
+            <com.wuruoye.note.widget.FontButton
                 android:id="@+id/btn_login_out"
                 android:text="注销"
                 android:background="@drawable/button_shape"
@@ -128,7 +111,7 @@
 
     </com.wuruoye.note.widget.SpringScrollView>
 
-    <TextView
+    <com.wuruoye.note.widget.FontTextView
         android:id="@+id/tv_login_back"
         android:background="@drawable/back"
         android:text="设"

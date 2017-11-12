@@ -47,7 +47,7 @@
                 android:textColor="@color/carnation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-            <TextView
+            <com.wuruoye.note.widget.FontTextView
                 android:text="年"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -60,13 +60,13 @@
                 android:textColor="@color/carnation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-            <TextView
+            <com.wuruoye.note.widget.FontTextView
                 android:text="月"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <TextView
+        <com.wuruoye.note.widget.FontTextView
             android:id="@+id/tv_note_write"
             android:text="撰"
             android:textSize="18sp"
@@ -87,7 +87,7 @@
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-            <TextView
+            <com.wuruoye.note.widget.FontTextView
                 android:id="@+id/tv_note_close"
                 android:text="折"
                 android:clickable="true"
@@ -96,7 +96,7 @@
                 android:textColor="@color/carnation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-            <TextView
+            <com.wuruoye.note.widget.FontTextView
                 android:id="@+id/tv_note_search"
                 android:text="搜"
                 android:clickable="true"
@@ -105,7 +105,7 @@
                 android:textColor="@color/carnation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-            <TextView
+            <com.wuruoye.note.widget.FontTextView
                 android:id="@+id/tv_note_setting"
                 android:text="设"
                 android:clickable="true"

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <com.wuruoye.note.widget.FontTextView
         android:text="反馈建议"
         android:gravity="center_horizontal"
         android:padding="10dp"
@@ -43,7 +43,7 @@
         </LinearLayout>
     </com.wuruoye.note.widget.SpringScrollView>
 
-    <TextView
+    <com.wuruoye.note.widget.FontTextView
         android:id="@+id/tv_feedback_back"
         android:background="@drawable/back"
         android:text="设"

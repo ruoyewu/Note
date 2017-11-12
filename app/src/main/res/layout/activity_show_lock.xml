@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <com.wuruoye.note.widget.FontTextView
         android:id="@+id/tv_show_lock_tip"
         android:text="@string/example"
         android:gravity="center"
@@ -23,20 +23,20 @@
             android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-            <Button
+            <com.wuruoye.note.widget.FontButton
                 android:id="@+id/btn_lock_lock"
                 android:text="开启密码锁"
                 android:background="@drawable/button_shape"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp" />
-            <Button
+            <com.wuruoye.note.widget.FontButton
                 android:id="@+id/btn_lock_pass"
                 android:text="修改密码"
                 android:background="@drawable/button_shape"
                 android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="40dp" />
-            <Button
+            <com.wuruoye.note.widget.FontButton
                 android:id="@+id/btn_lock_finger"
                 android:text="使用指纹"
                 android:background="@drawable/button_shape"
@@ -46,7 +46,7 @@
         </LinearLayout>
     </com.wuruoye.note.widget.SpringScrollView>
 
-    <TextView
+    <com.wuruoye.note.widget.FontTextView
         android:id="@+id/tv_lock_back"
         android:background="@drawable/back"
         android:text="设"

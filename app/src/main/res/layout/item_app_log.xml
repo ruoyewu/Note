@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
+    <com.wuruoye.note.widget.FontTextView
         android:id="@+id/tv_app_log_version"
         android:text="版本: 1.7.0"
         android:padding="10dp"
@@ -17,12 +17,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
+        <com.wuruoye.note.widget.FontTextView
             android:text="更新内容: "
             android:padding="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-        <TextView
+        <com.wuruoye.note.widget.FontTextView
             android:id="@+id/tv_app_log_info"
             android:padding="10dp"
             android:text="@string/example_d"

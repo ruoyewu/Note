@@ -1,6 +1,7 @@
 package com.wuruoye.note.base
 
 import android.app.Application
+import android.graphics.Typeface
 import com.droi.sdk.core.Core
 import com.droi.sdk.core.DroiCloud
 import com.droi.sdk.core.DroiObject
@@ -23,10 +24,10 @@ class App : Application(){
         FileDownloader.init(this)
 
         //云服务初始化
-        Core.initialize(this)
         DroiUser.setAutoAnonymousUser(false)
         DroiObject.registerCustomClass(UpNote::class.java)
         DroiObject.registerCustomClass(Feedback::class.java)
+        Core.initialize(this)
 
         //字体初始化
         val fontCache = FontCache(this)
@@ -36,12 +37,16 @@ class App : Application(){
         val font = fontCache.font
         if (font > 0){
             try {
-                FontUtil.setFont(this,false,Config.fontNameList[font - 1])
+                mTypeFace = FontUtil.setFont(this,false,Config.fontNameList[font - 1])
             } catch(e: Exception) {
                 toast("字体加载出错...请稍后重新下载")
                 fontCache.font = 0
                 FontUtil.deleteFontFromStorage(Config.fontNameList[font - 1])
             }
         }
+    }
+
+    companion object {
+        var mTypeFace: Typeface? = null
     }
 }

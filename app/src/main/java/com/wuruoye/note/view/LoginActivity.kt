@@ -10,6 +10,7 @@ import com.droi.sdk.DroiError
 import com.droi.sdk.core.DroiUser
 import com.transitionseverywhere.TransitionManager
 import com.wuruoye.note.R
+import com.wuruoye.note.base.App
 import com.wuruoye.note.base.BaseActivity
 import com.wuruoye.note.model.NoteCache
 import com.wuruoye.note.util.isPhone
@@ -42,6 +43,14 @@ class LoginActivity : BaseActivity(), View.OnClickListener{
     }
 
     override fun initView() {
+        if (App.mTypeFace != null){
+            with (App.mTypeFace){
+                til_login_name.setTypeface(this)
+                til_login_pass.setTypeface(this)
+                til_login_phone.setTypeface(this)
+            }
+        }
+
         when (currentView){
             DEFAULT_VIEW -> defaultView()
             LOGIN_VIEW -> loginView()
@@ -130,7 +139,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener{
         val name = et_login_name.text.toString()
         val pass = et_login_pass.text.toString()
         val phone = et_login_phone.text.toString()
-        val email = et_login_email.text.toString()
         if (name == ""){
             til_login_name.error = "请输入用户名"
         }else if (pass.trim().length < 6){
@@ -141,8 +149,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener{
             val user = DroiUser()
             user.userId = name
             user.password = pass
-            user.phoneNumber = phone
-            user.email = email
+            user.phoneNumber = "86" + phone
             user.signUpInBackground(object : DroiCallback<Boolean>{
                 override fun result(p0: Boolean?, p1: DroiError?) {
                     if (p1!!.isOk){
@@ -166,7 +173,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener{
     private fun loginView(){
         clearError()
         til_login_phone.visibility = View.GONE
-        til_login_email.visibility = View.GONE
         btn_login_out.visibility = View.GONE
         tv_login_tip.visibility = View.GONE
 
@@ -184,7 +190,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener{
 
         til_login_name.visibility = View.VISIBLE
         til_login_pass.visibility = View.VISIBLE
-        til_login_email.visibility = View.VISIBLE
         til_login_phone.visibility = View.VISIBLE
         btn_login_sign.visibility = View.VISIBLE
     }
@@ -194,7 +199,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener{
         clearError()
         til_login_name.visibility = View.GONE
         til_login_pass.visibility = View.GONE
-        til_login_email.visibility = View.GONE
         til_login_phone.visibility = View.GONE
         btn_login_sign.visibility = View.GONE
         btn_login_login.visibility = View.GONE
@@ -208,9 +212,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener{
 
     private fun clearError(){
         til_login_name.error = ""
-        til_login_email.error = ""
         til_login_phone.error = ""
-        til_login_email.error = ""
     }
 
     override fun onBackPressed() {

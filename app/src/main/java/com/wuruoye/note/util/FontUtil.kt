@@ -19,7 +19,7 @@ object FontUtil {
         return path
     }
 
-    fun setFont(context: Context, isAssets: Boolean, name: String){
+    fun setFont(context: Context, isAssets: Boolean, name: String): Typeface{
         val path = getFontPath(name)
         val typeFace =
                 if (isAssets){
@@ -27,9 +27,10 @@ object FontUtil {
                 }else{
                     Typeface.createFromFile(path)
                 }
-        val field = Typeface::class.java.getDeclaredField("SERIF")
-        field.isAccessible = true
-        field.set(null, typeFace)
+//        val field = Typeface::class.java.getDeclaredField("SERIF")
+//        field.isAccessible = true
+//        field.set(null, typeFace)
+        return typeFace
     }
 
     fun downloadFont(name: String, listener: FileDownloadListener){

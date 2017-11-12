@@ -142,7 +142,6 @@ class MainActivity : BaseActivity(),
             }
 
             override fun onQueryTextChange(p0: String?): Boolean {
-                Log.e("ruoyenote",p0)
                 search = p0!!
                 getNote()
                 return false

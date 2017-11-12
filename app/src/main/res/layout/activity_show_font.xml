@@ -22,14 +22,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <com.wuruoye.note.widget.FontTextView
                 android:id="@+id/tv_font_download"
                 android:text="下载更多字体"
                 android:gravity="center"
                 android:padding="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-            <TextView
+            <com.wuruoye.note.widget.FontTextView
                 android:text="@string/font_tip"
                 android:textSize="12sp"
                 android:layout_marginTop="20dp"
@@ -38,7 +38,7 @@
         </LinearLayout>
     </com.wuruoye.note.widget.SpringScrollView>
 
-    <TextView
+    <com.wuruoye.note.widget.FontTextView
         android:id="@+id/tv_font_set_back"
         android:text="设"
         android:background="@drawable/back"

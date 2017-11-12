@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <com.wuruoye.note.widget.FontTextView
         android:id="@+id/tv_backup_remote_tip"
         android:gravity="center_horizontal"
         android:text="@string/example"
@@ -29,7 +29,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <TextView
+        <com.wuruoye.note.widget.FontTextView
             android:id="@+id/tv_backup_remote_back"
             android:background="@drawable/back"
             android:text="退"
@@ -41,7 +41,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             tools:ignore="UnusedAttribute" />
-        <TextView
+        <com.wuruoye.note.widget.FontTextView
             android:id="@+id/tv_backup_remote_input"
             android:text="导"
             android:padding="10dp"
