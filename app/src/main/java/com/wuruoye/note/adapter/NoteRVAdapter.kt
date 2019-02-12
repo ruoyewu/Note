@@ -29,21 +29,19 @@ class NoteRVAdapter(
     private lateinit var noteCache: NoteCache
 
     @SuppressLint("SetTextI18n")
-    override fun onBindViewHolder(p0: ViewHolder?, p1: Int) {
+    override fun onBindViewHolder(p0: ViewHolder, p1: Int) {
         val note = notes[p1]
-        p0!!.itemView.tag = note
+        p0.itemView.tag = note
         p0.itemView.setTag(R.id.note_view_holder,p0)
         p0.itemView.setOnClickListener(this)
 
         setView(note,p0)
     }
 
-    override fun getItemCount(): Int {
-        return notes.size
-    }
+    override fun getItemCount(): Int = notes.size
 
-    override fun onCreateViewHolder(p0: ViewGroup?, p1: Int): ViewHolder {
-        redColor = ActivityCompat.getColor(p0!!.context,R.color.carnation)
+    override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
+        redColor = ActivityCompat.getColor(p0.context,R.color.carnation)
         defaultColor = ActivityCompat.getColor(p0.context,R.color.gray)
         noteCache = NoteCache(p0.context)
         val item = noteCache.itemShow

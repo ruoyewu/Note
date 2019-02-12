@@ -15,7 +15,7 @@ import java.util.regex.Pattern
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show()
     }
     fun Fragment.toast(message: String){
-        context.toast(message)
+        context?.toast(message)
     }
 
     fun loge(message: String){

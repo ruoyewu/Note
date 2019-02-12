@@ -18,7 +18,7 @@ class ItemRVAdapter(
         private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<ItemRVAdapter.ViewHolder>() , View.OnClickListener{
 
-    override fun onBindViewHolder(p0: ViewHolder?, p1: Int) {
+    override fun onBindViewHolder(p0: ViewHolder, p1: Int) {
         val item = itemList[p1]
         val string =
         if (item > 2000){
@@ -26,7 +26,7 @@ class ItemRVAdapter(
         }else{
             Config.numList[item]
         }
-        p0!!.tv.text = string
+        p0.tv.text = string
 
         p0.itemView.tag = item
         p0.itemView.setOnClickListener(this)
@@ -36,8 +36,8 @@ class ItemRVAdapter(
         listener.onItemClick(v!!.tag as Int)
     }
 
-    override fun onCreateViewHolder(p0: ViewGroup?, p1: Int): ViewHolder {
-        val view = LayoutInflater.from(p0!!.context).inflate(R.layout.item_show_item,p0,false)
+    override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
+        val view = LayoutInflater.from(p0.context).inflate(R.layout.item_show_item,p0,false)
         return ViewHolder(view)
     }
 

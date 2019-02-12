@@ -19,7 +19,7 @@ class AppLogRVAdapter (
         private val logList: ArrayList<AppLog>
 ) : RecyclerView.Adapter<AppLogRVAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder? {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
                 .inflate(R.layout.item_app_log, viewGroup, false)
         return ViewHolder(view)
